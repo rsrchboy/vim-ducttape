@@ -1,0 +1,12 @@
+[submodule "p5/json-tiny"]
+	path = p5/json-tiny
+	url = https://github.com/daoswald/JSON-Tiny.git
+[submodule "p5/http-tiny"]
+	path = p5/http-tiny
+	url = https://github.com/chansen/p5-http-tiny.git
+[submodule "p5/try-tiny"]
+	path = p5/try-tiny
+	url = https://github.com/p5sagit/Try-Tiny.git
+[submodule "p5/path-tiny"]
+	path = p5/path-tiny
+	url = https://github.com/dagolden/Path-Tiny.git
