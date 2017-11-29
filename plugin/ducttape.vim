@@ -5,19 +5,34 @@ let g:ducttape_loaded = 1
 
 execute ':perl push @INC, q{' . expand('<sfile>:h') . '/../lib}'
 
+finish
 
-" also: /opt/perl5.26.1/lib/site_perl/5.26.1/x86_64-linux/.meta
-" let s:metacpan_api_base    = 'https://fastapi.metacpan.org/v1/'
-" let s:metacpan_api_release = s:metacpan_api_base . 'release/'
-" let s:metacpan_api_module  = s:metacpan_api_base . 'module/'
+perl <<EOP
+# line 12 "~/work/vim/vim-ducttape/plugin/ducttape.vim"
 
-" let s:metacpan_release = 'https://metacpan.org/release/'
+use strict;
+use warnings;
 
-" function! s:GetUrl(module) abort
-"     let l:module = json_decode(webapi#http#get(s:metacpan_api_module . a:module).content)
-"     return s:metacpan_release . l:module.distribution
-" endfunction
+# push onto @INC, but only once
+BEGIN {
+    my $base = VIM::Eval('expand("<sfile>:h")') . '/..';
 
-" function! DucttapeGetUrl(module) abort
-"     return s:GetUrl(a:module)
-" endfunction
+    push @INC,
+        # note the $_'s are *different* in the following line
+        grep { ! { map { $_ => 1 } @INC }->{$_} }
+        "$base/module-info/lib", "$base/lib", scalar VIM::Eval('g:perl#bootstrap')
+        ;
+}
+
+use VIMx::Out;
+
+# again, somethings we only ever need to do once...
+unless (tied *VIMOUT) {
+    tie (*VIMOUT, 'VIMx::Out');
+    tie (*VIMERR, 'VIMx::Out', 'ErrorMsg');
+    select VIMOUT;
+}
+
+EOP
+
+" __END__
