@@ -1,5 +1,6 @@
 " also: /opt/perl5.26.1/lib/site_perl/5.26.1/x86_64-linux/.meta
 
+execute ':perl push @INC, q{' . expand('<sfile>:h') . '/../lib}'
 
 let s:metacpan_api_base    = 'https://fastapi.metacpan.org/v1/'
 let s:metacpan_api_release = s:metacpan_api_base . 'release/'
