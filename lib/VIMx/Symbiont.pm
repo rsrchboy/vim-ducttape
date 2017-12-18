@@ -2,11 +2,20 @@ package VIMx::Symbiont;
 
 # ABSTRACT: Co-dependent Perl
 
+# Some notes, before we get started:
+#
+# For portability's sake, use as few external packages as possible: the whole
+# idea is to be able to just drop this in and use it, after all. The ::Tiny
+# ones are generally fine, as they can be included as submodules, but XS is
+# "right out".
+
+
 use strict;
 use warnings;
 
 use Path::Tiny;
 use JSON::Tiny qw{ encode_json decode_json };
+use VIMx::Tie::Dict;
 
 use parent 'Exporter';
 
@@ -16,6 +25,9 @@ our @EXPORT = qw/
     encode_json
 
     function
+
+    %B
+    %G
 /;
 
 our %VIML;
@@ -23,6 +35,9 @@ VIM::DoCommand('let g:vimx_symbiont_viml = {}');
 
 our %RETURN;
 VIM::DoCommand('let g:vimx_symbiont_return = {}');
+
+tie our %G, 'VIMx::Tie::Dict', 'g:';
+tie our %B, 'VIMx::Tie::Dict', 'b:';
 
 sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 
