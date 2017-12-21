@@ -15,6 +15,7 @@ use warnings;
 
 use Path::Tiny;
 use JSON::Tiny qw{ encode_json decode_json };
+use Try::Tiny;
 use VIMx::Tie::Dict;
 
 use parent 'Exporter';
@@ -64,10 +65,18 @@ END
     my $wrapped = sub {
         # vivify our args, execute the coderef, etc
         my @a000 = @{ decode_json(scalar VIM::Eval('json_encode(a:000)')) };
-        ( $RETURN{$name} = encode_json($coderef->(@a000)) ) =~ s/'/''/g;
+        try {
+            ( $RETURN{$name} = encode_json($coderef->(@a000)) ) =~ s/'/''/g;
 
-        # handle getting the return value(s) back into vim-land
-        VIM::DoCommand("let $return_var = '$RETURN{$name}'");
+            # handle getting the return value(s) back into vim-land
+            VIM::DoCommand("let $return_var = '$RETURN{$name}'");
+        }
+        catch {
+            $_ =~ s/'/''/g;
+            VIM::DoCommand("throw '$_'");
+        };
+
+        return;
     };
 
     warn $viml;
