@@ -49,7 +49,7 @@ sub function {
     # TODO just return if we're not inside vim
 
     my ($pkg) = caller;
-    my $perl_name = "${pkg}::${name}";
+    my $perl_name = "${pkg}::func_${name}";
     my $vim_ns    = _class_to_vim_ns($pkg);
     $name = _class_to_vim_ns($pkg) . "#$name";
 
