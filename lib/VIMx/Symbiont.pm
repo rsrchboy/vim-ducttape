@@ -79,8 +79,11 @@ END
         return;
     };
 
-    warn $viml;
-    $VIML{$pkg} //= q{};
+    $VIML{$pkg} //= <<"END";
+fun! $vim_ns#load() abort
+endfun
+END
+
     $VIML{$pkg}  .= $viml;
 
     # get everything
