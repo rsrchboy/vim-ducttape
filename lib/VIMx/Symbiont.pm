@@ -80,6 +80,7 @@ END
     };
 
     $VIML{$pkg} //= <<"END";
+let g:$vim_ns#loaded = 1
 fun! $vim_ns#load() abort
 endfun
 END
