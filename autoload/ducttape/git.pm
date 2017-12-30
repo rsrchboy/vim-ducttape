@@ -45,15 +45,9 @@ function revparse         => sub { [ bufrepo->revparse(@_) ]    };
 function revlist       => sub { [ map { $_->id } bufrepo->walker->push_range(bufrepo->revparse(@_))->all ] };
 function revlist_count => sub { scalar bufrepo->walker->push_range(bufrepo->revparse(@_))->all             };
 
-# function revparse_count   => sub { scalar bufrepo->revparse(@_) };
-# function revlist_count   => sub { scalar bufrepo->revparse(@_) };
-
 function fixup => sub {
     my ($id_to_fixup) = @_;
 
-    # FIXME symlinks!
-    # my $repo = Git::Raw::Repository->discover(path($main::curbuf->Name)->absolute->parent);
-    # my $repo = Git::Raw::Repository->open($b{git_dir});
     my $repo = bufrepo;
 
     ### get our index and its corresponding tree...
