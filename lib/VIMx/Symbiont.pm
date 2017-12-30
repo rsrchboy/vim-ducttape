@@ -27,8 +27,8 @@ our @EXPORT = qw/
 
     function
 
-    %B
-    %G
+    %b
+    %g
 /;
 
 our %VIML;
@@ -37,8 +37,8 @@ VIM::DoCommand('let g:vimx_symbiont_viml = {}');
 our %RETURN;
 VIM::DoCommand('let g:vimx_symbiont_return = {}');
 
-tie our %G, 'VIMx::Tie::Dict', 'g:';
-tie our %B, 'VIMx::Tie::Dict', 'b:';
+tie our %g, 'VIMx::Tie::Dict', 'g:';
+tie our %b, 'VIMx::Tie::Dict', 'b:';
 
 sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 
