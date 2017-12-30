@@ -82,11 +82,6 @@ function fixup => sub {
 function cat_file => sub {
     my ($fn) = @_;
 
-    # FIXME symlinks!
-    # my $repo = Git::Raw::Repository->discover(path($main::curbuf->Name)->absolute->parent);
-    # my $repo = Git::Raw::Repository->open($b{git_dir});
-    ### git dir: $b{git_commondir}
-    # my $repo = Git::Raw::Repository->open($b{git_commondir});
     my $repo = bufrepo;
 
     my $contents = join("\n", $main::curbuf->Get(1..$main::curbuf->Count));
