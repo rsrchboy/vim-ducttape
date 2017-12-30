@@ -13,22 +13,10 @@ use Git::Raw::Repository;
 use Git::Raw::Signature;
 use Path::Tiny;
 
-# debugging...
-use Smart::Comments '###';
-
-sub repo_for_bufno {
-    my ($bufnr) = @_;
-
-    state $repos = {};
-
-    return $repos->{$bufnr}
-        if defined $repos->{$bufnr};
-
-    # $repos->{$bufnr} = path($curbuf->Name)->absolute->parent;
-    return $repos->{$bufnr} = Git::Raw::Repository->open($B{git_commondir});
+sub bufrepo {
+    my $start = path(shift // $main::curbuf->Name)->absolute->parent;
+    return Git::Raw::Repository->discover($start);
 }
-
-sub bufrepo { repo_for_bufno($main::curbuf->Number) }
 
 function config_str => sub { Git::Raw::Config->default->str(shift) };
 
