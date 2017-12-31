@@ -1,0 +1,17 @@
+Execute:
+  call ducttape#http#load()
+  Assert exists('g:ducttape#http#loaded'), 'loaded global set'
+
+Execute(basic tie tests):
+  unlet! b:eep
+  perl $VIMx::Symbiont::b{eep} = 'one'
+  AssertEqual 'one', b:eep
+  perl delete $VIMx::Symbiont::b{eep}
+  Assert !has('b:eep')
+
+Execute(complex-ish tie tests):
+  unlet! b:eep
+  perl $VIMx::Symbiont::b{eep} = [1, 2, 3]
+  AssertEqual [1, 2, 3], b:eep
+  perl $VIMx::Symbiont::b{eep} = { one => [1, 2, 3] }
+  AssertEqual { 'one': [1, 2, 3] }, b:eep
