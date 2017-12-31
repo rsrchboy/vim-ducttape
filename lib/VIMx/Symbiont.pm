@@ -39,6 +39,15 @@ tie our %t, 'VIMx::Tie::Dict', 't:';
 tie our %v, 'VIMx::Tie::Dict', 'v:';
 tie our %w, 'VIMx::Tie::Dict', 'w:';
 
+# may as well make life a little easier at the command prompt
+$main::a = \%a;
+$main::b = \%b;
+$main::g = \%g;
+$main::l = \%l;
+$main::t = \%t;
+$main::v = \%v;
+$main::w = \%w;
+
 our %VIML;
 $g{vimx_symbiont_viml} = {};
 
