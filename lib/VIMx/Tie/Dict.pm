@@ -3,6 +3,8 @@ package VIMx::Tie::Dict;
 use strict;
 use warnings;
 
+use JSON::Tiny qw{ encode_json decode_json };
+
 use base 'Tie::Hash';
 
 # debugging...
@@ -21,16 +23,19 @@ sub TIEHASH {
 sub STORE {
     my ($this, $key, $value) = @_;
     my $dict = $this->{dict};
-    my ($success, $v) = VIM::Eval("let $dict"."['$key'] = '$value'");
-    return;
+
+    (my $viml_value = encode_json($value)) =~ s/'/''/g;
+
+    my ($success, $v) = VIM::DoCommand("let $dict"."['$key'] = json_decode('$viml_value')");
+    return $value;
 }
 
 sub FETCH {
     my ($this, $key) = @_;
     ### @_
     my $dict = $this->{dict};
-    my ($success, $v) = VIM::Eval("get($dict, '$key')");
-    return $v;
+    my ($success, $v) = VIM::Eval("json_encode(get($dict, '$key'))");
+    return decode_json($v);
 }
 
 sub EXISTS {
