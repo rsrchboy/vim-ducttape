@@ -48,7 +48,7 @@ sub EXISTS {
 sub DELETE {
     my ($this, $key) = @_;
     my $dict = $this->{dict};
-    my ($success, $v) = VIM::Eval("unlet! ${dict}"."['$key'])");
+    my ($success, $v) = VIM::DoCommand("unlet! ${dict}"."['$key']");
     return;
 }
 
