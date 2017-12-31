@@ -36,11 +36,5 @@ function version_ge => sub { $^V ge shift ? 1 : 0 };
 function version_lt => sub { $^V lt shift ? 1 : 0 };
 function version_le => sub { $^V le shift ? 1 : 0 };
 
-# function head   => sub { request(HEAD   => @_) };
-# function put    => sub { request(PUT    => @_) };
-# function post   => sub { request(POST   => @_) };
-# function delete => sub { request(DELETE => @_) };
-
-
 !!42;
 __END__

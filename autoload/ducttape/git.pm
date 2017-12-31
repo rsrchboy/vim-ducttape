@@ -41,6 +41,9 @@ function path_is_ignored  => sub { bufrepo->path_is_ignored(@_) };
 function merge_base       => sub { bufrepo->merge_base(@_)      };
 function status           => sub { bufrepo->status              };
 function revparse         => sub { [ bufrepo->revparse(@_) ]    };
+function id_for           => sub { bufrepo->revparse(shift)     };
+
+function index_add => sub { my $i = bufrepo->index; $i->add($main::curbuf->Name); $i->write };
 
 function revlist       => sub { [ map { $_->id } bufrepo->walker->push_range(bufrepo->revparse(@_))->all ] };
 function revlist_count => sub { scalar bufrepo->walker->push_range(bufrepo->revparse(@_))->all             };
@@ -79,6 +82,8 @@ function fixup => sub {
     return $fixup->id;
 };
 
+# somewhat a misnomer -- write the contents of the current file to the object
+# store, then return the blob's id
 function cat_file => sub {
     my ($fn) = @_;
 
