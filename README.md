@@ -1,6 +1,12 @@
 This is a VimL library to assist one in using Perl in vim; that is, not to
 help you with *writing* Perl in vim, using Perl in vim (VimL).
 
+## Notes
+
+If the vim you're using lacks `json_encode()` and `json_decode()` this isn't
+going to work -- we make extensive use of those functions when passing data
+back and forth from Perl-space to VIM-space.
+
 ## Why "ducttape"?
 
 ![Honestly, we just hacked it all together](https://imgs.xkcd.com/comics/lisp.jpg)
