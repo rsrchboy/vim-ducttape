@@ -14,7 +14,11 @@ use Git::Raw::Signature;
 use Path::Tiny;
 
 sub bufrepo {
-    my $start = path(shift // $main::curbuf->Name)->absolute->parent;
+    # FIXME ARRGH
+    return Git::Raw::Repository->open($b{git_dir});
+
+    return unless $b{git_dir};
+    my $start = path(shift // $main::curbuf->Name || q{.})->absolute->parent;
     return Git::Raw::Repository->discover($start);
 }
 
