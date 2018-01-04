@@ -10,3 +10,6 @@
 [submodule "p5/path-tiny"]
 	path = p5/path-tiny
 	url = https://github.com/dagolden/Path-Tiny.git
+[submodule "p5/module-info"]
+	path = p5/module-info
+	url = https://github.com/neilb/Module-Info.git
