@@ -21,9 +21,11 @@ function has => sub {
 };
 
 function use => sub {
-    my ($module) = @_;
+    my @modules = @_;
     return try {
-        use_module($module);
+        use_module($_)
+            for @modules;
+        return 1;
     }
     catch {
         return 0;
@@ -31,9 +33,11 @@ function use => sub {
 };
 
 function require => sub {
-    my ($module) = @_;
+    my @modules = @_;
     return try {
-        return require_module($module);
+        require_module($_)
+            for @modules;
+        return 1;
     }
     catch {
         return 0;
