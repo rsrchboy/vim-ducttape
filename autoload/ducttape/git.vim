@@ -4,6 +4,10 @@
 " belong in that namespace -- or perhaps just that we're determined so it may
 " as well get out of the way.
 
+if !ducttape#require('Git::Raw')
+    finish
+endif
+
 execute ducttape#symbiont#autoload(expand('<sfile>'))
 
 " __END__
