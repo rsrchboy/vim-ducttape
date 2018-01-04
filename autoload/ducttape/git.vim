@@ -5,6 +5,7 @@
 " as well get out of the way.
 
 if !ducttape#require('Git::Raw')
+    " TODO FIXME create a FuncUndefined au here to warn?
     finish
 endif
 
