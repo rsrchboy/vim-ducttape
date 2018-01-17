@@ -6,6 +6,7 @@
 
 if !ducttape#require('Git::Raw')
     " TODO FIXME create a FuncUndefined au here to warn?
+    let g:ducttape#git#loaded = 0
     finish
 endif
 

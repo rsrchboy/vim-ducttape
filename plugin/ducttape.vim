@@ -8,7 +8,7 @@ execute ':perl push @INC, q{' . expand('<sfile>:h') . '/../lib}'
 finish
 
 perl <<EOP
-# line 12 "~/work/vim/vim-ducttape/plugin/ducttape.vim"
+# line 12 "/shared/git/vim/vim-ducttape/plugin/ducttape.vim"
 
 use strict;
 use warnings;
@@ -20,7 +20,7 @@ BEGIN {
     push @INC,
         # note the $_'s are *different* in the following line
         grep { ! { map { $_ => 1 } @INC }->{$_} }
-        "$base/module-info/lib", "$base/lib", scalar VIM::Eval('g:perl#bootstrap')
+        "$base/lib",
         ;
 }
 

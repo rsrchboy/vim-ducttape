@@ -7,7 +7,7 @@ use JSON::Tiny qw{ encode_json decode_json };
 
 use base 'Tie::Hash';
 
-# debugging...
+# # debugging...
 # use Smart::Comments '###';
 
 # NOTE right now we only handle simple cases, where the value of the slot to
@@ -26,6 +26,7 @@ sub STORE {
 
     (my $viml_value = encode_json($value)) =~ s/'/''/g;
 
+    ### STORE: "let $dict"."['$key'] = json_decode('$viml_value')"
     my ($success, $v) = VIM::DoCommand("let $dict"."['$key'] = json_decode('$viml_value')");
     return $value;
 }

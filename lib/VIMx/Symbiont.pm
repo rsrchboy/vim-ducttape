@@ -57,12 +57,19 @@ $g{vimx_symbiont_return} = {};
 sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 
 
+tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return';
+
 sub function {
     my ($coderef, $name) = (pop, pop);
     my %opts = (
         args => '...',
         @_,
     );
+
+    # TODO handle specific arguments, e.g. something like this should be
+    # possible:
+    #
+    # function args => 'one, two, three', <name> => sub { ... };
 
     # TODO just return if we're not inside vim
 
@@ -88,6 +95,7 @@ END
 
             # handle getting the return value(s) back into vim-land
             VIM::DoCommand("let $return_var = '$RETURN{$name}'");
+            # $vimx_return{$name} = $coderef->(@a000);
         }
         catch {
             $_ =~ s/'/''/g;
