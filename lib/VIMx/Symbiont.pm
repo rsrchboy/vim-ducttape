@@ -58,7 +58,11 @@ sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 
 
 sub function {
-    my ($name, $coderef) = @_;
+    my ($coderef, $name) = (pop, pop);
+    my %opts = (
+        args => '...',
+        @_,
+    );
 
     # TODO just return if we're not inside vim
 
@@ -70,7 +74,7 @@ sub function {
     my $return_var = "g:vimx_symbiont_return['$name']";
 
     my $viml = <<"END";
-function! $name(...) abort
+function! $name($opts{args}) abort
     perl ${perl_name}(scalar VIM::Eval('json_encode(a:000)'))
     return json_decode($return_var)
 endfunction
