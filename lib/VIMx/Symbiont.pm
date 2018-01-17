@@ -57,6 +57,9 @@ $g{vimx_symbiont_return} = {};
 sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 
 
+tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return';
+tie our %vimx_viml,   'VIMx::Tie::Dict', 'g:vimx_symbiont_viml';
+
 sub function {
     my ($coderef, $name) = (pop, pop);
     my %opts = (
