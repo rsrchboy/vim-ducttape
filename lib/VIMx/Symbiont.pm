@@ -68,6 +68,7 @@ sub function {
     my ($coderef, $name) = (pop, pop);
     my %opts = (
         args => '...',
+        opts => 'abort',
         @_,
     );
 
@@ -81,7 +82,7 @@ sub function {
     my $return_var = "g:vimx_symbiont_return['$name']";
 
     my $viml = <<"END";
-function! $name($opts{args}) abort
+function! $name($opts{args}) $opts{opts}
     perl ${perl_name}(scalar VIM::Eval('json_encode(a:000)'))
     return json_decode($return_var)
 endfunction
