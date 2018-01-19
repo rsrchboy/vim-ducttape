@@ -26,6 +26,7 @@ our @EXPORT = qw/
     encode_json
 
     function
+    fun
 
     %a %b %g %l %t %v %w
 /;
@@ -120,6 +121,9 @@ END
 
     return;
 }
+
+# shorthand
+sub fun { goto \&function }
 
 !!42;
 __END__
