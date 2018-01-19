@@ -111,12 +111,9 @@ fun! $vim_ns#load() abort
 endfun
 END
 
+    # optimize later -- some cruft built up here
     $VIML{$pkg}  .= $viml;
-
-    # get everything
-    ($viml = $VIML{$pkg}) =~ s/'/''/g;
-    # optimize later -- easier to pass it in from this side
-    VIM::DoCommand(qq{let g:vimx_symbiont_viml['$pkg'] = json_decode('} . encode_json($viml) . q{')});
+    $vimx_viml{$pkg} = $VIML{$pkg};
 
     {
         no strict 'refs';
