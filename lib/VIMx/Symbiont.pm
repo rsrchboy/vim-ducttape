@@ -61,6 +61,9 @@ sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return';
 tie our %vimx_viml,   'VIMx::Tie::Dict', 'g:vimx_symbiont_viml';
 
+# NOTE: when using the args option, the named parameters must be accessed
+# through the %a tie.
+
 sub function {
     my ($coderef, $name) = (pop, pop);
     my %opts = (
