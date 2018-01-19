@@ -17,6 +17,8 @@ use base 'Tie::Hash';
 
 sub TIEHASH {
     my ($class, $dict) = @_;
+    # ensure we exist
+    VIM::DoCommand("if !exists('$dict') | let $dict = {} | endif");
     return bless { dict => $dict }, $class;
 }
 
