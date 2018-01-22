@@ -28,7 +28,7 @@ our @EXPORT = qw/
     function
     fun
 
-    %a %b %g %l %t %v %w
+    %a %b %g %l %s %t %v %w
 /;
 
 # see help for internal-variables for more information
@@ -36,6 +36,7 @@ tie our %a, 'VIMx::Tie::Dict', 'a:';
 tie our %b, 'VIMx::Tie::Dict', 'b:';
 tie our %g, 'VIMx::Tie::Dict', 'g:';
 tie our %l, 'VIMx::Tie::Dict', 'l:';
+tie our %s, 'VIMx::Tie::Dict', 's:';
 tie our %t, 'VIMx::Tie::Dict', 't:';
 tie our %v, 'VIMx::Tie::Dict', 'v:';
 tie our %w, 'VIMx::Tie::Dict', 'w:';
@@ -45,6 +46,7 @@ $main::a = \%a;
 $main::b = \%b;
 $main::g = \%g;
 $main::l = \%l;
+$main::s = \%s;
 $main::t = \%t;
 $main::v = \%v;
 $main::w = \%w;
