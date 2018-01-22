@@ -1,0 +1,37 @@
+Execute (set rtp, check load variable):
+  " set rtp+=expand('<sfile>')
+  set rtp+=vader/rtp
+  Assert 1, g:t#one#loaded
+
+Execute (hello()):
+  Assert exists('*t#one#hello')
+  AssertEqual 'world!', t#one#hello()
+
+Execute (scalar):
+  Assert exists('*t#one#scalar')
+  AssertEqual 4, t#one#scalar(2)
+
+Execute (scalar_ref):
+  Assert exists('*t#one#scalar_ref')
+  AssertEqual 4, t#one#scalar_ref()
+
+Execute (hash_ref):
+  Assert exists('*t#one#hash_ref')
+  AssertEqual { 'a': 1, 'b': 2 }, t#one#hash_ref()
+
+Execute (array_ref):
+  Assert exists('*t#one#array_ref')
+  AssertEqual [1, 2, 3], t#one#array_ref()
+
+Execute (nested):
+  Assert exists('*t#one#nested')
+  AssertEqual { 'a': [1, 2], 'b': { 'rainbow': 'dash' } }, t#one#nested()
+
+Execute (round_trip):
+  Assert exists('*t#one#round_trip')
+  let g:tdata = 'eep'
+  AssertEqual g:tdata, t#one#round_trip(g:tdata)
+  let g:tdata = [1, 2, 3]
+  AssertEqual g:tdata, t#one#round_trip(g:tdata)
+  AssertEqual [ g:tdata, 'a' ], t#one#round_trip(g:tdata, 'a')
+  unlet g:tdata
