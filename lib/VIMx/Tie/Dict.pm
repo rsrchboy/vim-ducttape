@@ -82,7 +82,12 @@ sub _keys_hash {
     my $first = shift @keys;
     my $last  = pop @keys;
 
-    my %keys = ($first, ( map { $_ => $_ } @keys ), $last, $last, undef);
+    my %keys = (
+        $first,
+        ( map { $_ => $_ } @keys ),
+        ( defined $last ? ( $last, $last ) : () ),
+        undef,
+    );
 
     ### %keys
     return \%keys;
