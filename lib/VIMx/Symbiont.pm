@@ -131,28 +131,24 @@ sub function {
 $opts{viml_prelude}
 function! $opts{fn_ns}$name($opts{args}) $opts{opts}
     perl ${perl_name}(scalar VIM::Eval('json_encode(a:000)'))
-    return json_decode($return_var)
+    return $return_var
 endfunction
 $opts{viml_postlude}
 END
 
-    # $viml =
-
     my $wrapped = sub {
-        # vivify our args, execute the coderef, etc
-        my @a000 = @{ decode_json(scalar VIM::Eval('json_encode(a:000)')) };
-        try {
-            ( $vimx_return{$perl_name} = encode_json($coderef->(@a000)) ) =~ s/'/''/g;
 
-            # handle getting the return value(s) back into vim-land
-            VIM::DoCommand("let $return_var = '$vimx_return{$perl_name}'");
-            # $vimx_return{$name} = $coderef->(@a000);
+        my @ret = try {
+            # make any unnamed params available in @_
+            $coderef->(@{$a{'000'}});
         }
         catch {
+            # translate our Perl exception into a VimL one
             $_ =~ s/'/''/g;
             VIM::DoCommand("throw 'symbiont: $_'");
         };
 
+        $vimx_return{$perl_name} = ( @ret == 1 ? $ret[0] : \@ret );
         return;
     };
 
