@@ -36,6 +36,13 @@ sub FETCH {
     my ($this, $key) = @_;
     ### @_
     my $dict = $this->{dict};
+
+    # conform to expected behaviour: vim will complain if a slot that does not
+    # exist is accessed, while Perl will simply return undef.  Here we
+    # short-circuit to return undef.
+    return
+        unless EXISTS($this, $key);
+
     my ($success, $v) = VIM::Eval("json_encode(get($dict, '$key'))");
     return decode_json($v);
 }
