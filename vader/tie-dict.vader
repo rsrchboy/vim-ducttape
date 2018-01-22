@@ -44,3 +44,9 @@ Execute (concatenation works, redux):
   perl $VIMx::Symbiont::b{eep} //= 'ARRGH'
   perl $VIMx::Symbiont::b{eep}  .= ' worked!'
   AssertEqual 'This worked!', b:eep
+
+Execute (keys):
+  let b:eep = { 'a': 1, 'b': 2, 'c': 3 }
+  perl $VIMx::Symbiont::b{oop} = [ sort keys %{ $VIMx::Symbiont::b{eep} } ]
+  AssertEqual [ 'a', 'b', 'c' ], b:oop
+  unlet! b:eep b:oop
