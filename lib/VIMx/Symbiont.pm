@@ -70,6 +70,7 @@ sub method {
     my %opts = (
         fn_ns       => 's:method_',
         perl_prefix => 'method_',
+        opts        => 'abort dict',
         pkg         => (caller)[0],
         @_,
     );
