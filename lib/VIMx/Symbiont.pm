@@ -18,7 +18,7 @@ use JSON::Tiny qw{ encode_json decode_json };
 use Try::Tiny;
 use VIMx::Tie::Dict;
 
-use parent 'Exporter';
+use Exporter 'import';
 
 # use Smart::Comments;
 
