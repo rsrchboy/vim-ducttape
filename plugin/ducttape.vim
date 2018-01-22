@@ -3,28 +3,16 @@ if has('g:ducttape_loaded')
 endif
 let g:ducttape_loaded = 1
 
+" perleval() became available with 2016-01-17 e9b892ebc (tag: v7.4.1125) patch 7.4.1125
 execute ':perl push @INC, q{' . expand('<sfile>:h') . '/../lib}'
 
-finish
+" the rest became unnecessary after 6244a0fc2 (tag: v7.4.1729) patch 7.4.1729
+if v:version < 704 || v:version == 704 && !has('patch1729')
+    finish
+endif
 
 perl <<EOP
-# line 12 "plugin/ducttape.vim"
-
-use v5.10;
-use strict;
-use warnings;
-
-# push onto @INC, but only once
-BEGIN {
-    my $base = VIM::Eval('expand("<sfile>:h")') . '/..';
-
-    push @INC,
-        # note the $_'s are *different* in the following line
-        grep { ! { map { $_ => 1 } @INC }->{$_} }
-        "$base/lib",
-        ;
-}
-
+# line 16 "plugin/ducttape.vim"
 use VIMx::Out;
 
 # again, somethings we only ever need to do once...
