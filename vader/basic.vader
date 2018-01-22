@@ -15,3 +15,13 @@ Execute(complex-ish tie tests):
   AssertEqual [1, 2, 3], b:eep
   perl $VIMx::Symbiont::b{eep} = { one => [1, 2, 3] }
   AssertEqual { 'one': [1, 2, 3] }, b:eep
+
+Execute (reference execution tie tests):
+  unlet! b:eep
+  perl $VIMx::Symbiont::b{eep} = \'1 + 1'
+  AssertEqual 2, b:eep
+
+Execute (defined-or setting on non-extant slot):
+  unlet! b:eep
+  perl $VIMx::Symbiont::b{eep} //= 42
+  AssertEqual 42, b:eep
