@@ -26,9 +26,20 @@ sub STORE {
     my ($this, $key, $value) = @_;
     my $dict = $this->{dict};
 
+    my $target = "$dict"."['$key']";
+
+    if ((ref $value // q{}) eq 'SCALAR') {
+        # we've been passed a reference to a scalar
+        # much like DBIC, this means "execute this literally"
+        VIM::DoCommand("let $target = $$value");
+        my ($success, $v) = VIM::Eval("$target");
+        return $v;
+    }
+
     (my $viml_value = encode_json($value)) =~ s/'/''/g;
 
-    my ($success, $v) = VIM::DoCommand("let $dict"."['$key'] = json_decode('$viml_value')");
+    ### STORE: "$target = json_decode('$viml_value')"
+    VIM::DoCommand("let $target = json_decode('$viml_value')");
     return $value;
 }
 
