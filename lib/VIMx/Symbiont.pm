@@ -34,6 +34,7 @@ our @EXPORT = qw/
     make_new
 
     %a %b %g %l %s %t %v %w
+    %self
 /;
 
 # see help for internal-variables for more information
@@ -62,6 +63,8 @@ sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return';
 tie our %vimx_viml,   'VIMx::Tie::Dict', 'g:vimx_symbiont_viml';
 
+tie our %self, 'VIMx::Tie::Dict', 'l:self';
+
 # NOTE: when using the args option, the named parameters must be accessed
 # through the %a tie.
 
@@ -79,7 +82,7 @@ sub method {
 if !has_key(s:, 'prototype') | let s:prototype = {} | endif
 VIML
     my $postlude = <<"VIML";
-let s:prototype['$name'] = function('$opts{fn_ns}$name', [])
+let s:prototype['$name'] = function('$opts{fn_ns}$name')
 VIML
 
     # _ensure_prototype;
@@ -139,9 +142,10 @@ END
 
     my $wrapped = sub {
 
-        my @ret = try {
+        try {
             # make any unnamed params available in @_
-            $coderef->(@{$a{'000'}});
+            my @ret = $coderef->(@{$a{'000'}});
+            $vimx_return{$perl_name} = ( @ret == 1 ? $ret[0] : \@ret );
         }
         catch {
             # translate our Perl exception into a VimL one
@@ -149,7 +153,6 @@ END
             VIM::DoCommand("throw 'symbiont: $_'");
         };
 
-        $vimx_return{$perl_name} = ( @ret == 1 ? $ret[0] : \@ret );
         return;
     };
 
