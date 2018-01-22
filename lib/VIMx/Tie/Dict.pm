@@ -7,7 +7,7 @@ use JSON::Tiny qw{ encode_json decode_json };
 
 use base 'Tie::Hash';
 
-# debugging...
+# # debugging...
 # use Smart::Comments '###';
 
 # NOTE right now we only handle simple cases, where the value of the slot to
@@ -37,14 +37,13 @@ sub STORE {
 
     (my $viml_value = encode_json($value)) =~ s/'/''/g;
 
-    ### STORE: "$target = json_decode('$viml_value')"
+    #### STORE: "$target = json_decode('$viml_value')"
     VIM::DoCommand("let $target = json_decode('$viml_value')");
     return $value;
 }
 
 sub FETCH {
     my ($this, $key) = @_;
-    ### @_
     my $dict = $this->{dict};
 
     # conform to expected behaviour: vim will complain if a slot that does not
@@ -70,6 +69,40 @@ sub DELETE {
     my $value = FETCH($this, $key);
     VIM::DoCommand("unlet! ${dict}"."['$key']");
     return $value;
+}
+
+sub _keys_hash {
+    my ($this) = @_;
+    my $dict = $this->{dict};
+
+    my ($success, $v) = VIM::Eval("json_encode(keys($dict))");
+    my @keys          = sort @{ decode_json($v) };
+
+    ### @keys
+    my $first = shift @keys;
+    my $last  = pop @keys;
+
+    my %keys = ($first, ( map { $_ => $_ } @keys ), $last, $last, undef);
+
+    ### %keys
+    return \%keys;
+}
+
+sub FIRSTKEY {
+    my ($this) = @_;
+    my $dict = $this->{dict};
+
+    my ($success, $v) = VIM::Eval("len(keys($dict))");
+    return unless $v;
+
+    ($success, $v) = VIM::Eval("keys($dict)[0]");
+    return $v;
+}
+
+sub NEXTKEY {
+    my ($this, $prevkey) = @_;
+
+    return _keys_hash($this)->{$prevkey};
 }
 
 !!42;
