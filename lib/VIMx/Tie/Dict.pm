@@ -32,8 +32,7 @@ sub STORE {
         # we've been passed a reference to a scalar
         # much like DBIC, this means "execute this literally"
         VIM::DoCommand("let $target = $$value");
-        my ($success, $v) = VIM::Eval("$target");
-        return $v;
+        return FETCH($this, $key);
     }
 
     (my $viml_value = encode_json($value)) =~ s/'/''/g;
