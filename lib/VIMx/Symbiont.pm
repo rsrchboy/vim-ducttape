@@ -130,7 +130,7 @@ sub function {
     my $viml = <<"END";
 $opts{viml_prelude}
 function! $opts{fn_ns}$name($opts{args}) $opts{opts}
-    perl ${perl_name}(scalar VIM::Eval('json_encode(a:000)'))
+    perl ${perl_name}()
     return $return_var
 endfunction
 $opts{viml_postlude}
