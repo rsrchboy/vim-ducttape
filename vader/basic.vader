@@ -27,7 +27,20 @@ Execute (defined-or setting on non-extant slot):
   AssertEqual 42, b:eep
 
 Execute (delete returns value):
-  unlet! b:eep
+  unlet! b:eep b:eep2
   let b:eep2 = 84
   perl $VIMx::Symbiont::b{eep} = delete $VIMx::Symbiont::b{eep2}
   AssertEqual 84, b:eep
+
+Execute (concatenation works):
+  unlet! b:eep
+  perl $VIMx::Symbiont::b{eep}  = 'This'
+  perl $VIMx::Symbiont::b{eep} .= ' worked!'
+  AssertEqual 'This worked!', b:eep
+
+Execute (concatenation works, redux):
+  unlet! b:eep
+  perl $VIMx::Symbiont::b{eep}   = 'This'
+  perl $VIMx::Symbiont::b{eep} //= 'ARRGH'
+  perl $VIMx::Symbiont::b{eep}  .= ' worked!'
+  AssertEqual 'This worked!', b:eep
