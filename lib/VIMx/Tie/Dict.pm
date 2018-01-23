@@ -19,12 +19,12 @@ sub TIEHASH {
     my ($class, $dict) = @_;
     # ensure we exist
     VIM::DoCommand("if !exists('$dict') | let $dict = {} | endif");
-    return bless { dict => $dict }, $class;
+    return bless { thing => $dict }, $class;
 }
 
 sub STORE {
     my ($this, $key, $value) = @_;
-    my $dict = $this->{dict};
+    my $dict = $this->{thing};
 
     my $target = "$dict"."['$key']";
 
@@ -44,7 +44,7 @@ sub STORE {
 
 sub FETCH {
     my ($this, $key) = @_;
-    my $dict = $this->{dict};
+    my $dict = $this->{thing};
 
     # conform to expected behaviour: vim will complain if a slot that does not
     # exist is accessed, while Perl will simply return undef.  Here we
@@ -58,22 +58,22 @@ sub FETCH {
 
 sub EXISTS {
     my ($this, $key) = @_;
-    my $dict = $this->{dict};
+    my $dict = $this->{thing};
     my ($success, $v) = VIM::Eval("has_key($dict, '$key')");
     return !!$v;
 }
 
 sub DELETE {
     my ($this, $key) = @_;
-    my $dict = $this->{dict};
+    my $dict = $this->{thing};
     my $value = FETCH($this, $key);
-    VIM::DoCommand("unlet! ${dict}"."['$key']");
+    VIM::DoCommand("unlet! $dict"."['$key']");
     return $value;
 }
 
 sub _keys_hash {
     my ($this) = @_;
-    my $dict = $this->{dict};
+    my $dict = $this->{thing};
 
     my ($success, $v) = VIM::Eval("json_encode(keys($dict))");
     my @keys          = sort @{ decode_json($v) };
@@ -95,7 +95,7 @@ sub _keys_hash {
 
 sub FIRSTKEY {
     my ($this) = @_;
-    my $dict = $this->{dict};
+    my $dict = $this->{thing};
 
     my ($success, $v) = VIM::Eval("len(keys($dict))");
     return unless $v;
