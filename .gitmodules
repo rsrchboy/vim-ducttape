@@ -13,3 +13,6 @@
 [submodule "p5/module-info"]
 	path = p5/module-info
 	url = https://github.com/neilb/Module-Info.git
+[submodule "p5/Role-Tiny"]
+	path = p5/Role-Tiny
+	url = https://github.com/moose/Role-Tiny.git
