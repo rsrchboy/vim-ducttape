@@ -150,7 +150,7 @@ END
         catch {
             # translate our Perl exception into a VimL one
             $_ =~ s/'/''/g;
-            VIM::DoCommand("throw 'symbiont: $_'");
+            VIM::DoCommand("throw '$opts{vim_ns} $_'");
         };
 
         return;
