@@ -3,9 +3,12 @@ package VIMx::Tie::Dict;
 use strict;
 use warnings;
 
+use Carp 'croak';
 use JSON::Tiny qw{ encode_json decode_json };
+use Role::Tiny::With;
 
 use base 'Tie::Hash';
+with 'VIMx::Role::Tie';
 
 # # debugging...
 # use Smart::Comments '###';
@@ -22,53 +25,14 @@ sub TIEHASH {
     return bless { thing => $dict }, $class;
 }
 
-sub STORE {
-    my ($this, $key, $value) = @_;
-    my $dict = $this->{thing};
-
-    my $target = "$dict"."['$key']";
-
-    if ((ref $value // q{}) eq 'SCALAR') {
-        # we've been passed a reference to a scalar
-        # much like DBIC, this means "execute this literally"
-        VIM::DoCommand("let $target = $$value");
-        return FETCH($this, $key);
-    }
-
-    (my $viml_value = encode_json($value)) =~ s/'/''/g;
-
-    #### STORE: "$target = json_decode('$viml_value')"
-    VIM::DoCommand("let $target = json_decode('$viml_value')");
-    return $value;
-}
-
-sub FETCH {
+sub _make_target {
     my ($this, $key) = @_;
     my $dict = $this->{thing};
 
-    # conform to expected behaviour: vim will complain if a slot that does not
-    # exist is accessed, while Perl will simply return undef.  Here we
-    # short-circuit to return undef.
-    return
-        unless EXISTS($this, $key);
+    # croak "VimL dicts cannot have numeric keys: $dict, $key"
+    #     if "$key" =~ /^\d+$/;
 
-    my ($success, $v) = VIM::Eval("json_encode(get($dict, '$key'))");
-    return decode_json($v);
-}
-
-sub EXISTS {
-    my ($this, $key) = @_;
-    my $dict = $this->{thing};
-    my ($success, $v) = VIM::Eval("has_key($dict, '$key')");
-    return !!$v;
-}
-
-sub DELETE {
-    my ($this, $key) = @_;
-    my $dict = $this->{thing};
-    my $value = FETCH($this, $key);
-    VIM::DoCommand("unlet! $dict"."['$key']");
-    return $value;
+    return "$dict"."['$key']";
 }
 
 sub _keys_hash {
