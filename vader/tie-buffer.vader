@@ -1,0 +1,104 @@
+Execute:
+  call ducttape#http#load()
+  Assert exists('g:ducttape#http#loaded'), 'loaded global set'
+
+Given (ponies!):
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+  Pinkie Pie
+
+Execute(append / push):
+  perl push @VIMx::curbuf, 'spike!'
+
+Expect (ponies and company):
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+  Pinkie Pie
+  spike!
+
+Execute(set / replace):
+  perl $VIMx::curbuf[2] = 'spiky!'
+
+Expect (ponies and company):
+  Twilight Sparkle
+  Rainbow Dash
+  spiky!
+  Fluttershy
+  Rarity
+  Pinkie Pie
+
+Execute(pop):
+  unlet! b:scratch
+  perl $VIMx::b{scratch} = pop @VIMx::curbuf
+  AssertEqual 'Pinkie Pie', b:scratch
+
+Expect (popped):
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+
+Execute(delete):
+  unlet! b:scratch
+  perl $VIMx::b{scratch} = delete $VIMx::curbuf[3]
+  AssertEqual 'Fluttershy', b:scratch
+
+Expect (delete):
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Rarity
+  Pinkie Pie
+
+Execute(shift):
+  unlet! b:scratch
+  perl $VIMx::b{scratch} = shift @VIMx::curbuf
+  AssertEqual 'Twilight Sparkle', b:scratch
+
+Expect (shift):
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+  Pinkie Pie
+
+Execute(unshift):
+  " unlet! b:scratch
+  perl unshift @VIMx::curbuf, 'Princess Celestia'
+  " AssertEqual 'Twilight Sparklee, b:scratch
+
+Expect (unshift):
+  Princess Celestia
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+  Pinkie Pie
+
+Execute(multiple unshift):
+  " unlet! b:scratch
+  perl unshift @VIMx::curbuf, 'Princess Celestia', 'Princess Luna'
+  " AssertEqual 'Twilight Sparklee, b:scratch
+
+Expect (multiple unshift):
+  Princess Celestia
+  Princess Luna
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+  Pinkie Pie
+
+" FIXME ... yeah, lots more to do
+
+
+" __END__
