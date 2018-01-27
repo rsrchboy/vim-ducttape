@@ -16,13 +16,14 @@ use warnings;
 use Path::Tiny;
 use JSON::Tiny qw{ encode_json decode_json };
 use Try::Tiny;
+use VIMx;
 use VIMx::Tie::Dict;
 
 use Exporter 'import';
 
 # use Smart::Comments;
 
-# also JSON::Tiny, for convenience
+# also JSON::Tiny and VIMx, for convenience
 our @EXPORT = qw/
     decode_json
     encode_json
@@ -37,33 +38,10 @@ our @EXPORT = qw/
     %self
 /;
 
-# see help for internal-variables for more information
-tie our %a, 'VIMx::Tie::Dict', 'a:';
-tie our %b, 'VIMx::Tie::Dict', 'b:';
-tie our %g, 'VIMx::Tie::Dict', 'g:';
-tie our %l, 'VIMx::Tie::Dict', 'l:';
-tie our %s, 'VIMx::Tie::Dict', 's:';
-tie our %t, 'VIMx::Tie::Dict', 't:';
-tie our %v, 'VIMx::Tie::Dict', 'v:';
-tie our %w, 'VIMx::Tie::Dict', 'w:';
-
-# may as well make life a little easier at the command prompt
-$main::a = \%a;
-$main::b = \%b;
-$main::g = \%g;
-$main::l = \%l;
-$main::s = \%s;
-$main::t = \%t;
-$main::v = \%v;
-$main::w = \%w;
-
-sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
-
-
 tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return';
 tie our %vimx_viml,   'VIMx::Tie::Dict', 'g:vimx_symbiont_viml';
 
-tie our %self, 'VIMx::Tie::Dict', 'l:self';
+sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 
 # NOTE: when using the args option, the named parameters must be accessed
 # through the %a tie.
