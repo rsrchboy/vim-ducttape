@@ -1,1 +1,0 @@
-../../p5/try-tiny/lib/Try/Tiny.pm
