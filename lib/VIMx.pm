@@ -32,3 +32,29 @@ tie our @curbuf, 'VIMx::Tie::Buffer', '%';
 
 !!42;
 __END__
+
+=head1 SYNOPSIS
+
+    use VIMx; # exports everything by default
+
+    # ...
+
+    # aka: let b:eep = 'bzzzt'
+    $b{eep} = 'bzzzt';
+
+=head1 DESCRIPTION
+
+This small utility package exports a number of tied variables designed to make 
+writing code running in vim via it's embedded interpreter a touch easier.  The 
+variables C<%b>, C<%g>, C<%a>, etc, all correspond to C<b:>, C<g:>, C<a:>, 
+etc.  Assigning and reading structures is supported.  For more information,
+see L<VIMx::Tie::Dict>.
+
+For buffers...
+
+Note this package has nothing to do with using vim to write Perl, and rather everything
+to do with writing Perl to run on vim.  (Don't think about that one too much.)
+
+All variables are exported by default.
+
+=cut
