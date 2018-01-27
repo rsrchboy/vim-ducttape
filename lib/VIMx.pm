@@ -7,11 +7,13 @@ use strict;
 use warnings;
 
 use VIMx::Tie::Dict;
+use VIMx::Tie::Buffer;
 use Exporter 'import';
 
 our @EXPORT = qw/
     %a %b %g %l %s %t %v %w
     %self
+    @curbuf
 /;
 
 # see help for internal-variables for more information
@@ -25,6 +27,8 @@ tie our %v, 'VIMx::Tie::Dict', 'v:';
 tie our %w, 'VIMx::Tie::Dict', 'w:';
 
 tie our %self, 'VIMx::Tie::Dict', 'l:self';
+
+tie our @curbuf, 'VIMx::Tie::Buffer', '%';
 
 !!42;
 __END__
