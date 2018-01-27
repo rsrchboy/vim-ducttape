@@ -22,7 +22,7 @@ sub STORE {
         return $this->FETCH($key);
     }
 
-    my $viml_value = encode_json($this->_escape($value));
+    my $viml_value = $this->_escape(encode_json($value));
 
     #### STORE: "$target = json_decode('$viml_value')"
     VIM::DoCommand("let $target = json_decode('$viml_value')");
