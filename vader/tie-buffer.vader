@@ -98,6 +98,21 @@ Expect (multiple unshift):
   Rarity
   Pinkie Pie
 
+Execute(blessed overload):
+  unlet! b:eep
+  perl $VIMx::b{eep} = $VIMx::cbuf->Count
+  AssertEqual 6, b:eep
+  perl $VIMx::cbuf->Append(0, 'Nightmare Moon')
+
+Expect (autoloading blessed tie nightmare):
+  Nightmare Moon
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+  Pinkie Pie
+
 " FIXME ... yeah, lots more to do
 
 
