@@ -1,6 +1,61 @@
 This is a VimL library to assist one in using Perl in vim; that is, not to
 help you with *writing* Perl in vim, using Perl in vim (VimL).
 
+# Oh, the things you can do!
+
+There are two main efforts here; the first to make loading Perl functions and
+generating "glue" viml functions trivial, the second to make interacting with
+vim-bits from Perl easier.
+
+
+# "vim-bits from Perl"
+
+## Variables
+
+`%b`, `%g`, `%a`, etc, are provided to access `b:`, `g:`, `a:`, etc.  Complex
+data structures are supported on both sides; e.g.:
+
+```perl
+$b{eep} = [ 1, 2, { three => 3 } ];
+```
+
+...equates to:
+
+```vim
+let b:eep = [ 1, 2, { 'three': 3 } ]
+```
+
+...and the other way around.
+
+Additionally, `%self` is provided for use in dict functions.  See [VIMx] for
+more information.
+
+## Functions
+
+Perl functions can easily be bound to generated viml functions by exploiting
+`ducttape::symbiont` and vim's autoload functionality.
+
+```vim
+" autoload/heya/there.vim
+execute ducttape#symbiont#autoload(expand('<sfile>'))
+```
+```perl
+# autoload/heya/there.pm
+package heya::there;
+use VIMx::Symbiont;
+
+function hello => sub { print 'hello, ' . ($_[0] // 'world') };
+```
+
+Given the above files:
+
+```vim
+:call heya#there#hello()
+" prints 'hello, world'
+:call heya#there#hello('chris')
+" prints 'hello, chris'
+```
+
 # Components
 
 ## VIMx::Out
@@ -53,11 +108,16 @@ including their authors, maintainers, and licenses.
 * HTTP::Tiny
 * JSON::Tiny
 * Path::Tiny
+* Role::Tiny
 * Try::Tiny
 
 `JSON::Tiny` in particular is key, as we lean heavily on vim's `json_encode()`
 and `json_decode()` to make bits like `VIMx::Tie::Dict` and
 `VIMx::Symbiont::function()` work.
+
+# Mechanism
+
+...
 
 # Requirements
 
