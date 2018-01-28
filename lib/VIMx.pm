@@ -22,6 +22,7 @@ our @EXPORT_OK = qw/
     @curbuf
 
     %global_options %local_options
+    buffer          buffers
 /;
 
 our %EXPORT_TAGS = (
@@ -51,6 +52,17 @@ tie our %local_options,  'VIMx::Tie::Options', '&l:';
 # tie our %vim_options, 'VIMx::Tie::Options', '&';
 
 # TODO register access?
+
+sub buffer {
+    my ($bufid) = @_;
+
+    tie our @buf, 'VIMx::Tie::Buffer', $bufid;
+    our $buf = bless \@buf, 'VIMx::AutoLoadFor::Tie';
+
+    return $buf;
+}
+
+sub buffers { +{ map { $_ => buffer($_) } map { $_->Name } VIM::Buffers() } }
 
 !!42;
 __END__
