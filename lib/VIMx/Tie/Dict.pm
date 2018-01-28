@@ -21,7 +21,7 @@ with 'VIMx::Role::Tie';
 sub TIEHASH {
     my ($class, $dict) = @_;
     # ensure we exist
-    VIM::DoCommand("if !exists('$dict') | let $dict = {} | endif");
+    VIM::DoCommand("if !exists('$dict') | silent! let $dict = {} | endif");
     return bless { thing => $dict }, $class;
 }
 
