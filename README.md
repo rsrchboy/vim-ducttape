@@ -7,6 +7,8 @@ There are two main efforts here; the first to make loading Perl functions and
 generating "glue" viml functions trivial, the second to make interacting with
 vim-bits from Perl easier.
 
+You may find the test suite (available under `vader/`) helpful, for examples
+and demonstrations of expected behaviour.
 
 # "vim-bits from Perl"
 
@@ -30,7 +32,57 @@ let b:eep = [ 1, 2, { 'three': 3 } ]
 Additionally, `%self` is provided for use in dict functions.  See [VIMx] for
 more information.
 
-## Functions
+## Buffers
+
+Buffers can be accessed in a number of ways.
+
+### Current Buffer
+
+The current buffer can be accessed via `$VIMx::cbuf`, a blessed reference to a
+tied variable.  The contents of the buffer can be read or modified by
+accessing the underlying array:
+
+```perl
+my $len = @$VIMx::cbuf;
+my $first_line = $VIMx::cbuf->[0];
+my $line5 = delete $VIMx::cbuf->[4];
+push @$VIMx::cbuf, 'remember gems for spike';
+```
+
+Note that Vim's functions (e.g. `VIM::Buffer(...)->Get(10)`) are 1-based,
+while our array is the expected 0-based.
+
+You can also call any method you can call on a `VIBUF`:
+
+```perl
+my $name = $VIMx::cbuf->Name;
+# ...etc.  see `:h perl` for more
+```
+
+You can delete lines by using the Perl built-in `delete`, a la:
+
+```perl
+my $line5 = delete $VIMx::cbuf->[4];
+```
+
+`$cbuf` stringifies to its name.
+
+### All Buffers (`%VIMx::BUFFERS`)
+
+Similarly, all buffers can be accessed via the `%VIMx::BUFFERS` hash.  The
+keys are the names of the buffers, while the values are a reference tied and
+blessed in the same way as the current buffer variable (`$VIMx::cbuf`).
+
+This hash behaves in the expected fashion, e.g.
+
+```perl
+say 'it exists!'
+    if exists $VIMx::BUFFERS{'hippograph-relations.txt'};
+say "buf: $_"
+    for keys %VIMx::BUFFERS;
+```
+
+## Perl Functions from Vim
 
 Perl functions can easily be bound to generated viml functions by exploiting
 `ducttape::symbiont` and vim's autoload functionality.
@@ -120,6 +172,10 @@ and `json_decode()` to make bits like `VIMx::Tie::Dict` and
 ...
 
 # Requirements
+
+Basically:
+
+* vim v7.4.1304 compiled with support (`+perl`) Perl v5.10+
 
 ## Vim Requirements
 
