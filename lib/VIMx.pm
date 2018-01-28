@@ -8,6 +8,7 @@ use warnings;
 
 use VIMx::AutoLoadFor::Tie;
 use VIMx::Tie::Buffer;
+use VIMx::Tie::Buffers;
 use VIMx::Tie::Dict;
 use VIMx::Tie::Options;
 use Exporter 'import';
@@ -20,6 +21,7 @@ our @EXPORT = qw/
 
 our @EXPORT_OK = qw/
     @curbuf
+    %BUFFERS
 
     %global_options %local_options
     buffer          buffers
@@ -46,6 +48,8 @@ tie our %self, 'VIMx::Tie::Dict', 'l:self';
 
 tie our @curbuf, 'VIMx::Tie::Buffer', '%';
 our $cbuf = bless \@curbuf, 'VIMx::AutoLoadFor::Tie';
+
+tie our %BUFFERS, 'VIMx::Tie::Buffers';
 
 tie our %global_options, 'VIMx::Tie::Options', '&g:';
 tie our %local_options,  'VIMx::Tie::Options', '&l:';
