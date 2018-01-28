@@ -74,5 +74,12 @@ sub NEXTKEY {
     return _keys_hash($this)->{$prevkey};
 }
 
+sub SCALAR {
+    my ($this) = @_;
+
+    my ($success, $v) = VIM::Eval("len(keys($this->{thing}))");
+    return $v // 0;
+}
+
 !!42;
 __END__
