@@ -1,52 +1,51 @@
-Execute:
-  call ducttape#http#load()
-  Assert exists('g:ducttape#http#loaded'), 'loaded global set'
+Execute (setup):
+  perl require VIMx;
 
 Execute(basic tie tests):
   unlet! b:eep
-  perl $VIMx::Symbiont::b{eep} = 'one'
+  perl $VIMx::b{eep} = 'one'
   AssertEqual 'one', b:eep
-  perl delete $VIMx::Symbiont::b{eep}
+  perl delete $VIMx::b{eep}
   Assert !has('b:eep')
 
 Execute(complex-ish tie tests):
   unlet! b:eep
-  perl $VIMx::Symbiont::b{eep} = [1, 2, 3]
+  perl $VIMx::b{eep} = [1, 2, 3]
   AssertEqual [1, 2, 3], b:eep
-  perl $VIMx::Symbiont::b{eep} = { one => [1, 2, 3] }
+  perl $VIMx::b{eep} = { one => [1, 2, 3] }
   AssertEqual { 'one': [1, 2, 3] }, b:eep
 
 Execute (reference execution tie tests):
   unlet! b:eep
-  perl $VIMx::Symbiont::b{eep} = \'1 + 1'
+  perl $VIMx::b{eep} = \'1 + 1'
   AssertEqual 2, b:eep
 
 Execute (defined-or setting on non-extant slot):
   unlet! b:eep
-  perl $VIMx::Symbiont::b{eep} //= 42
+  perl $VIMx::b{eep} //= 42
   AssertEqual 42, b:eep
 
 Execute (delete returns value):
   unlet! b:eep b:eep2
   let b:eep2 = 84
-  perl $VIMx::Symbiont::b{eep} = delete $VIMx::Symbiont::b{eep2}
+  perl $VIMx::b{eep} = delete $VIMx::b{eep2}
   AssertEqual 84, b:eep
 
 Execute (concatenation works):
   unlet! b:eep
-  perl $VIMx::Symbiont::b{eep}  = 'This'
-  perl $VIMx::Symbiont::b{eep} .= ' worked!'
+  perl $VIMx::b{eep}  = 'This'
+  perl $VIMx::b{eep} .= ' worked!'
   AssertEqual 'This worked!', b:eep
 
 Execute (concatenation works, redux):
   unlet! b:eep
-  perl $VIMx::Symbiont::b{eep}   = 'This'
-  perl $VIMx::Symbiont::b{eep} //= 'ARRGH'
-  perl $VIMx::Symbiont::b{eep}  .= ' worked!'
+  perl $VIMx::b{eep}   = 'This'
+  perl $VIMx::b{eep} //= 'ARRGH'
+  perl $VIMx::b{eep}  .= ' worked!'
   AssertEqual 'This worked!', b:eep
 
 Execute (keys):
   let b:eep = { 'a': 1, 'b': 2, 'c': 3 }
-  perl $VIMx::Symbiont::b{oop} = [ sort keys %{ $VIMx::Symbiont::b{eep} } ]
+  perl $VIMx::b{oop} = [ sort keys %{ $VIMx::b{eep} } ]
   AssertEqual [ 'a', 'b', 'c' ], b:oop
   unlet! b:eep b:oop
