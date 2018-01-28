@@ -28,7 +28,7 @@ our %EXPORT_TAGS = (
     variables => [ qw{ %a %b %g %l %s %t %v %w } ],
     buffers   => [ qw{ $cbuf } ],
     unblessed => [ qw{ @curbuf } ],
-    options   => [ qw{ %global_options %local_options }],
+    options   => [ qw{ %global_options %local_options } ],
 );
 
 # see help for internal-variables for more information
@@ -50,6 +50,8 @@ tie our %global_options, 'VIMx::Tie::Options', '&g:';
 tie our %local_options,  'VIMx::Tie::Options', '&l:';
 # tie our %vim_options, 'VIMx::Tie::Options', '&';
 
+# TODO register access?
+
 !!42;
 __END__
 
@@ -64,9 +66,9 @@ __END__
 
 =head1 DESCRIPTION
 
-This small utility package exports a number of tied variables designed to make 
-writing code running in vim via it's embedded interpreter a touch easier.  The 
-variables C<%b>, C<%g>, C<%a>, etc, all correspond to C<b:>, C<g:>, C<a:>, 
+This small utility package exports a number of tied variables designed to make
+writing code running in vim via it's embedded interpreter a touch easier.  The
+variables C<%b>, C<%g>, C<%a>, etc, all correspond to C<b:>, C<g:>, C<a:>,
 etc.  Assigning and reading structures is supported.  For more information,
 see L<VIMx::Tie::Dict>.
 
@@ -74,7 +76,5 @@ For buffers...
 
 Note this package has nothing to do with using vim to write Perl, and rather everything
 to do with writing Perl to run on vim.  (Don't think about that one too much.)
-
-All variables are exported by default.
 
 =cut
