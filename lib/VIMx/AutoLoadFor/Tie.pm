@@ -4,6 +4,10 @@ use v5.10;
 use strict;
 use warnings;
 
+use overload
+    '""' => sub { tied(@{$_[0]}) . q{} },
+    ;
+
 # # debugging...
 # use Smart::Comments '###';
 

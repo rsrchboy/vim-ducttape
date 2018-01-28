@@ -4,6 +4,10 @@ use v5.10;
 use warnings;
 use strict;
 
+use overload
+    '""' => sub { shift->buffer->Name },
+    ;
+
 use Role::Tiny::With;
 use JSON::Tiny qw{ encode_json decode_json };
 
