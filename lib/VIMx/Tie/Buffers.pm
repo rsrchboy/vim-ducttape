@@ -22,9 +22,19 @@ sub STORE  { ... }
 sub DELETE { ... }
 sub CLEAR  { ... }
 
-# FIXME TODO
-sub FIRSTKEY { ... }
-sub NEXTKEY  { ... }
+sub FIRSTKEY { [ VIM::Buffers() ]->[0]->Name }
+
+sub NEXTKEY  {
+    my ($this, $prevkey) = @_;
+    my @bufs = VIM::Buffers();
+    for my $i (0..$#bufs-1) {
+        return $bufs[$i+1]->Name
+            if $bufs[$i]->Name eq $prevkey;
+    }
+
+    # no more keys!
+    return;
+}
 
 sub EXISTS {
     my ($this, $bufid) = @_;
