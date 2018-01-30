@@ -145,7 +145,7 @@ function wip => sub {
 
     my $name = $cbuf->Name;
     return
-        if $name =~ m!^\.git/!;
+        if $name =~ m!^(\.git/|fugitive://)!;
 
     my $repo = bufrepo;
     my $blob = _cbuf_to_blob($repo);
