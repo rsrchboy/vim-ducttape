@@ -5,7 +5,9 @@ use strict;
 use warnings;
 
 use overload
-    '""' => sub { tied(@{$_[0]}) . q{} },
+    '""' => sub { q{} . tied(@{$_[0]}) },
+    '0+' => sub {   0 + tied(@{$_[0]}) },
+    fallback => 1,
     ;
 
 # # debugging...

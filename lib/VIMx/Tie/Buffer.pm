@@ -6,6 +6,8 @@ use strict;
 
 use overload
     '""' => sub { shift->buffer->Name },
+    '0+' => sub { shift->buffer->Number },
+    fallback => 1,
     ;
 
 use Role::Tiny::With;
