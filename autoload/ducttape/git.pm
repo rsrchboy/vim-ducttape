@@ -143,16 +143,20 @@ function curbuf_to_blob => sub {
 
 function wip => sub {
 
+    my $name = $cbuf->Name;
+    return
+        if $name =~ m!^\.git/!;
+
     my $repo = bufrepo;
     my $blob = _cbuf_to_blob($repo);
 
     my $wip_ref  = _wip_ref_for($repo);
-    my $wip_tree = new_tree_with($repo, $wip_ref->peel('tree'), $cbuf->Name => $blob);
+    my $wip_tree = new_tree_with($repo, $wip_ref->peel('tree'), $name => $blob);
 
     ### $wip_tree
     my $who = Git::Raw::Signature->default($repo);
     my $wip = Git::Raw::Commit->create($repo,
-        'wip of ' . $cbuf->Name,
+        'wip of ' . $name,
         $who,
         $who,
         [$wip_ref->peel('commit')],
