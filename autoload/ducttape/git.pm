@@ -225,7 +225,7 @@ sub _wip_ref_for {
     }
 
     ### no existing wip ref found; creating...
-    return Git::Raw::Reference->create($wip_refname, $repo, $head);
+    return Git::Raw::Reference->create($wip_refname, $repo, $head->peel('commit'));
 }
 
 sub _cbuf_to_blob {
