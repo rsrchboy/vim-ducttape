@@ -194,8 +194,9 @@ sub _new_tree_with {
         ;
 
     ### out of recursion...
+    my $mode = !!$entry ? $entry->file_mode : 0100644;
     my $tb = Git::Raw::Tree::Builder->new($repo, $tree);
-    $tb->insert($our_part, $thing, $entry->file_mode);
+    $tb->insert($our_part, $thing, $mode);
     return $tb->write;
 }
 
