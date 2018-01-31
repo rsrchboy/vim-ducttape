@@ -2,6 +2,9 @@ sudo: false
 language: vim
 addons:
   apt:
+    sources:
+      - sourceline: 'ppa:pi-rho/dev'
+        key_url: 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xCC892FC6779C27D7'
     packages:
       - vim-nox
 
