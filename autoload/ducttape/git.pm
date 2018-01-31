@@ -16,12 +16,7 @@ use Git::Raw::Signature;
 use Path::Tiny;
 
 sub bufrepo {
-    # FIXME ARRGH
-    return Git::Raw::Repository->open($b{git_dir});
-
-    return unless $b{git_dir};
-    my $start = path(shift // $main::curbuf->Name || q{.})->absolute->parent;
-    return Git::Raw::Repository->discover($start);
+    return Git::Raw::Repository->discover(path($cbuf->Name)->realpath);
 }
 
 function config_str => sub { Git::Raw::Config->default->str(shift) };
@@ -143,13 +138,15 @@ function curbuf_to_blob => sub {
 
 function wip => sub {
 
-    my $name = $cbuf->Name;
+    # check these before resolving the path
     return
-        if $name =~ m!^(\.git/|fugitive://)!;
+        if $cbuf->Name =~ m!^(\.git/|fugitive://)!;
 
     my $repo = bufrepo;
+    my $name = resolve_relative_path($repo => $cbuf->Name);
     my $blob = _cbuf_to_blob($repo);
 
+    ### $name
     my $wip_ref  = _wip_ref_for($repo);
     my $wip_tree = new_tree_with($repo, $wip_ref->peel('tree'), $name => $blob);
 
@@ -167,6 +164,19 @@ function wip => sub {
     ### $wip
     return $wip->id;
 };
+
+# resolves a file's path relative to the repo path; necessary when working
+# with files symlinked outside of a repository
+sub resolve_relative_path {
+    my ($repo, $path) = @_;
+
+    ### $path
+    ### workdir: $repo->workdir
+    my $relative = path($path)->realpath->relative($repo->workdir);
+
+    ### $relative
+    return $relative;
+}
 
 sub new_tree_with {
     my ($repo, $tree, $name, $blob) = @_;
