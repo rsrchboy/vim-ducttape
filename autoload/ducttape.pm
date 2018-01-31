@@ -44,14 +44,5 @@ function require => sub {
     };
 };
 
-function version => sub { "$^V" };
-
-function version_gt => sub { $^V gt shift ? 1 : 0 };
-function version_ge => sub { $^V ge shift ? 1 : 0 };
-function version_lt => sub { $^V lt shift ? 1 : 0 };
-function version_le => sub { $^V le shift ? 1 : 0 };
-
-
-
 !!42;
 __END__
