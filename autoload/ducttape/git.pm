@@ -130,7 +130,7 @@ function curbuf_to_blob => sub {
     my ($fn) = @_;
 
     my $repo = bufrepo;
-    my $blob = _cbuf_to_blob($repo);
+    my $blob = cbuf_to_blob($repo);
 
     ### id: $blob->id
     return $blob->id;
@@ -144,7 +144,7 @@ function wip => sub {
 
     my $repo = bufrepo;
     my $name = resolve_relative_path($repo => $cbuf->Name);
-    my $blob = _cbuf_to_blob($repo);
+    my $blob = cbuf_to_blob($repo);
 
     ### $name
     my $wip_ref  = _wip_ref_for($repo);
@@ -238,7 +238,7 @@ sub _wip_ref_for {
     return Git::Raw::Reference->create($wip_refname, $repo, $head->peel('commit'));
 }
 
-sub _cbuf_to_blob {
+sub cbuf_to_blob {
     my ($repo) = @_;
 
     my $contents = join("\n", @$cbuf);
