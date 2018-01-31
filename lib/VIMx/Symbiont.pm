@@ -23,10 +23,12 @@ use Exporter 'import';
 
 # use Smart::Comments;
 
-# also JSON::Tiny and VIMx, for convenience
+# also JSON::Tiny, Path::Tiny, and VIMx, for convenience
 our @EXPORT = qw/
     decode_json
     encode_json
+
+    path
 
     function
     fun
