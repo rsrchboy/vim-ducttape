@@ -39,6 +39,12 @@ sub bufrepo {
         return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
     }
 
+    if ("$name" =~ /\.fugitiveblame/) {
+
+        ### uhh, just trying cwd again: $name
+        return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
+    }
+
     ### check to see if exists: $name
     return Git::Raw::Repository->discover($name->parent->realpath)
         unless $name->exists;
