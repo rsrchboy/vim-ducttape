@@ -1,0 +1,15 @@
+sudo: false
+language: vim
+addons:
+  apt:
+    packages:
+      - vim-nox
+
+before_script: |
+  git clone --depth=1 https://github.com/junegunn/vader.vim.git
+
+script: |
+  vim -Nu <(cat << VIMRC
+  set rtp+=vader.vim
+  set rtp+=.
+  VIMRC) -c 'Vader! vader/*' > /dev/null
