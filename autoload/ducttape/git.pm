@@ -17,17 +17,33 @@ use Path::Tiny;
 
 sub bufrepo {
 
+    my $name = path($cbuf->Name);
+
     # if we don't correspond to a file, well...
     if ($VIMx::local_options{buftype} eq 'nofile') {
+
+        ### buftype nofile: $name
         return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
     }
 
-    ### check to see if we don't exist...
-    # (new files and scratch buffers that haven't had buftype set yet)
-    my $name = path($cbuf->Name);
+    if ("$name" =~ m!^fugitive:/!) {
+
+        # for now, just use the current directory; probably better to parse
+        # out from the fugitive url, however.  This will only occurr in
+        # fugitive buffers, after all, and they tend to be fairly worktree
+        # agnostic.
+        #
+        # Kinda.
+
+        ### fugitive: $name
+        return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
+    }
+
+    ### check to see if exists: $name
     return Git::Raw::Repository->discover($name->parent->realpath)
         unless $name->exists;
 
+    ### using: $name->realpath
     return Git::Raw::Repository->discover($name->realpath);
 }
 
