@@ -7,9 +7,6 @@ use warnings;
 use VIMx::Symbiont;
 use HTTP::Tiny;
 
-# debugging...
-use Smart::Comments '###';
-
 # the VIMx::Symbiont-generated sub functions handles turning the parameters
 # JSON into Perl values -- and the other way around on return.
 
