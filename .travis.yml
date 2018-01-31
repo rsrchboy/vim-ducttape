@@ -7,6 +7,7 @@ addons:
         key_url: 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xCC892FC6779C27D7'
     packages:
       - vim-nox
+      - libio-socket-ssl-perl
 
 before_script: |
   git clone --depth=1 https://github.com/junegunn/vader.vim.git
