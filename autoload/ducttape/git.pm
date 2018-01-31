@@ -16,7 +16,19 @@ use Git::Raw::Signature;
 use Path::Tiny;
 
 sub bufrepo {
-    return Git::Raw::Repository->discover(path($cbuf->Name)->realpath);
+
+    # if we don't correspond to a file, well...
+    if ($VIMx::local_options{buftype} eq 'nofile') {
+        return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
+    }
+
+    ### check to see if we don't exist...
+    # (new files and scratch buffers that haven't had buftype set yet)
+    my $name = path($cbuf->Name);
+    return Git::Raw::Repository->discover($name->parent->realpath)
+        unless $name->exists;
+
+    return Git::Raw::Repository->discover($name->realpath);
 }
 
 function config_str => sub { Git::Raw::Config->default->str(shift) };
