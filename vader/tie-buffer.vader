@@ -1,6 +1,35 @@
 Execute:
-  call ducttape#http#load()
-  Assert exists('g:ducttape#http#loaded'), 'loaded global set'
+  perl use VIMx;
+
+Given (one pony):
+  Rainbow Dash
+
+Execute(whole-buffer):
+  unlet! b:eep
+  perl $b{eep} = [ @$VIMx::cbuf ]
+  AssertEqual [
+    \ 'Rainbow Dash',
+    \], b:eep
+
+Given (ponies!):
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+  Pinkie Pie
+
+Execute(whole-buffer):
+  unlet! b:eep
+  perl $b{eep} = [ @$VIMx::cbuf ]
+  AssertEqual [
+    \ 'Twilight Sparkle',
+    \ 'Rainbow Dash',
+    \ 'Applejack',
+    \ 'Fluttershy',
+    \ 'Rarity',
+    \ 'Pinkie Pie',
+    \], b:eep
 
 Given (ponies!):
   Twilight Sparkle
