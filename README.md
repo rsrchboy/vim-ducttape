@@ -38,15 +38,15 @@ Buffers can be accessed in a number of ways.
 
 ### Current Buffer
 
-The current buffer can be accessed via `$VIMx::cbuf`, a blessed reference to a
+The current buffer can be accessed via `$VIMx::BUFFER`, a blessed reference to a
 tied variable.  The contents of the buffer can be read or modified by
 accessing the underlying array:
 
 ```perl
-my $len = @$VIMx::cbuf;
-my $first_line = $VIMx::cbuf->[0];
-my $line5 = delete $VIMx::cbuf->[4];
-push @$VIMx::cbuf, 'remember gems for spike';
+my $len = @$VIMx::BUFFER;
+my $first_line = $VIMx::BUFFER->[0];
+my $line5 = delete $VIMx::BUFFER->[4];
+push @$VIMx::BUFFER, 'remember gems for spike';
 ```
 
 Note that Vim's functions (e.g. `VIM::Buffer(...)->Get(10)`) are 1-based,
@@ -55,23 +55,23 @@ while our array is the expected 0-based.
 You can also call any method you can call on a `VIBUF`:
 
 ```perl
-my $name = $VIMx::cbuf->Name;
+my $name = $VIMx::BUFFER->Name;
 # ...etc.  see `:h perl` for more
 ```
 
 You can delete lines by using the Perl built-in `delete`, a la:
 
 ```perl
-my $line5 = delete $VIMx::cbuf->[4];
+my $line5 = delete $VIMx::BUFFER->[4];
 ```
 
-`$cbuf` stringifies to its name.
+`$VIMx::BUFFER` stringifies to its name.
 
 ### All Buffers (`%VIMx::BUFFERS`)
 
 Similarly, all buffers can be accessed via the `%VIMx::BUFFERS` hash.  The
 keys are the names of the buffers, while the values are a reference tied and
-blessed in the same way as the current buffer variable (`$VIMx::cbuf`).
+blessed in the same way as the current buffer variable (`$VIMx::BUFFER`).
 
 This hash behaves in the expected fashion, e.g.
 

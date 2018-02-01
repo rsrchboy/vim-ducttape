@@ -6,12 +6,12 @@ Given (one pony):
 
 Execute(whole-buffer):
   unlet! b:eep
-  perl $b{eep} = [ @$VIMx::cbuf ]
+  perl $b{eep} = [ @$VIMx::BUFFER ]
   AssertEqual [
     \ 'Rainbow Dash',
     \], b:eep
 
-Given (ponies!):
+Given (mane six):
   Twilight Sparkle
   Rainbow Dash
   Applejack
@@ -21,7 +21,7 @@ Given (ponies!):
 
 Execute(whole-buffer):
   unlet! b:eep
-  perl $b{eep} = [ @$VIMx::cbuf ]
+  perl $b{eep} = [ @$VIMx::BUFFER ]
   AssertEqual [
     \ 'Twilight Sparkle',
     \ 'Rainbow Dash',
@@ -40,7 +40,7 @@ Given (ponies!):
   Pinkie Pie
 
 Execute(append / push):
-  perl push @VIMx::curbuf, 'spike!'
+  perl push @$VIMx::BUFFER, 'spike!'
 
 Expect (ponies and company):
   Twilight Sparkle
@@ -52,7 +52,7 @@ Expect (ponies and company):
   spike!
 
 Execute(set / replace):
-  perl $VIMx::curbuf[2] = 'spiky!'
+  perl $VIMx::BUFFER->[2] = 'spiky!'
 
 Expect (ponies and company):
   Twilight Sparkle
@@ -64,7 +64,7 @@ Expect (ponies and company):
 
 Execute(pop):
   unlet! b:scratch
-  perl $VIMx::b{scratch} = pop @VIMx::curbuf
+  perl $VIMx::b{scratch} = pop @$VIMx::BUFFER
   AssertEqual 'Pinkie Pie', b:scratch
 
 Expect (popped):
@@ -76,7 +76,7 @@ Expect (popped):
 
 Execute(delete):
   unlet! b:scratch
-  perl $VIMx::b{scratch} = delete $VIMx::curbuf[3]
+  perl $VIMx::b{scratch} = delete $VIMx::BUFFER->[3]
   AssertEqual 'Fluttershy', b:scratch
 
 Expect (delete):
@@ -88,7 +88,7 @@ Expect (delete):
 
 Execute(shift):
   unlet! b:scratch
-  perl $VIMx::b{scratch} = shift @VIMx::curbuf
+  perl $VIMx::b{scratch} = shift @$VIMx::BUFFER
   AssertEqual 'Twilight Sparkle', b:scratch
 
 Expect (shift):
@@ -100,7 +100,7 @@ Expect (shift):
 
 Execute(unshift):
   " unlet! b:scratch
-  perl unshift @VIMx::curbuf, 'Princess Celestia'
+  perl unshift @$VIMx::BUFFER, 'Princess Celestia'
   " AssertEqual 'Twilight Sparklee, b:scratch
 
 Expect (unshift):
@@ -113,9 +113,7 @@ Expect (unshift):
   Pinkie Pie
 
 Execute(multiple unshift):
-  " unlet! b:scratch
-  perl unshift @VIMx::curbuf, 'Princess Celestia', 'Princess Luna'
-  " AssertEqual 'Twilight Sparklee, b:scratch
+  perl unshift @$VIMx::BUFFER, 'Princess Celestia', 'Princess Luna'
 
 Expect (multiple unshift):
   Princess Celestia
@@ -129,9 +127,9 @@ Expect (multiple unshift):
 
 Execute(blessed overload):
   unlet! b:eep
-  perl $VIMx::b{eep} = $VIMx::cbuf->Count
+  perl $VIMx::b{eep} = $VIMx::BUFFER->Count
   AssertEqual 6, b:eep
-  perl $VIMx::cbuf->Append(0, 'Nightmare Moon')
+  perl $VIMx::BUFFER->Append(0, 'Nightmare Moon')
 
 Expect (autoloading blessed tie nightmare):
   Nightmare Moon

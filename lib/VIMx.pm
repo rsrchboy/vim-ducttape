@@ -16,11 +16,10 @@ use Exporter 'import';
 our @EXPORT = qw/
     %a %b %g %l %s %t %v %w
     %self
-    $cbuf
+    $BUFFER
 /;
 
 our @EXPORT_OK = qw/
-    @curbuf
     %BUFFERS
 
     %global_options %local_options
@@ -30,7 +29,6 @@ our @EXPORT_OK = qw/
 our %EXPORT_TAGS = (
     variables => [ qw{ %a %b %g %l %s %t %v %w } ],
     buffers   => [ qw{ $cbuf } ],
-    unblessed => [ qw{ @curbuf } ],
     options   => [ qw{ %global_options %local_options } ],
 );
 
@@ -47,7 +45,7 @@ tie our %w, 'VIMx::Tie::Dict', 'w:';
 tie our %self, 'VIMx::Tie::Dict', 'l:self';
 
 tie our @curbuf, 'VIMx::Tie::Buffer', '%';
-our $cbuf = bless \@curbuf, 'VIMx::AutoLoadFor::Tie';
+our $BUFFER = bless \@curbuf, 'VIMx::AutoLoadFor::Tie';
 
 tie our %BUFFERS, 'VIMx::Tie::Buffers';
 

@@ -17,7 +17,7 @@ use Path::Tiny;
 
 sub bufrepo {
 
-    my $name = path($cbuf->Name);
+    my $name = path($BUFFER->Name);
 
     # if we don't correspond to a file, well...
     if ($VIMx::local_options{buftype} eq 'nofile') {
@@ -174,10 +174,10 @@ function wip => sub {
 
     # check these before resolving the path
     return
-        if $cbuf->Name =~ m!^(\.git/|fugitive://)!;
+        if $BUFFER->Name =~ m!^(\.git/|fugitive://)!;
 
     my $repo = bufrepo;
-    my $name = resolve_relative_path($repo => $cbuf->Name);
+    my $name = resolve_relative_path($repo => $BUFFER->Name);
     my $blob = cbuf_to_blob($repo);
 
     ### $name
@@ -275,7 +275,7 @@ sub _wip_ref_for {
 sub cbuf_to_blob {
     my ($repo) = @_;
 
-    my $contents = join("\n", @$cbuf);
+    my $contents = join("\n", @$BUFFER);
     my $blob = Git::Raw::Blob->create($repo, $contents);
 
     ### id: $blob->id

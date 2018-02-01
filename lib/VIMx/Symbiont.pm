@@ -38,7 +38,7 @@ our @EXPORT = qw/
 
     %a %b %g %l %s %t %v %w
     %self
-    $cbuf
+    $BUFFER
 /;
 
 tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return';
