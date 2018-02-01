@@ -4,5 +4,6 @@ Execute (setup):
 
 Execute (basic get):
   unlet! b:response
+  Assert exists('*ducttape#http#get')
   let b:response = ducttape#http#get('https://api.github.com/rate_limit')
   AssertEqual ['content', 'headers', 'protocol', 'reason', 'status', 'success', 'url'], sort(keys(b:response))
