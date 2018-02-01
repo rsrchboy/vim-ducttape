@@ -2,8 +2,10 @@ Execute (setup):
   call ducttape#http#load()
   Assert exists('g:ducttape#http#loaded'), 'loaded global set'
 
+Execute (get() exists):
+  Assert exists('*ducttape#http#get')
+
 Execute (basic get):
   unlet! b:response
-  Assert exists('*ducttape#http#get')
   let b:response = ducttape#http#get('https://api.github.com/rate_limit')
   AssertEqual ['content', 'headers', 'protocol', 'reason', 'status', 'success', 'url'], sort(keys(b:response))
