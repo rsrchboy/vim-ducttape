@@ -1,7 +1,7 @@
 Execute (set rtp, check load variable):
   " set rtp+=expand('<sfile>')
   set rtp+=vader/rtp
-  Assert 1, g:t#one#loaded
+  AssertEqual 1, g:t#one#loaded
 
 Execute (hello()):
   Assert exists('*t#one#hello')
