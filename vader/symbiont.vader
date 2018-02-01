@@ -5,33 +5,33 @@ Execute (set rtp, check load variable):
 
 Execute (hello()):
   Assert exists('*t#one#hello'), 't#one#hello() exists'
-  AssertEqual 'world!', t#one#hello()
+  AssertEqual 'world!', t#one#hello(), 'correct return'
 
 Execute (scalar):
   Assert exists('*t#one#scalar'), 't#one#scalar() exists'
-  AssertEqual 4, t#one#scalar(2)
+  AssertEqual 4, t#one#scalar(2), 'correct return'
 
 Execute (scalar_ref):
   Assert exists('*t#one#scalar_ref'), 't#one#scalar_ref() exists'
-  AssertEqual 4, t#one#scalar_ref()
+  AssertEqual 4, t#one#scalar_ref(), 'correct return'
 
 Execute (hash_ref):
   Assert exists('*t#one#hash_ref'), 't#one#hash_ref() exists'
-  AssertEqual { 'a': 1, 'b': 2 }, t#one#hash_ref()
+  AssertEqual { 'a': 1, 'b': 2 }, t#one#hash_ref(), 'correct return'
 
 Execute (array_ref):
   Assert exists('*t#one#array_ref'), 't#one#array_ref() exists'
-  AssertEqual [1, 2, 3], t#one#array_ref()
+  AssertEqual [1, 2, 3], t#one#array_ref(), 'correct return'
 
 Execute (nested):
   Assert exists('*t#one#nested'), 't#one#nested() exists'
-  AssertEqual { 'a': [1, 2], 'b': { 'rainbow': 'dash' } }, t#one#nested()
+  AssertEqual { 'a': [1, 2], 'b': { 'rainbow': 'dash' } }, t#one#nested(), 'correct return'
 
 Execute (round_trip):
   Assert exists('*t#one#round_trip'), 't#one#round_trip() exists'
   let g:tdata = 'eep'
-  AssertEqual g:tdata, t#one#round_trip(g:tdata)
+  AssertEqual g:tdata, t#one#round_trip(g:tdata), 'correct return (1)'
   let g:tdata = [1, 2, 3]
-  AssertEqual g:tdata, t#one#round_trip(g:tdata)
-  AssertEqual [ g:tdata, 'a' ], t#one#round_trip(g:tdata, 'a')
+  AssertEqual g:tdata, t#one#round_trip(g:tdata), 'correct return(2)'
+  AssertEqual [ g:tdata, 'a' ], t#one#round_trip(g:tdata, 'a'), 'correct return (3)'
   unlet g:tdata
