@@ -1,0 +1,3 @@
+Execute (ensure plugin was loaded):
+  Assert exists('g:ducttape_loaded'), 'g:ducttape_loaded exists'
+  AssertEqual 1, g:ducttape_loaded, 'g:ducttape_loaded exists and is 1'
