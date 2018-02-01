@@ -58,7 +58,7 @@ sub bufrepo {
 function config_str => sub { Git::Raw::Config->default->str(shift) };
 
 fun args => 'key', config => sub {
-    return bufrepo($main::curbuf->Number)->config->str($a{key});
+    return bufrepo($BUFFER->Number)->config->str($a{key});
 };
 
 function is_bare          => sub { bufrepo->is_bare             };
@@ -79,7 +79,7 @@ function id_for           => sub { bufrepo->revparse(shift)     };
 
 fun revparse => sub { [ bufrepo->revparse(@_) ] };
 
-function index_add => sub { my $i = bufrepo->index; $i->add($main::curbuf->Name); $i->write };
+function index_add => sub { my $i = bufrepo->index; $i->add($BUFFER->Name); $i->write };
 
 function revlist       => sub { [ map { $_->id } bufrepo->walker->push_range(bufrepo->revparse(@_))->all ] };
 function revlist_count => sub { scalar bufrepo->walker->push_range(bufrepo->revparse(@_))->all             };
