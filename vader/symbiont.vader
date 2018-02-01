@@ -4,7 +4,6 @@ Execute (set rtp, check load variable):
   AssertEqual 1, g:t#one#loaded
 
 Execute (hello()):
-  Assert exists('*t#one#hello'), 't#one#hello() exists'
   AssertEqual 'world!', t#one#hello(), 'correct return'
 
 Execute (scalar):
