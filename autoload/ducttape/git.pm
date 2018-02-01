@@ -17,7 +17,7 @@ use Path::Tiny;
 
 sub bufrepo {
 
-    my $name = path($BUFFER->Name);
+    my $name = $BUFFER->Name;
 
     # if we don't correspond to a file, well...
     if ($VIMx::local_options{buftype} eq 'nofile') {
@@ -26,7 +26,7 @@ sub bufrepo {
         return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
     }
 
-    if ("$name" =~ m!^fugitive:/!) {
+    if (( "$name" =~ m!^fugitive:/! ) || ($name eq q{})) {
 
         # for now, just use the current directory; probably better to parse
         # out from the fugitive url, however.  This will only occurr in
@@ -35,7 +35,7 @@ sub bufrepo {
         #
         # Kinda.
 
-        ### fugitive: $name
+        ### fugitive or blank: $name
         return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
     }
 
@@ -44,6 +44,8 @@ sub bufrepo {
         ### uhh, just trying cwd again: $name
         return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
     }
+
+    $name = path($name);
 
     ### check to see if exists: $name
     return Git::Raw::Repository->discover($name->parent->realpath)
