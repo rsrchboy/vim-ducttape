@@ -1,5 +1,15 @@
-Execute:
+Execute (setup):
   perl use VIMx;
+
+Execute (string overload):
+  unlet! b:eep
+  perl $b{eep} = "$VIMx::BUFFER"
+  AssertEqual b:eep, bufname('')
+
+Execute (numeric overload):
+  unlet! b:eep
+  perl $b{eep} = 0+$VIMx::BUFFER
+  AssertEqual b:eep, bufnr('')
 
 Given (one pony):
   Rainbow Dash
