@@ -178,7 +178,11 @@ function wip => sub {
     return
         if $BUFFER->Name =~ m!^(\.git/|fugitive://)!;
 
+    ### skip files in a git-annex repository...
     my $repo = bufrepo;
+    return
+        if $repo->config->int('annex.version');
+
     my $name = resolve_relative_path($repo => $BUFFER->Name);
     my $blob = cbuf_to_blob($repo);
 
