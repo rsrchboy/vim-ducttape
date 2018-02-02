@@ -81,6 +81,7 @@ fun revparse => sub { [ bufrepo->revparse(@_) ] };
 
 function index_add => sub { my $i = bufrepo->index; $i->add($BUFFER->Name); $i->write };
 
+# TODO rejigger to use the ::Graph functions instead
 function revlist       => sub { [ map { $_->id } bufrepo->walker->push_range(bufrepo->revparse(@_))->all ] };
 function revlist_count => sub { scalar bufrepo->walker->push_range(bufrepo->revparse(@_))->all             };
 
@@ -103,13 +104,11 @@ function fixup => sub {
 
     ### commit the fixup...
     my $who = Git::Raw::Signature->default($repo);
-    # my $fixup = $repo->commit(
     my $fixup = Git::Raw::Commit->create($repo,
         "fixup! $summary",
         $who,
         $who,
         [$head_commit],
-        # [$repo->head->target],
         $tree,
     );
 
@@ -125,32 +124,6 @@ fun args => 'id', type_of => sub {
     (my $type = lc ref $thing) =~ s/^.*:://;
 
     return $type;
-};
-
-fun args => 'id', lookup => sub {
-    my $r = bufrepo;
-
-    # lookup() returns blessed to type of thing found
-    my $thing = $r->lookup($a{id});
-
-    if ($thing->is_blob) {
-        return {
-            id      => $thing->id,
-            type    => 'blob',
-            content => $thing->content,
-            size    => $thing->size,
-        };
-    }
-    elsif ($thing->is_tree) {
-        ...;
-        return {
-            id      => $thing->id,
-            type    => 'tree',
-            # content => $thing->content,
-            size    => 0, # undef?
-        };
-    }
-    ...;
 };
 
 fun args => 'id', blob_read => sub {
