@@ -267,15 +267,5 @@ sub cbuf_to_blob {
     return $blob;
 }
 
-
-function huh => sub {
-    my $head = bufrepo->head;
-    warn "$_: " . $head->$_() . "\n"
-        for qw{ name shorthand type is_branch };
-    my $wip_ref = _wip_ref_for(bufrepo);
-    ### $wip_ref
-    return;
-};
-
 !!42;
 __END__
