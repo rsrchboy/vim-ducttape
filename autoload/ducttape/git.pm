@@ -5,6 +5,8 @@ use strict;
 use warnings;
 
 use VIMx::Symbiont;
+
+use Carp 'croak';
 use Git::Raw;
 use Git::Raw::Blob;
 use Git::Raw::Commit;
@@ -17,16 +19,15 @@ use Path::Tiny;
 
 sub bufrepo {
 
-    my $name = $BUFFER->Name;
+    my ( $name, $discover_path ) = ( "$BUFFER", undef );
 
-    # if we don't correspond to a file, well...
+    ### looking for repo for buffer: $name
     if ($VIMx::local_options{buftype} eq 'nofile') {
 
         ### buftype nofile: $name
-        return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
+        $discover_path = Path::Tiny->cwd->realpath;
     }
-
-    if (( "$name" =~ m!^fugitive:/! ) || ($name eq q{})) {
+    elsif (( "$name" =~ m!^fugitive:/! ) || ($name eq q{})) {
 
         # for now, just use the current directory; probably better to parse
         # out from the fugitive url, however.  This will only occurr in
@@ -36,23 +37,27 @@ sub bufrepo {
         # Kinda.
 
         ### fugitive or blank: $name
-        return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
+        $discover_path = Path::Tiny->cwd->realpath;
     }
-
-    if ("$name" =~ /\.fugitiveblame/) {
+    elsif ("$name" =~ /\.fugitiveblame/) {
 
         ### uhh, just trying cwd again: $name
-        return Git::Raw::Repository->discover(Path::Tiny->cwd->realpath);
+        $discover_path = Path::Tiny->cwd->realpath;
+    }
+    else {
+        $name = path($name);
+
+        ### check to see if exists: $name
+        $discover_path
+            = $name->exists
+            ? $name->realpath
+            : $name->parent->realpath
+            ;
     }
 
-    $name = path($name);
-
-    ### check to see if exists: $name
-    return Git::Raw::Repository->discover($name->parent->realpath)
-        unless $name->exists;
-
-    ### using: $name->realpath
-    return Git::Raw::Repository->discover($name->realpath);
+    ### $discover_path
+    return Git::Raw::Repository->discover($discover_path)
+        or croak "Cannot find a git repo for buffer $name at path $discover_path";
 }
 
 function config_str => sub { Git::Raw::Config->default->str(shift) };
@@ -66,6 +71,7 @@ function is_empty         => sub { bufrepo->is_empty            };
 function is_shallow       => sub { bufrepo->is_shallow          };
 function is_head_detached => sub { bufrepo->is_head_detached    };
 function is_worktree      => sub { bufrepo->is_worktree         };
+function is_annex         => sub { defined bufrepo->config->int('annex.version') };
 function branches         => sub { bufrepo->branches(@_)        };
 function state            => sub { bufrepo->state               };
 function path             => sub { bufrepo->path                };
