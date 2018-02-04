@@ -138,6 +138,10 @@ $g{a_dict} = { 'rainbow dash' => '120%' };
 my $coolness = $g{a_dict}; # hashref
 ```
 
+## VIMx::Tie::List
+
+As with `VIMx::Tie::Dict`, but for Lists.
+
 ## VIMx::Symbiont
 
 This package starts tying things together.  When used, it exports a number of
