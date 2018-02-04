@@ -110,12 +110,28 @@ Given the above files:
 
 # Components
 
-## VIMx::Out
+## VIMx::Tie::Buffer
 
-If you're using a version of vim older than 7.4.1729, writing to `STDOUT` or
-`STDERR` will fail silently.  We work around that by playing with the
-file-handles until they use `VIM::Msg()` and company.  (Yes, this is probably
-not the best way to do it, but as people upgrade it'll be moot anyways.)
+Ties an array to a `VIBUF`, allowing the buffer contents to be accessed
+through the tied array.  It also contains additional "methods" that the
+blessed references in `$VIMx::BUFFER` and `%VIMx::BUFFERS` will look for if
+invoked on those references; e.g.
+
+```perl
+say $BUFFER->Name; # AKA $curbuf->Name
+```
+
+The references also support overloading, e.g.
+```perl
+say "$BUFFER"; # AKA $curbuf->Name
+say 0+$BUFFER; # AKA $curbuf->Number
+```
+
+## VIMx::Tie::Buffers
+
+The magic behind `%VIMx::BUFFERS`.
+
+...
 
 ## VIMx::Tie::Dict
 
@@ -152,6 +168,13 @@ exports a `%self` tied to `l:self` for use in `dict` functions.
 installs it, then generates a glue viml function.
 
 ...
+
+## VIMx::Out
+
+If you're using a version of vim older than 7.4.1729, writing to `STDOUT` or
+`STDERR` will fail silently.  We work around that by playing with the
+file-handles until they use `VIM::Msg()` and company.  (Yes, this is probably
+not the best way to do it, but as people upgrade it'll be moot anyways.)
 
 ## Essential CPAN packages
 
