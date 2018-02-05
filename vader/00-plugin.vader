@@ -13,4 +13,9 @@ Execute (@INC):
 Execute ($PERL5LIB):
   Log $PERL5LIB
 
+Execute (linked Perl version):
+  unlet! b:eep
+  perl $b{eep} = $]
+  Log b:eep
+
 " __END__
