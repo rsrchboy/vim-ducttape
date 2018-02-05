@@ -11,7 +11,8 @@ use VIMx::Symbiont;
 # the VIMx::Symbiont-generated sub functions handles turning the parameters
 # JSON into Perl values -- and the other way around on return.
 
-function args => q{}, version => sub { "$^V" };
+function args => q{}, version         => sub { "$^V" };
+function args => q{}, decimal_version => sub {   $]  };
 
 function args => 'ver', version_gt => sub { $^V gt $a{ver} ? 1 : 0 };
 function args => 'ver', version_ge => sub { $^V ge $a{ver} ? 1 : 0 };
