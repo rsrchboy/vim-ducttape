@@ -1,0 +1,6 @@
+Execute (setup):
+  call ducttape#perl#load()
+  Assert exists('g:ducttape#perl#loaded'), 'loaded global set'
+
+Execute (version() exists):
+  Assert exists('*ducttape#perl#version')
