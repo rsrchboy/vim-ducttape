@@ -19,6 +19,9 @@ sub AUTOLOAD {
     my ($self, @args) = @_;
     ( my $method = $AUTOLOAD ) =~ s/^.*:://;
 
+    return
+        if $method eq 'DESTROY';
+
     ### $self
     ### $AUTOLOAD
     ### $method
