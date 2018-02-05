@@ -18,4 +18,8 @@ Execute (linked Perl version):
   perl $b{eep} = $]
   Log b:eep
 
+Execute (vim info):
+  Log v:progpath
+  Log v:version
+
 " __END__
