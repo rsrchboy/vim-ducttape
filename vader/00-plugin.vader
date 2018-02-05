@@ -1,3 +1,11 @@
 Execute (ensure plugin was loaded):
   Assert exists('g:ducttape_loaded'), 'g:ducttape_loaded exists'
   AssertEqual 1, g:ducttape_loaded, 'g:ducttape_loaded exists and is 1'
+
+Execute (@INC):
+  " let the user know what our @INC is after the login is loaded
+  unlet! b:INC b:inc_dir
+  perl $b{INC} = [ @INC ]
+  for b:inc_dir in b:INC
+    Log b:inc_dir
+  endfor
