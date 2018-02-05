@@ -13,10 +13,10 @@ use VIMx::Symbiont;
 
 function args => q{}, version => sub { "$^V" };
 
-function version_gt => sub { $^V gt shift ? 1 : 0 };
-function version_ge => sub { $^V ge shift ? 1 : 0 };
-function version_lt => sub { $^V lt shift ? 1 : 0 };
-function version_le => sub { $^V le shift ? 1 : 0 };
+function args => 'ver', version_gt => sub { $^V gt $a{ver} ? 1 : 0 };
+function args => 'ver', version_ge => sub { $^V ge $a{ver} ? 1 : 0 };
+function args => 'ver', version_lt => sub { $^V lt $a{ver} ? 1 : 0 };
+function args => 'ver', version_le => sub { $^V le $a{ver} ? 1 : 0 };
 
 !!42;
 __END__
