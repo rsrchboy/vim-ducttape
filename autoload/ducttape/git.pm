@@ -17,6 +17,9 @@ use Git::Raw::Reference;
 use Git::Raw::Signature;
 use Path::Tiny;
 
+# poor man's aliased
+use constant TreeBuilder => 'Git::Raw::Tree::Builder';
+
 sub bufrepo {
 
     my ( $name, $discover_path ) = ( "$BUFFER", undef );
@@ -211,20 +214,33 @@ sub _new_tree_with {
 
     ### $our_part
     ### @path_parts
-    my $entry = $tree->entry_byname($our_part);
+    ### $tree
+    my $entry
+        = ref $tree eq 'Git::Raw::Tree'
+        ? $tree->entry_byname($our_part)
+        : $tree->get($our_part)
+        ;
+
     ### $entry
+    my $child_tree
+        = !!$entry ? $entry->object : TreeBuilder->new($repo)->write;
 
     # FIXME TODO handle DNE $entry
 
     my $thing
         = @path_parts > 0
-        ? _new_tree_with($repo, $entry->object, $blob, @path_parts)
+        ? _new_tree_with($repo, $child_tree, $blob, @path_parts)
         : $blob
         ;
 
     ### out of recursion...
-    my $mode = !!$entry ? $entry->file_mode : 0100644;
-    my $tb = Git::Raw::Tree::Builder->new($repo, $tree);
+    my $mode
+        = !!$entry        ? $entry->file_mode # use existing
+        : @path_parts > 0 ? 0040000           # directory
+        :                   0100644           # file
+        ;
+
+    my $tb = TreeBuilder->new($repo, $tree);
     $tb->insert($our_part, $thing, $mode);
     return $tb->write;
 }
