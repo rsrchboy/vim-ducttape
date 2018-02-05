@@ -1,5 +1,7 @@
 # Vim and Perl: Perfect together
 
+[[https://travis-ci.org/rsrchboy/vim-ducttape.svg?branch=master]]
+
 This is a VimL library to assist one in using Perl in vim; that is, not to
 help you with *writing* Perl in vim, but rather *using* vim's embedded Perl
 (`+perl` via VimL).
