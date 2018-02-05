@@ -7,7 +7,6 @@ use strict;
 use warnings;
 
 use VIMx::Symbiont;
-use Module::Info;
 
 # the VIMx::Symbiont-generated sub functions handles turning the parameters
 # JSON into Perl values -- and the other way around on return.
