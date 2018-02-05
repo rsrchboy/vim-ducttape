@@ -16,3 +16,6 @@
 [submodule "p5/Role-Tiny"]
 	path = p5/Role-Tiny
 	url = https://github.com/moose/Role-Tiny.git
+[submodule "p5/module-runtime"]
+	path = p5/module-runtime
+	url = git://git.fysh.org/zefram/Module-Runtime.git
