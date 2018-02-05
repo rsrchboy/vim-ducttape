@@ -1,7 +1,8 @@
-This is a VimL library to assist one in using Perl in vim; that is, not to
-help you with *writing* Perl in vim, using Perl in vim (VimL).
+# Vim and Perl: Perfect together
 
-# Oh, the things you can do!
+This is a VimL library to assist one in using Perl in vim; that is, not to
+help you with *writing* Perl in vim, but rather *using* vim's embedded Perl
+(`+perl` via VimL).
 
 There are two main efforts here; the first to make loading Perl functions and
 generating "glue" viml functions trivial, the second to make interacting with
