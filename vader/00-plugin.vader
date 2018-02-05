@@ -9,3 +9,8 @@ Execute (@INC):
   for b:inc_dir in b:INC
     Log b:inc_dir
   endfor
+
+Execute ($PERL5LIB):
+  Log $PERL5LIB
+
+" __END__
