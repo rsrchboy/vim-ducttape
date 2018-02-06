@@ -10,16 +10,29 @@ addons:
       - libio-socket-ssl-perl
       - libperl-dev
 
+env:
+  - VIM_VER=""
+  - VIM_VER="v8.0.0654"
+
+matrix:
+  allow_failures:
+    - env: VIM_VER=""
+
 before_script: |
   git clone --depth=1 https://github.com/junegunn/vader.vim.git
 
-  # right now, we need at least v8.0.0654
-  git clone --depth=1 https://github.com/vim/vim.git --branch v8.0.0654
-  cd vim
-  ./configure --enable-perlinterp=yes
-  make -j4
-  sudo make install
-  cd ..
+  if [ "x$VIM_VER" = "x" ]; then
+    echo "Using system vim"
+  else
+    # right now, we need at least v8.0.0654
+    git clone --depth=1 https://github.com/vim/vim.git --branch $VIM_VER
+    cd vim
+    ./configure --enable-perlinterp=yes
+    make -j4
+    sudo make install
+    cd ..
+  fi
+
   vim --version
 
 script: |
