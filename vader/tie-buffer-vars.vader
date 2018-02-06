@@ -31,5 +31,8 @@ Execute(STORE):
   AssertEqual b:var, 'Rainbow Dash'
   AssertEqual b:eep, 'Rainbow Dash'
 
+Execute(KEYS spew):
+  perl $b{eep} = [ keys %vars ]
+  Log b:eep
 
 " __END__
