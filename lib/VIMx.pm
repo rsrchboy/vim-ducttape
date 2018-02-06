@@ -17,11 +17,10 @@ our @EXPORT = qw/
     %a %b %g %l %s %t %v %w
     %self
     $BUFFER
+    %BUFFERS
 /;
 
 our @EXPORT_OK = qw/
-    %BUFFERS
-
     %global_options %local_options
     buffer          buffers
 /;
