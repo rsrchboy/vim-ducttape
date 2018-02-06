@@ -19,13 +19,11 @@ Execute ($BUFFER->vars is %b):
 Execute (vars - get):
   let b:eep = 'Rainbow Dash'
   perl $b{oop} = $BUFFER->vars->{eep}
-  Log b:oop
   AssertEqual b:oop, b:eep
 
 Execute (vars - set):
   let b:eep = 'Rainbow Dash'
   perl $BUFFER->vars->{oop} = $b{eep}
-  Log b:oop
   AssertEqual b:oop, b:eep
 
 Given (one pony):
@@ -55,14 +53,6 @@ Execute(whole-buffer):
     \ 'Rarity',
     \ 'Pinkie Pie',
     \], b:eep
-
-Given (ponies!):
-  Twilight Sparkle
-  Rainbow Dash
-  Applejack
-  Fluttershy
-  Rarity
-  Pinkie Pie
 
 Execute(append / push):
   perl push @$VIMx::BUFFER, 'spike!'
