@@ -1,0 +1,35 @@
+Execute (setup):
+  perl require VIMx; require VIMx::Tie::BufferVars;
+
+Given:
+
+Before:
+  unlet! b:eep b:var b:var_exists
+  let b:ours = bufnr('')
+  perl tie our %vars, 'VIMx::Tie::BufferVars', $b{ours}
+
+Execute(EXISTS):
+  let b:eep = 'Rainbow Dash'
+  perl $b{var_exists} = exists $vars{eep}
+  Assert b:var_exists
+
+Execute(not EXISTS):
+  perl $b{var_exists} = exists $vars{eep}
+  Assert !b:var_exists
+
+Execute(FETCH):
+  let b:eep = 'Rainbow Dash'
+  perl $b{var} = $vars{eep}
+  AssertEqual b:var, 'Rainbow Dash'
+
+Execute(FETCH dne):
+  perl $b{var} = not defined $vars{eep}
+  Assert b:var
+
+Execute(STORE):
+  perl $b{var} = $vars{eep} = 'Rainbow Dash'
+  AssertEqual b:var, 'Rainbow Dash'
+  AssertEqual b:eep, 'Rainbow Dash'
+
+
+" __END__
