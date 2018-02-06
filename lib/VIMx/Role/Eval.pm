@@ -32,4 +32,12 @@ sub _eval_or_confess {
     return $v;
 }
 
+sub _eval {
+    my ($this, $viml) = @_;
+
+    return decode_json($this->_eval_or_confess("json_encode($viml)"));
+}
+
+sub _eval_raw { shift->_eval_or_confess(@_) }
+
 !!42;
