@@ -26,7 +26,10 @@ sub AUTOLOAD {
     ### $AUTOLOAD
     ### $method
     ### @args
-    return tied(@$self)->buffer->$method(@args);
+    my $thing = tied(@$self);
+    return $thing->$method(@args)
+        if $thing->can($method);
+    return $thing->buffer->$method(@args);
 }
 
 !!42;
