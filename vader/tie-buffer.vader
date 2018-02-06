@@ -4,6 +4,14 @@ Execute (setup):
 Before:
   unlet! b:eep b:oop b:scratch
 
+Execute (bufnr() agrees):
+  perl $b{eep} = 0+$BUFFER
+  AssertEqual b:eep, bufnr('')
+
+Execute (bufname() agrees):
+  perl $b{eep} = "$BUFFER"
+  AssertEqual b:eep, bufname('')
+
 Execute (string overload):
   perl $b{eep} = "$VIMx::BUFFER"
   AssertEqual b:eep, bufname('')
