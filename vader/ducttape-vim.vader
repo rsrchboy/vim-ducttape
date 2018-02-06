@@ -1,0 +1,10 @@
+Execute (setup):
+  perl use VIMx; use strict; use warnings;
+  AssertEqual 1, g:ducttape#vim#loaded
+
+Before:
+  unlet! b:eep b:oop b:ours
+
+Execute (...#buffers()):
+  let b:oop = ducttape#vim#buffers()
+  Log b:oop
