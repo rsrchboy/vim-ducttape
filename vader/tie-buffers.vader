@@ -1,0 +1,66 @@
+Execute (setup):
+  perl use VIMx; use strict; use warnings;
+
+Before:
+  unlet! b:eep b:oop b:ours b:isa b:our_name
+  let b:ours     = bufnr('')
+  let b:our_name = bufname('')
+
+Given (mane six):
+  Twilight Sparkle
+  Rainbow Dash
+  Applejack
+  Fluttershy
+  Rarity
+  Pinkie Pie
+
+Execute (%BUFFERS isa):
+  perl $b{oop} = ref tied(%BUFFERS)
+  AssertEqual b:oop, 'VIMx::Tie::Buffers'
+
+Execute (EXISTS - bufnr):
+  perl $b{oop} = exists $BUFFERS{0+$BUFFER}
+  Assert b:oop
+
+Execute(KEYS spew):
+  perl $b{eep} = [ keys %BUFFERS ]
+  Log b:eep
+
+Execute (EXISTS - bufname):
+  Assert bufexists(bufname('')), 'buffer exists'
+  Assert buflisted(bufname('')), 'buffer is listed'
+  Assert bufloaded(bufname('')), 'buffer is loaded'
+  perl $b{oop} = exists $BUFFERS{"$BUFFER"} ? 1 : 0
+  Assert b:oop, 'tied %BUFFERS found ' . bufname('')
+
+Execute (not EXISTS - bufname):
+  perl $b{oop} = exists $BUFFERS{'la la la la la BUFNAME OF DOOM'} ? 0 : 1
+  Assert b:oop
+
+Execute (vars - values are VIMx::AutoLoadFor::Tie):
+  perl $b{oop} = ref $BUFFERS{0+$BUFFER}
+  AssertEqual b:oop, 'VIMx::AutoLoadFor::Tie'
+
+Execute (vars - values are tied ::Buffer):
+  perl $b{oop} = ref tied(@{ $BUFFERS{0+$BUFFER} })
+  AssertEqual b:oop, 'VIMx::Tie::Buffer'
+
+Execute (vars - isa ::BufferVars):
+  perl $b{oop} = ref tied(%{ $BUFFERS{0+$BUFFER}->vars })
+  AssertEqual b:oop, 'VIMx::Tie::BufferVars'
+
+Execute (vars - get):
+  let b:eep = 'Rainbow Dash'
+  perl $b{oop} = $BUFFERS{0+$BUFFER}->vars->{eep}
+  AssertEqual b:oop, b:eep
+
+Execute (vars - set):
+  let b:eep = 'Rainbow Dash'
+  perl $BUFFERS{0+$BUFFER}->vars->{oop} = $b{eep}
+  AssertEqual b:oop, b:eep
+
+Execute (trivial get of a buffer line):
+  perl $b{oop} = $BUFFERS{0+$BUFFER}->[1]
+  AssertEqual b:oop, 'Rainbow Dash'
+
+" __END__
