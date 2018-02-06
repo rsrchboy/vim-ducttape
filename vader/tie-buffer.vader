@@ -12,6 +12,22 @@ Execute (numeric overload):
   perl $b{eep} = 0+$VIMx::BUFFER
   AssertEqual b:eep, bufnr('')
 
+Execute ($BUFFER->vars is %b):
+  perl $b{eep} = tied(%{ $BUFFER->vars })->{thing}
+  AssertEqual b:eep, 'b:'
+
+Execute (vars - get):
+  let b:eep = 'Rainbow Dash'
+  perl $b{oop} = $BUFFER->vars->{eep}
+  Log b:oop
+  AssertEqual b:oop, b:eep
+
+Execute (vars - set):
+  let b:eep = 'Rainbow Dash'
+  perl $BUFFER->vars->{oop} = $b{eep}
+  Log b:oop
+  AssertEqual b:oop, b:eep
+
 Given (one pony):
   Rainbow Dash
 

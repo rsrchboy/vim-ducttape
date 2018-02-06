@@ -12,6 +12,7 @@ use overload
 
 use Role::Tiny::With;
 use JSON::Tiny qw{ encode_json decode_json };
+use VIMx::Tie::BufferVars;
 
 use base 'Tie::Array';
 
@@ -97,6 +98,16 @@ sub UNSHIFT { shift->buffer->Append(0, @_); return }
 
 # for current buffer, just swap this out
 sub buffer { VIM::Buffers(shift->{buffer}) }
+
+sub vars {
+    my ($this) = @_;
+
+    return $this->{vars}
+        if exists $this->{vars};
+
+    tie my %vars, 'VIMx::Tie::BufferVars', $this->buffer->Number;
+    return $this->{vars} = \%vars;
+}
 
 !!42;
 __END__
