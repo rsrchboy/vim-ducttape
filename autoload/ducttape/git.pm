@@ -25,7 +25,7 @@ sub bufrepo {
     my ( $name, $discover_path ) = ( "$BUFFER", undef );
 
     ### looking for repo for buffer: $name
-    if ($VIMx::local_options{buftype} eq 'nofile') {
+    if ($VIMx::LOPTIONS{buftype} eq 'nofile') {
 
         ### buftype nofile: $name
         $discover_path = Path::Tiny->cwd->realpath;

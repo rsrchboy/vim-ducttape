@@ -1,0 +1,15 @@
+Execute (setup):
+  perl require VIMx;
+
+Given frobnip (frobnip f/t buffer):
+  hi there!
+
+Execute(f/t option local):
+  unlet! b:eep
+  AssertEqual 'frobnip', &filetype, 'Initial check'
+  perl $b{eep} = $VIMx::OPTIONS{filetype}
+  AssertEqual 'frobnip', b:eep, 'check what $VIMx::OPTIONS believes it to be'
+  perl $VIMx::OPTIONS{filetype} = 'zoop'
+  AssertEqual 'zoop', &filetype, 'check Perl set to "zoop"'
+
+" __END__

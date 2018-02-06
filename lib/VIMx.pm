@@ -29,7 +29,7 @@ our @EXPORT_OK = qw/
 our %EXPORT_TAGS = (
     variables => [ qw{ %a %b %g %l %s %t %v %w } ],
     buffers   => [ qw{ $cbuf } ],
-    options   => [ qw{ %global_options %local_options } ],
+    options   => [ qw{ %GOPTIONS %LOPTIONS %OPTIONS } ],
 );
 
 # see help for internal-variables for more information
@@ -49,9 +49,9 @@ our $BUFFER = bless \@curbuf, 'VIMx::AutoLoadFor::Tie';
 
 tie our %BUFFERS, 'VIMx::Tie::Buffers';
 
-tie our %global_options, 'VIMx::Tie::Options', '&g:';
-tie our %local_options,  'VIMx::Tie::Options', '&l:';
-# tie our %vim_options, 'VIMx::Tie::Options', '&';
+tie our %GOPTIONS, 'VIMx::Tie::Options', '&g:';
+tie our %LOPTIONS, 'VIMx::Tie::Options', '&l:';
+tie our %OPTIONS,  'VIMx::Tie::Options', '&';
 
 # TODO register access?
 
