@@ -1,5 +1,5 @@
 Execute (setup):
-  perl use VIMx;
+  perl use VIMx; use warnings; use strict;
 
 Before:
   unlet! b:eep b:oop b:scratch
