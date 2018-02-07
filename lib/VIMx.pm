@@ -43,15 +43,16 @@ tie our %w, 'VIMx::Tie::Dict', 'w:';
 
 tie our %self, 'VIMx::Tie::Dict', 'l:self';
 
-tie our @curbuf, 'VIMx::Tie::Buffer', '%';
-tied(@curbuf)->{vars} = \%b;
-our $BUFFER = bless \@curbuf, 'VIMx::AutoLoadFor::Tie';
-
-tie our %BUFFERS, 'VIMx::Tie::Buffers';
-
 tie our %GOPTIONS, 'VIMx::Tie::Options', '&g:';
 tie our %LOPTIONS, 'VIMx::Tie::Options', '&l:';
 tie our %OPTIONS,  'VIMx::Tie::Options', '&';
+
+tie our %BUFFERS, 'VIMx::Tie::Buffers';
+
+tie our @curbuf, 'VIMx::Tie::Buffer', '%';
+tied(@curbuf)->{vars} = \%b;
+tied(@curbuf)->{options} = \%OPTIONS;
+our $BUFFER = bless \@curbuf, 'VIMx::AutoLoadFor::Tie';
 
 # TODO register access?
 

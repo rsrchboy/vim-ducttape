@@ -24,6 +24,12 @@ Execute ($BUFFER->vars is %b):
   perl $b{eep} = tied(%{ $BUFFER->vars })->{thing}
   AssertEqual b:eep, 'b:'
 
+Execute ($BUFFER->options is %OPTIONS):
+  perl $b{eep} = ref tied(%{ $BUFFER->options })
+  AssertEqual b:eep, 'VIMx::Tie::Options', 'tied class correct'
+  perl $b{oop} = tied(%{ $BUFFER->options })->{thing}
+  AssertEqual b:oop, '&', 'prefix correct (&)'
+
 Execute (vars - get):
   let b:eep = 'Rainbow Dash'
   perl $b{oop} = $BUFFER->vars->{eep}
