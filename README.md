@@ -189,6 +189,7 @@ including their authors, maintainers, and licenses.
 
 * HTTP::Tiny
 * JSON::Tiny
+* Module::Runtime
 * Path::Tiny
 * Role::Tiny
 * Try::Tiny
