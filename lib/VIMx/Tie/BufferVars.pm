@@ -9,10 +9,13 @@ use Role::Tiny::With;
 
 with 'VIMx::Role::Eval';
 
+my $prefix = q{};
+
 sub TIEHASH {
-    my ($class, $bufnr) = @_;
+    my ($class, $bufnr, $prefix) = @_;
+    $prefix //= q{};
     ### TIEHASH(): $bufnr
-    return bless { bufnr => $bufnr }, $class;
+    return bless { bufnr => $bufnr, prefix => $prefix }, $class;
 }
 
 sub EXISTS {
@@ -20,7 +23,7 @@ sub EXISTS {
     ### EXISTS(): $key
     my %bufvars =
         map { $_ => 1 }
-        @{ $this->_eval("keys(getbufvar($this->{bufnr}, ''))") }
+        @{ $this->_eval("keys(getbufvar($this->{bufnr}, '$this->{prefix}'))") }
         ;
 
     ### %bufvars
@@ -37,14 +40,14 @@ sub FETCH {
         unless $this->EXISTS($key);
 
     ### fetched: $this->_eval("getbufvar($this->{bufnr}, '$key')")
-    return $this->_eval("getbufvar($this->{bufnr}, '$key')")
+    return $this->_eval("getbufvar($this->{bufnr}, '$this->{prefix}$key')")
 }
 
 sub STORE {
     my ($this, $key, $value) = @_;
     ### STORE(): "$key => $value"
 
-    $this->_eval("setbufvar($this->{bufnr}, '$key', '$value')");
+    $this->_eval("setbufvar($this->{bufnr}, '$this->{prefix}$key', '$value')");
     return $value;
 }
 
@@ -66,7 +69,7 @@ sub NEXTKEY {
     return pop @{ $this->{keys} };
 }
 
-sub _buf_vars { @{ $_[0]->_eval("keys(getbufvar($_[0]->{bufnr}, ''))") } }
+sub _buf_vars { @{ $_[0]->_eval("keys(getbufvar($_[0]->{bufnr}, '$_[0]->{prefix}'))") } }
 
 !!42;
 __END__
