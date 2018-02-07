@@ -18,7 +18,7 @@ sub STORE {
 
     my $target = $this->_make_target($key);
 
-    if ((ref $value // q{}) eq 'SCALAR') {
+    if (ref $value eq 'SCALAR') {
         # we've been passed a reference to a scalar
         # much like DBIC, this means "execute this literally"
         VIM::DoCommand("let $target = $$value");
