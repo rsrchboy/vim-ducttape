@@ -37,6 +37,10 @@ Execute (not EXISTS - bufname):
   perl $b{oop} = exists $BUFFERS{'la la la la la BUFNAME OF DOOM'} ? 0 : 1
   Assert b:oop
 
+Execute (trivial get of a buffer line):
+  perl $b{oop} = $BUFFERS{0+$BUFFER}->[1]
+  AssertEqual b:oop, 'Rainbow Dash'
+
 Execute (vars - values are VIMx::AutoLoadFor::Tie):
   perl $b{oop} = ref $BUFFERS{0+$BUFFER}
   AssertEqual b:oop, 'VIMx::AutoLoadFor::Tie'
@@ -59,8 +63,31 @@ Execute (vars - set):
   perl $BUFFERS{0+$BUFFER}->vars->{oop} = $b{eep}
   AssertEqual b:oop, b:eep
 
-Execute (trivial get of a buffer line):
-  perl $b{oop} = $BUFFERS{0+$BUFFER}->[1]
-  AssertEqual b:oop, 'Rainbow Dash'
+Execute ($BUFFER->options isa BufferVars):
+  perl $b{eep} = ref tied(%{ $BUFFER->options })
+  AssertEqual b:eep, 'VIMx::Tie::Options', 'tied class correct'
+  perl $b{oop} = tied(%{ $BUFFER->options })->{thing}
+  AssertEqual b:oop, '&', 'prefix correct (&)'
+
+Execute (options - values are tied ::BufferVars):
+  perl $b{oop} = ref tied(%{ $BUFFERS{0+$BUFFER}->options })
+  AssertEqual b:oop, 'VIMx::Tie::BufferVars'
+
+Given ponyville (one pony):
+  Rainbow Dash
+
+Execute (options - get):
+  perl $b{oop} = $BUFFERS{0+$BUFFER}->options->{filetype}
+  AssertEqual b:oop, 'ponyville'
+
+Execute (options - set):
+  perl $b{oop} = $BUFFERS{0+$BUFFER}->options->{filetype} = 'manehattan'
+  AssertEqual b:oop, 'manehattan', 'tied Perl return correct'
+  AssertEqual &filetype, 'manehattan', '...and matches &filetype'
+
+" Execute (vars - set):
+"   let b:eep = 'Rainbow Dash'
+"   perl $BUFFERS{0+$BUFFER}->vars->{oop} = $b{eep}
+"   AssertEqual b:oop, b:eep
 
 " __END__
