@@ -1,13 +1,16 @@
 Execute (setup):
-  perl require VIMx; require VIMx::Tie::List
+  perl use VIMx; require VIMx::Tie::List; use strict; use warnings
   perl tie our @listie, 'VIMx::Tie::List', 'b:test_list'
 
 Execute (creation):
   Assert has_key(b:, 'test_list')
   AssertEqual [], b:test_list
 
+Before (setup):
+  unlet! b:test_list b:eep b:oop
+  let b:test_list = []
+
 Execute (FETCHSIZE):
-  unlet! b:test_list b:eep
   let b:test_list = [ 1, 2, 3 ]
   perl $b{eep} = scalar @listie
   AssertEqual b:eep, 3
@@ -19,69 +22,59 @@ Execute (FETCHSIZE):
   AssertEqual b:eep, 0, 'zero size'
 
 Execute (PUSH):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 1, 2 ]
   perl $b{oop} = push @listie, 3
   AssertEqual b:test_list, [ 1, 2, 3 ]
   AssertEqual b:oop, 3
 
 Execute (PUSH - multiple):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 1, 2 ]
   perl $b{oop} = push @listie, 3, 4, 5
   AssertEqual b:test_list, [ 1, 2, 3, 4, 5 ]
   AssertEqual b:oop, 5
 
 Execute (PUSH onto zero-length list):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = []
   perl $b{oop} = push @listie, 3
   AssertEqual b:test_list, [ 3 ]
   AssertEqual b:oop, 1
 
 Execute (UNSHIFT):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 1, 2 ]
   perl $b{oop} = unshift @listie, 3
   AssertEqual b:test_list, [ 3, 1, 2 ]
   AssertEqual b:oop, 3
 
 Execute (UNSHIFT - multiple):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 1, 2 ]
   perl $b{oop} = unshift @listie, 3, 4, 5
   AssertEqual b:test_list, [ 3, 4, 5, 1, 2 ]
   AssertEqual b:oop, 5
 
 Execute (POP):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 1, 2 ]
   perl $b{oop} = pop @listie
   AssertEqual b:test_list, [ 1 ]
   AssertEqual b:oop, 2
 
 Execute (POP -- last):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 5 ]
   perl $b{oop} = pop @listie
   AssertEqual b:test_list, []
   AssertEqual b:oop, 5
 
 Execute (SHIFT):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 1, 2, 3 ]
   perl $b{oop} = shift @listie
   AssertEqual b:test_list, [ 2, 3 ]
   AssertEqual b:oop, 1
 
 Execute (CLEAR):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 1, 2, 3 ]
   perl @listie = ()
   AssertEqual b:test_list, [ ]
 
 Execute (perl-side set):
-  unlet! b:test_list b:eep b:oop
   let b:test_list = [ 'King Zumbra' ]
   perl $listie[0] = 'Twilight Sparkle'
   AssertEqual ['Twilight Sparkle'], b:test_list
