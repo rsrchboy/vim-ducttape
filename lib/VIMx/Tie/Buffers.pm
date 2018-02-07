@@ -10,10 +10,8 @@ use Carp 'croak';
 
 use base 'Tie::Hash';
 
-
 sub TIEHASH {
     my ($class) = @_;
-    # ensure we exist
     return bless { }, $class;
 }
 
@@ -39,9 +37,12 @@ sub NEXTKEY  {
 sub EXISTS {
     my ($this, $bufid) = @_;
 
+    ### EXISTS(): $bufid
     my $buf = VIM::Buffers($bufid);
 
-    return !!$buf;
+    ### $buf
+    ### defined: defined $buf
+    return defined $buf;
 }
 
 sub FETCH {
@@ -49,12 +50,15 @@ sub FETCH {
 
     # for efficiency, we don't use EXISTS() here.
     # of course, you know what they say about premature optimization...
+
+    ### FETCH(): $bufid
     my $buf = VIM::Buffers($bufid);
+
+    ### $buf
     croak "No such buffer ($bufid)"
-        if !$buf;
+        unless defined $buf;
 
     return VIMx::buffer($bufid);
-    # return $buf;
 }
 
 sub SCALAR { scalar VIM::Buffers() }
