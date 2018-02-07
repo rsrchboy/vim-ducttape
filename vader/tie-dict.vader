@@ -1,8 +1,34 @@
 Execute (setup):
-  perl require VIMx;
+  perl require VIMx; require VIMx::Tie::Dict; use strict; use warnings
 
 Before:
-  unlet! b:eep b:eep2 b:oop
+  unlet! b:eep b:eep2 b:oop b:dict
+  let b:dict = { 'one': 1, 2: 'two' }
+  perl tie our %dict, 'VIMx::Tie::Dict', 'b:dict'
+
+Execute (FETCH):
+  perl $b{eep} = $dict{one}
+  AssertEqual b:eep, 1, 'string key'
+  perl $b{eep} = $dict{2}
+  AssertEqual b:eep, 'two', 'integer key'
+
+Execute (FETCH dne slot):
+  perl $b{eep} = defined $dict{foo} ? 1 : 0
+  AssertEqual b:eep, 0, 'string key'
+  perl $b{eep} = defined $dict{2} ? 1 : 0
+  AssertEqual b:eep, 0, 'integer key'
+
+Execute (EXISTS):
+  perl $b{eep} = exists $dict{one} ? 1 : 0
+  Assert b:eep, 'string key'
+  perl $b{eep} = exists $dict{2} ? 1 : 0
+  Assert b:eep, 'integer key'
+
+Execute (not EXISTS):
+  perl $b{eep} = exists $dict{foo} ? 1 : 0
+  Assert !b:eep, 'string key'
+  perl $b{eep} = exists $dict{3} ? 1 : 0
+  Assert !b:eep, 'integer key'
 
 Execute(basic tie tests):
   perl $VIMx::b{eep} = 'one'
