@@ -6,17 +6,18 @@ Before:
   let b:dict = { 'one': 1, 2: 'two' }
   perl tie our %dict, 'VIMx::Tie::Dict', 'b:dict'
 
+Execute (STORE string):
+  perl $b{eep} = $dict{coolest} = 'Rainbow Dash'
+  AssertEqual b:eep, 'Rainbow Dash', 'string key - STORE return correct'
+  AssertEqual b:dict.coolest, 'Rainbow Dash', 'string key'
+
 Execute (FETCH):
   perl $b{eep} = $dict{one}
   AssertEqual b:eep, 1, 'string key'
-  perl $b{eep} = $dict{2}
-  AssertEqual b:eep, 'two', 'integer key'
 
 Execute (FETCH dne slot):
   perl $b{eep} = defined $dict{foo} ? 1 : 0
   AssertEqual b:eep, 0, 'string key'
-  perl $b{eep} = defined $dict{2} ? 1 : 0
-  AssertEqual b:eep, 0, 'integer key'
 
 Execute (EXISTS):
   perl $b{eep} = exists $dict{one} ? 1 : 0
