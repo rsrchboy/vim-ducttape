@@ -192,6 +192,7 @@ including their authors, maintainers, and licenses.
 * Module::Runtime
 * Path::Tiny
 * Role::Tiny
+* Template::Tiny (*in `lib/`)
 * Try::Tiny
 
 `JSON::Tiny` in particular is key, as we lean heavily on vim's `json_encode()`
