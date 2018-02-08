@@ -187,6 +187,7 @@ really rather not reimplement here.  They're pulled in as submodules, and
 their source repositories should be viewed to learn more about those packages,
 including their authors, maintainers, and licenses.
 
+* Data::Section::Simple
 * HTTP::Tiny
 * JSON::Tiny
 * Module::Runtime
