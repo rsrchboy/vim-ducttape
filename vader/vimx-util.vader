@@ -16,6 +16,25 @@ Execute (vim_eval - function):
   perl $b{eep} = vim_eval("[ 1, 2 ]")
   AssertEqual b:eep, [ 1, 2 ]
 
+Execute (vim_typeof - number):
+  let b:eep = 1
+  perl $b{oop} = vim_typeof(1)
+  AssertEqual b:oop, 'number'
+
+Execute (vim_typeof - string):
+  let b:eep = 1
+  perl $b{oop} = vim_typeof("'hiya'")
+  AssertEqual b:oop, 'string'
+
+Execute (vim_typeof - dict):
+  let b:eep = 1
+  perl $b{oop} = vim_typeof("{'one': 1}")
+  AssertEqual b:oop, 'dict'
+
+Execute (vim_typeof - list):
+  let b:eep = 1
+  perl $b{oop} = vim_typeof("[1, 2, 3]")
+  AssertEqual b:oop, 'list'
 
 " Execute (vim_escape):
 "   " perl let $b{eep} = \( "'"vim_escape("one two 'three 'four'' five") )

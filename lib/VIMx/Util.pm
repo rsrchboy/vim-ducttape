@@ -15,6 +15,7 @@ our @EXPORT = qw{
     vim_eval_raw
     vim_escape
     vim_do
+    vim_typeof
 };
 
 sub vim_do { VIM::DoCommand($_[0]) }
@@ -48,5 +49,22 @@ sub vim_eval {
 }
 
 sub vim_eval_raw { _eval_or_confess(@_) }
+
+sub vim_typeof {
+    my ($viml) = @_;
+
+    # we can't -- shouldn't -- depend on %VIMx::x being available
+    state $types = {
+        map { vim_eval_raw("v:t_$_") => $_ }
+        qw{ number string func list dict float bool none job channel }
+    };
+
+    ### $types
+    ### typeof(): $viml
+    my $type = vim_eval_raw("type($viml)");
+
+    ### $type
+    return $types->{$type};
+}
 
 !!42;
