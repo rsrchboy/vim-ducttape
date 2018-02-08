@@ -1,0 +1,14 @@
+Execute (setup):
+  perl use VIMx; use VIMx::Util;
+
+Before:
+  unlet! b:eep b:eep2 b:oop b:dict
+
+Execute (vim_do):
+  perl vim_do("let b:eep = 'eeeyup!'")
+  AssertEqual b:eep, 'eeeyup!'
+
+" Execute (vim_escape):
+"   " perl let $b{eep} = \( "'"vim_escape("one two 'three 'four'' five") )
+"   perl VIM::DoCommand(q{let b:eep = '} . vim_escape("one two 'three 'four'' five") . q{'})
+"   AssertEqual b:eep, "one two 'three 'four'' five"

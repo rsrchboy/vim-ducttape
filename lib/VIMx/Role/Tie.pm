@@ -9,6 +9,7 @@ use warnings;
 use Carp 'confess';
 use Role::Tiny;
 use JSON::Tiny qw{ encode_json decode_json };
+use VIMx::Util;
 
 with 'VIMx::Role::Eval';
 
@@ -61,7 +62,7 @@ sub DELETE {
     my $dict = $this->{thing};
     my $value = $this->FETCH($key);
     my $target = $this->_make_target($key);
-    VIM::DoCommand("unlet! $target");
+    vim_do("unlet! $target");
     return $value;
 }
 
