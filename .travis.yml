@@ -11,8 +11,8 @@ language: C
 #       - libperl-dev
 
 env:
-  - VIM_VER=""
-  - VIM_VER="v8.0.0654"
+  - VIM_VER=""          VIM_PPA="ppa:jonathonf/vim"
+  - VIM_VER="v8.0.0654" VIM_PPA=""
 
 matrix:
   allow_failures:
