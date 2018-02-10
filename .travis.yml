@@ -1,14 +1,14 @@
 sudo: true
 language: C
-# addons:
-#   apt:
+addons:
+  apt:
 #     sources:
 #       - sourceline: 'ppa:pi-rho/dev'
 #         key_url: 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xCC892FC6779C27D7'
-#     packages:
-#       - vim-nox
-#       - libio-socket-ssl-perl
-#       - libperl-dev
+    packages:
+      - vim-nox
+      - libio-socket-ssl-perl
+      - libperl-dev
 
 env:
   - VIM_VER=""          VIM_PPA="ppa:jonathonf/vim"
@@ -30,9 +30,9 @@ before_script: |
     sudo make install
     cd ..
   elif [ "x$VIM_PPA" != "x" ] ; then
-    apt-add-repository --yes $VIM_PPA
-    apt-get -q update
-    apt-get install vim-nox libio-socket-ssl-perl libperl-dev
+    sudo apt-add-repository --yes $VIM_PPA
+    sudo apt-get -q update
+    sudo apt-get -y install vim-nox
   else
     echo "Using stock vim!"
   fi
