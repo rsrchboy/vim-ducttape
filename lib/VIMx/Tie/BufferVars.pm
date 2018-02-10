@@ -1,15 +1,12 @@
 package VIMx::Tie::BufferVars;
 
+use v5.10;
 use strict;
 use warnings;
 
+use VIMx::Util;
+
 use base 'Tie::Hash';
-
-use Role::Tiny::With;
-
-with 'VIMx::Role::Eval';
-
-my $prefix = q{};
 
 sub TIEHASH {
     my ($class, $bufnr, $prefix) = @_;
@@ -23,7 +20,7 @@ sub EXISTS {
     ### EXISTS(): $key
     my %bufvars =
         map { $_ => 1 }
-        @{ $this->_eval("keys(getbufvar($this->{bufnr}, '$this->{prefix}'))") }
+        @{ vim_eval("keys(getbufvar($this->{bufnr}, '$this->{prefix}'))") }
         ;
 
     ### %bufvars
@@ -39,15 +36,15 @@ sub FETCH {
     return undef
         unless $this->EXISTS($key);
 
-    ### fetched: $this->_eval("getbufvar($this->{bufnr}, '$key')")
-    return $this->_eval("getbufvar($this->{bufnr}, '$this->{prefix}$key')")
+    ### fetched: vim_eval("getbufvar($this->{bufnr}, '$key')")
+    return vim_eval("getbufvar($this->{bufnr}, '$this->{prefix}$key')")
 }
 
 sub STORE {
     my ($this, $key, $value) = @_;
     ### STORE(): "$key => $value"
 
-    $this->_eval("setbufvar($this->{bufnr}, '$this->{prefix}$key', '$value')");
+    vim_eval("setbufvar($this->{bufnr}, '$this->{prefix}$key', '$value')");
     return $value;
 }
 
@@ -69,7 +66,7 @@ sub NEXTKEY {
     return pop @{ $this->{keys} };
 }
 
-sub _buf_vars { @{ $_[0]->_eval("keys(getbufvar($_[0]->{bufnr}, '$_[0]->{prefix}'))") } }
+sub _buf_vars { @{ vim_eval("keys(getbufvar($_[0]->{bufnr}, '$_[0]->{prefix}'))") } }
 
 !!42;
 __END__
