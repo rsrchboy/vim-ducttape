@@ -1,14 +1,14 @@
-sudo: false
+sudo: true
 language: C
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:pi-rho/dev'
-        key_url: 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xCC892FC6779C27D7'
-    packages:
-      - vim-nox
-      - libio-socket-ssl-perl
-      - libperl-dev
+# addons:
+#   apt:
+#     sources:
+#       - sourceline: 'ppa:pi-rho/dev'
+#         key_url: 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xCC892FC6779C27D7'
+#     packages:
+#       - vim-nox
+#       - libio-socket-ssl-perl
+#       - libperl-dev
 
 env:
   - VIM_VER=""
@@ -21,9 +21,7 @@ matrix:
 before_script: |
   git clone --depth=1 https://github.com/junegunn/vader.vim.git
 
-  if [ "x$VIM_VER" = "x" ]; then
-    echo "Using system vim"
-  else
+  if [ "x$VIM_VER" != "x" ]; then
     # right now, we need at least v8.0.0654
     git clone --depth=1 https://github.com/vim/vim.git --branch $VIM_VER
     cd vim
@@ -31,6 +29,12 @@ before_script: |
     make -j4
     sudo make install
     cd ..
+  else if [ "x$VIM_PPA" != "x" ] ;
+    apt-add-repository --yes $VIM_PPA
+    apt-get -q update
+    apt-get install vim-nox libio-socket-ssl-perl libperl-dev
+  else
+    echo "Using stock vim!"
   fi
 
   vim --version
