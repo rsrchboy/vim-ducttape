@@ -4,11 +4,11 @@ Execute (setup):
 Before:
   unlet! b:eep b:oop b:scratch
 
-Execute (bufnr() agrees):
+Execute (bufnr() agrees -- 0+ overloading):
   perl $b{eep} = 0+$BUFFER
   AssertEqual b:eep, bufnr('')
 
-Execute (bufname() agrees):
+Execute (bufname() agrees -- "" overloading):
   perl $b{eep} = "$BUFFER"
   AssertEqual b:eep, bufname('')
 
