@@ -11,8 +11,6 @@ use Role::Tiny;
 use JSON::Tiny qw{ encode_json decode_json };
 use VIMx::Util;
 
-with 'VIMx::Role::Eval';
-
 sub STORE {
     my ($this, $key, $value) = @_;
     my $thing = $this->{thing};
@@ -26,11 +24,11 @@ sub STORE {
         return $this->FETCH($key);
     }
 
-    my $viml_value = $this->_escape(encode_json($value));
+    my $viml_value = vim_escape(encode_json($value));
 
     #### STORE: "$target = json_decode('$viml_value')"
     # VIM::DoCommand("let $target = json_decode('$viml_value')");
-    $this->_or_throw("let $target = json_decode('$viml_value')");
+    vim_do("let $target = json_decode('$viml_value')");
     return $value;
 }
 
@@ -49,7 +47,7 @@ sub FETCH {
     my $target = $this->_make_target($key);
 
     ### $target
-    return $this->_eval("$target")
+    return vim_eval("$target")
         unless $this->{turtles};
 
     my $type = vim_typeof($target);
@@ -72,8 +70,8 @@ sub FETCH {
 sub EXISTS {
     my ($this, $key) = @_;
     my $thing = $this->{thing};
-    my $target = $this->_escape($this->_make_target($key));
-    return !!$this->_eval_raw("exists('$target')");
+    my $target = vim_escape($this->_make_target($key));
+    return !!vim_eval_raw("exists('$target')");
 }
 
 sub DELETE {

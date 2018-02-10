@@ -15,7 +15,7 @@ with 'VIMx::Role::Tie';
 sub TIEARRAY {
     my ($class, $list) = @_;
     # ensure we exist
-    VIM::DoCommand(q{if !exists('} . vim_escape($list) . "') | let $list = [] | endif");
+    vim_do(q{if !exists('} . vim_escape($list) . "') | let $list = [] | endif");
     return bless { thing => $list }, $class;
 }
 
@@ -24,12 +24,12 @@ sub POP     { shift->_poppy(-1) }
 sub PUSH    { shift->_pushie('add',            @_) }
 sub UNSHIFT { shift->_pushie('insert', reverse @_) }
 
-sub CLEAR { $_[0]->_or_throw("unlet $_[0]->{thing}".'[:]'); return }
+sub CLEAR { vim_do("unlet $_[0]->{thing}".'[:]'); return }
 
 sub FETCHSIZE {
     ### in FETCHSIZE()...
     my ($this) = @_;
-    return $this->_eval_or_confess("len($this->{thing})");
+    return vim_eval_raw("len($this->{thing})");
 }
 
 
@@ -42,11 +42,11 @@ sub STORESIZE {
     my $size = $this->FETCHSIZE;
 
     if ($new_size < $size) {
-        $this->_eval_or_confess("let $list = $list".'[:'.($new_size-1).']');
+        vim_do("let $list = $list".'[:'.($new_size-1).']');
     }
     elsif ($new_size > $size) {
         my $xtn = ',v:null' x ($new_size - $size - 1);
-        $this->_eval_or_confess("let $list += [v:null$xtn]");
+        vim_do("let $list += [v:null$xtn]");
     }
 
     return;
@@ -71,7 +71,7 @@ sub _pushie {
         else {
             push @viml_values,
                 q{json_decode('}
-                . $this->_escape(encode_json($value))
+                . vim_escape(encode_json($value))
                 . q{')}
                 ;
         }
@@ -84,7 +84,7 @@ sub _pushie {
         ;
 
     ### $cmd
-    $this->_or_throw($cmd);
+    vim_do($cmd);
     return $this->FETCHSIZE;
 }
 
@@ -97,7 +97,7 @@ sub _poppy {
     my $doomed = $this->FETCH($index);
 
     ### popped: $doomed
-    $this->_or_throw("unlet $this->{thing}"."[$index]");
+    vim_do("unlet $this->{thing}"."[$index]");
 
     return $doomed;
 }

@@ -11,9 +11,6 @@ use VIMx::Util;
 use base 'Tie::Hash';
 with 'VIMx::Role::Tie';
 
-# # debugging...
-# use Smart::Comments '###';
-
 # NOTE right now we only handle simple cases, where the value of the slot to
 # be set/read is a plain scalar, a string or number.  We should probably
 # refactor this to do the whole json {en,de}coding bit we're doing to handle
@@ -40,8 +37,7 @@ sub _keys_hash {
     my ($this) = @_;
     my $dict = $this->{thing};
 
-    my ($success, $v) = VIM::Eval("json_encode(keys($dict))");
-    my @keys          = sort @{ decode_json($v) };
+    my @keys = sort @{ vim_eval("keys($dict)") };
 
     ### @keys
     my $first = shift @keys;
@@ -62,11 +58,7 @@ sub FIRSTKEY {
     my ($this) = @_;
     my $dict = $this->{thing};
 
-    my ($success, $v) = VIM::Eval("len(keys($dict))");
-    return unless $v;
-
-    ($success, $v) = VIM::Eval("keys($dict)[0]");
-    return $v;
+    return vim_eval_raw("keys($dict)[0]");
 }
 
 sub NEXTKEY {
@@ -78,8 +70,7 @@ sub NEXTKEY {
 sub SCALAR {
     my ($this) = @_;
 
-    my ($success, $v) = VIM::Eval("len(keys($this->{thing}))");
-    return $v // 0;
+    return vim_eval_raw("len(keys($this->{thing}))") // 0;
 }
 
 !!42;
