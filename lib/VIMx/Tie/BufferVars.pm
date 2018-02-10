@@ -28,7 +28,7 @@ sub EXISTS {
     ### EXISTS(): $key
     my %bufvars =
         map { $_ => 1 }
-        @{ vim_eval("keys(getbufvar($this->{bufnr}, '$this->{prefix}'))") }
+        @{ vim_eval("keys($this->{get}($this->{bufnr}, '$this->{prefix}'))") }
         ;
 
     ### %bufvars
@@ -44,15 +44,15 @@ sub FETCH {
     return undef
         unless $this->EXISTS($key);
 
-    ### fetched: vim_eval("getbufvar($this->{bufnr}, '$key')")
-    return vim_eval("getbufvar($this->{bufnr}, '$this->{prefix}$key')")
+    ### fetched: vim_eval("$this->{get}($this->{bufnr}, '$key')")
+    return vim_eval("$this->{get}($this->{bufnr}, '$this->{prefix}$key')")
 }
 
 sub STORE {
     my ($this, $key, $value) = @_;
     ### STORE(): "$key => $value"
 
-    vim_eval("setbufvar($this->{bufnr}, '$this->{prefix}$key', '$value')");
+    vim_eval("$this->{set}($this->{bufnr}, '$this->{prefix}$key', '$value')");
     return $value;
 }
 
@@ -74,7 +74,7 @@ sub NEXTKEY {
     return pop @{ $this->{keys} };
 }
 
-sub _buf_vars { @{ vim_eval("keys(getbufvar($_[0]->{bufnr}, '$_[0]->{prefix}'))") } }
+sub _buf_vars { @{ vim_eval("keys($_[0]->{get}($_[0]->{bufnr}, '$_[0]->{prefix}'))") } }
 
 !!42;
 __END__
