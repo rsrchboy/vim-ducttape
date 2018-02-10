@@ -99,16 +99,16 @@ sub UNSHIFT { shift->buffer->Append(0, @_); return }
 # for current buffer, just swap this out
 sub buffer { VIM::Buffers(shift->{buffer}) }
 
-sub vars    { shift->_reader('vars',    q{}, @_) }
-sub options { shift->_reader('options', '&', @_) }
+sub vars    { shift->_reader('vars',    { prefix => q{} }, @_) }
+sub options { shift->_reader('options', { prefix => '&' }, @_) }
 
 sub _reader {
-    my ($this, $key, $prefix) = @_;
+    my ($this, $key, $tie_opts) = @_;
 
     return $this->{$key}
         if exists $this->{$key};
 
-    tie my %thing, 'VIMx::Tie::BufferVars', $this->buffer->Number, $prefix;
+    tie my %thing, 'VIMx::Tie::BufferVars', $this->buffer->Number, %$tie_opts;
     return $this->{$key} = \%thing;
 }
 

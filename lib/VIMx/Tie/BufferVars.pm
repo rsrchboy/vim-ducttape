@@ -9,10 +9,18 @@ use VIMx::Util;
 use base 'Tie::Hash';
 
 sub TIEHASH {
-    my ($class, $bufnr, $prefix) = @_;
-    $prefix //= q{};
-    ### TIEHASH(): $bufnr
-    return bless { bufnr => $bufnr, prefix => $prefix }, $class;
+    my ($class, $bufnr, @tie_opts) = @_;
+
+    my $thing = {
+        prefix => q{},
+        set    => 'setbufvar',
+        get    => 'getbufvar',
+        @tie_opts,
+        bufnr  => $bufnr,
+    };
+
+    ### TIEHASH(): $thing
+    return bless $thing, $class;
 }
 
 sub EXISTS {
