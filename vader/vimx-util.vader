@@ -36,6 +36,14 @@ Execute (vim_typeof - list):
   perl $b{oop} = vim_typeof("[1, 2, 3]")
   AssertEqual b:oop, 'list'
 
+Execute (vim_has):
+  perl $b{eep} = vim_has('autocmd')
+  AssertEqual b:eep, 1
+
+Execute (vim_has - not):
+  perl $b{eep} = vim_has('ponies')
+  AssertEqual b:eep, 0
+
 " Execute (vim_escape):
 "   " perl let $b{eep} = \( "'"vim_escape("one two 'three 'four'' five") )
 "   perl VIM::DoCommand(q{let b:eep = '} . vim_escape("one two 'three 'four'' five") . q{'})

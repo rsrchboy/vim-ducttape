@@ -15,6 +15,7 @@ our @EXPORT = qw{
     vim_eval_raw
     vim_escape
     vim_do
+    vim_has
     vim_typeof
 };
 
@@ -66,5 +67,7 @@ sub vim_typeof {
     ### $type
     return $types->{$type};
 }
+
+sub vim_has { 0 + vim_eval_raw("has('$_[0]')") }
 
 !!42;
