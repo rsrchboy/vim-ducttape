@@ -13,6 +13,7 @@ use overload
 use Role::Tiny::With;
 use JSON::Tiny qw{ encode_json decode_json };
 use VIMx::Tie::BufferVars;
+use VIMx::Util;
 
 use base 'Tie::Array';
 
@@ -98,6 +99,8 @@ sub UNSHIFT { shift->buffer->Append(0, @_); return }
 
 # for current buffer, just swap this out
 sub buffer { VIM::Buffers(shift->{buffer}) }
+
+sub info { vim_eval("getbufinfo('$_[0]->{buffer}')") }
 
 sub vars    { shift->_reader('vars',    { prefix => q{} }, @_) }
 sub options { shift->_reader('options', { prefix => '&' }, @_) }

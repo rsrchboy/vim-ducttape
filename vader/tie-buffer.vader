@@ -40,6 +40,11 @@ Execute (vars - set):
   perl $BUFFER->vars->{oop} = $b{eep}
   AssertEqual b:oop, b:eep
 
+Execute (info):
+  perl $b{eep} = $BUFFER->info;
+  Log b:eep
+  " AssertEqual b:oop, b:eep
+
 Given (one pony):
   Rainbow Dash
 
