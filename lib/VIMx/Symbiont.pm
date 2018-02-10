@@ -41,8 +41,8 @@ our @EXPORT = qw/
     $BUFFER
 /;
 
-tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return';
-tie our %vimx_viml,   'VIMx::Tie::Dict', 'g:vimx_symbiont_viml';
+tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return', turtles => 1;
+tie our %vimx_viml,   'VIMx::Tie::Dict', 'g:vimx_symbiont_viml', turtles => 1;
 
 sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
 
