@@ -22,7 +22,7 @@ sub STORE {
     if (ref $value eq 'SCALAR') {
         # we've been passed a reference to a scalar
         # much like DBIC, this means "execute this literally"
-        VIM::DoCommand("let $target = $$value");
+        vim_do("let $target = $$value");
         return $this->FETCH($key);
     }
 
@@ -38,6 +38,8 @@ sub FETCH {
     my ($this, $key) = @_;
     my $thing = $this->{thing};
 
+    ### FETCH(): "$thing, $key"
+
     # conform to expected behaviour: vim will complain if a slot that does not
     # exist is accessed, while Perl will simply return undef.  Here we
     # short-circuit to return undef.
@@ -45,16 +47,33 @@ sub FETCH {
         unless $this->EXISTS($key);
 
     my $target = $this->_make_target($key);
-    my ($success, $v) = VIM::Eval("json_encode($target)");
-    return decode_json($v);
+
+    ### $target
+    return $this->_eval("$target")
+        unless $this->{turtles};
+
+    my $type = vim_typeof($target);
+
+    ### $type
+    if ($type eq 'dict') {
+        tie my %dict, 'VIMx::Tie::Dict', $target, turtles => 1;
+        return \%dict;
+    }
+    elsif ($type eq 'list') {
+        require VIMx::Tie::List;
+        tie my @list, 'VIMx::Tie::List', $target, turtles => 1;
+        return \@list;
+    }
+
+    ### FETCH() doing eval on: $target
+    return vim_eval($target);
 }
 
 sub EXISTS {
     my ($this, $key) = @_;
     my $thing = $this->{thing};
     my $target = $this->_escape($this->_make_target($key));
-    my ($success, $v) = VIM::Eval("exists('$target')");
-    return !!$v;
+    return !!$this->_eval_raw("exists('$target')");
 }
 
 sub DELETE {

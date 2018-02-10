@@ -6,6 +6,7 @@ use warnings;
 use Carp 'croak';
 use JSON::Tiny qw{ encode_json decode_json };
 use Role::Tiny::With;
+use VIMx::Util;
 
 use base 'Tie::Hash';
 with 'VIMx::Role::Tie';
@@ -19,10 +20,10 @@ with 'VIMx::Role::Tie';
 # @_ and a:000.
 
 sub TIEHASH {
-    my ($class, $dict) = @_;
+    my ($class, $dict, @opts) = @_;
     # ensure we exist
-    VIM::DoCommand("if !exists('$dict') | silent! let $dict = {} | endif");
-    return bless { thing => $dict }, $class;
+    vim_do(q{if !exists('} . vim_escape($dict) . "') | silent! let $dict = {} | endif");
+    return bless { thing => $dict, @opts }, $class;
 }
 
 sub _make_target {

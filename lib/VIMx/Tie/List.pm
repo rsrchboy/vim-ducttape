@@ -6,6 +6,7 @@ use strict;
 
 use Role::Tiny::With;
 use JSON::Tiny qw{ encode_json decode_json };
+use VIMx::Util;
 
 use base 'Tie::Array';
 
@@ -14,7 +15,7 @@ with 'VIMx::Role::Tie';
 sub TIEARRAY {
     my ($class, $list) = @_;
     # ensure we exist
-    VIM::DoCommand("if !exists('$list') | let $list = [] | endif");
+    VIM::DoCommand(q{if !exists('} . vim_escape($list) . "') | let $list = [] | endif");
     return bless { thing => $list }, $class;
 }
 
