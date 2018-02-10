@@ -29,7 +29,7 @@ before_script: |
     make -j4
     sudo make install
     cd ..
-  else if [ "x$VIM_PPA" != "x" ] ;
+  elif [ "x$VIM_PPA" != "x" ] ; then
     apt-add-repository --yes $VIM_PPA
     apt-get -q update
     apt-get install vim-nox libio-socket-ssl-perl libperl-dev
