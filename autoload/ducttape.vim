@@ -4,6 +4,8 @@
 " belong in that namespace -- or perhaps just that we're determined so it may
 " as well get out of the way.
 
-execute ducttape#symbiont#autoload(expand('<sfile>'))
+for s:eval in ducttape#symbiont#autoload(expand('<sfile>'))
+    execute s:eval
+endfor
 
 " __END__

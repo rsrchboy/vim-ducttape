@@ -99,8 +99,8 @@ sub function {
         args          => '...',       # arguments for the generated viml function
         opts          => 'abort',     # viml function opts
         perl_prefix   => 'func_',     # prefix to the perl sub name
-        viml_prelude  => q{},         # viml to insert before the func...
-        viml_postlude => q{},         # ...and after
+        viml_prelude  => [],         # viml to insert before the func...
+        viml_postlude => [],         # ...and after
         @_,
     );
     my $pkg         = $opts{pkg}; # FIXME hack
@@ -113,12 +113,10 @@ sub function {
     my $return_var = "g:vimx_symbiont_return['$perl_name']";
 
     my $viml = <<"END";
-$opts{viml_prelude}
 function! $opts{fn_ns}$name($opts{args}) $opts{opts}
     perl ${perl_name}()
     return $return_var
 endfunction
-$opts{viml_postlude}
 END
 
     my $wrapped = sub {
@@ -137,17 +135,19 @@ END
         return;
     };
 
-# if !has_key(s:, 'prototype') | let s:prototype = {} | endif
-    $vimx_viml{$pkg} //= <<"END";
-let g:$opts{vim_ns}#loaded = 1
-let s:prototype = {}
-fun! $opts{vim_ns}#load() abort
-endfun
-END
+    $vimx_viml{$pkg} //= [
+        "let g:$opts{vim_ns}#loaded = 1",
+        'let s:prototype = {}',
+        "fun! $opts{vim_ns}#load() abort\nendfun",
+    ];
 
     # say 'function: ' . $vimx_viml{$pkg};
     # optimize later -- some cruft built up here
-    $vimx_viml{$pkg} .= $viml;
+    push @{ $vimx_viml{$pkg} },
+        @{ $opts{viml_prelude} },
+        $viml,
+        @{ $opts{viml_postlude} },
+        ;
 
     {
         no strict 'refs';

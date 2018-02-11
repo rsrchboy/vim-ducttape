@@ -9,6 +9,9 @@ if !ducttape#require('Git::Raw')
 endif
 
 call ducttape#git#load() " ensure it's loaded
-execute ducttape#symbiont#autoload(expand('<sfile>'))
+
+for s:eval in ducttape#symbiont#autoload(expand('<sfile>'))
+    execute s:eval
+endfor
 
 " __END__
