@@ -54,9 +54,11 @@ sub vim_eval_raw { _eval_or_confess(@_) }
 sub vim_typeof {
     my ($viml) = @_;
 
-    # we can't -- shouldn't -- depend on %VIMx::x being available
+    # we can't -- shouldn't -- depend on %VIMx::v being available
+    my $i = 0;
     state $types = {
-        map { vim_eval_raw("v:t_$_") => $_ }
+        # v:t_* aren't available until v7.4.2071, _le sigh_
+        map { $i++ => $_ }
         qw{ number string func list dict float bool none job channel }
     };
 
