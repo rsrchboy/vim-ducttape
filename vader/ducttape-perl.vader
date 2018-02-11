@@ -1,6 +1,15 @@
 Execute (setup):
+  perl use VIMx; use strict; use warnings
   call ducttape#perl#load()
   Assert exists('g:ducttape#perl#loaded'), 'loaded global set'
 
+Before:
+  unlet! b:eep
+
 Execute (version() exists):
   Assert exists('*ducttape#perl#version')
+
+Execute (config):
+  let b:eep = ducttape#perl#config('archlib')
+  Log b:eep
+  Assert b:eep =~# '/perl5/\d\.\d\d/core_perl$', '...#config("archlib") looks correct'
