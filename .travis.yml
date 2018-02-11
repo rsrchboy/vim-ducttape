@@ -39,6 +39,8 @@ before_script: |
     echo "Using stock vim!"
   fi
 
+  perl -V
+
   vim --version
 
 script: |
