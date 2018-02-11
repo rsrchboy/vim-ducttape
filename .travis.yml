@@ -9,22 +9,18 @@ addons:
 
 env:
   - VIM_VER=""          VIM_PPA="ppa:pi-rho/dev"
-  - VIM_VER="v8.0.0654" VIM_PPA=""
-    # xenial's current level next
-  - VIM_VER="v7.4.1689" VIM_PPA=""
+  - VIM_VER="v7.4.1304" VIM_PPA=""
     # stock trusty next
   - VIM_VER=""          VIM_PPA=""
 
 matrix:
   allow_failures:
     - env: VIM_VER=""          VIM_PPA=""
-    - env: VIM_VER="v7.4.1689" VIM_PPA=""
 
 before_script: |
   git clone --depth=1 https://github.com/junegunn/vader.vim.git
 
   if [ "x$VIM_VER" != "x" ]; then
-    # right now, we need at least v8.0.0654
     git clone --depth=1 https://github.com/vim/vim.git --branch $VIM_VER
     cd vim
     ./configure --enable-perlinterp=yes
