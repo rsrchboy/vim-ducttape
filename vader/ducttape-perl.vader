@@ -10,6 +10,6 @@ Execute (version() exists):
   Assert exists('*ducttape#perl#version')
 
 Execute (config):
-  let b:eep = ducttape#perl#config('archlib')
+  let b:eep = ducttape#perl#config('api_revision')
   Log b:eep
-  Assert b:eep =~# '/perl5/\d\.\d\d/core_perl$', '...#config("archlib") looks correct'
+  AssertEqual b:eep, '5', '...#config("api_revision") looks correct'
