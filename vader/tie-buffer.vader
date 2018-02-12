@@ -27,9 +27,10 @@ Execute (vars - set):
   AssertEqual b:oop, b:eep
 
 Execute (info):
+  if !has('patch-7.4.2204') | finish | endif
   perl $b{eep} = $BUFFER->info;
   Log b:eep
-  " AssertEqual b:oop, b:eep
+  " TODO a test, bitte
 
 Given (one pony):
   Rainbow Dash
