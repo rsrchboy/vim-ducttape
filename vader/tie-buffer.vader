@@ -12,10 +12,6 @@ Execute (bufname() agrees -- "" overloading):
   perl $b{eep} = "$BUFFER"
   AssertEqual b:eep, bufname('')
 
-Execute (string overload):
-  perl $b{eep} = "$VIMx::BUFFER"
-  AssertEqual b:eep, bufname('')
-
 Execute (numeric overload):
   perl $b{eep} = 0+$VIMx::BUFFER
   AssertEqual b:eep, bufnr('')
