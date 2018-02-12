@@ -99,17 +99,21 @@ function fixup => sub {
 
     my $repo = bufrepo;
 
+    ### $id_to_fixup
+    ($id_to_fixup) = $repo->revparse($id_to_fixup // 'HEAD');
+
     ### get our index and its corresponding tree...
     my $index = $repo->index;
     $index->read(1);
     my $tree_id = $index->write_tree($repo);
     my $tree = $repo->lookup($tree_id);
 
-    ### get head for the fixup message...
     my $head = $repo->head;
     my $head_commit = $head->peel('commit');
-    ### head: $head_commit->id
-    my $summary = $head_commit->summary;
+
+    ### get commit for the fixup message: $id_to_fixup
+    my $target = $repo->lookup($id_to_fixup);
+    my $summary = $target->summary;
 
     ### commit the fixup...
     my $who = Git::Raw::Signature->default($repo);
