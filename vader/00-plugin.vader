@@ -17,6 +17,7 @@ Execute (linked Perl version):
   unlet! b:eep
   perl $b{eep} = $]
   Log b:eep
+  Assert b:eep >= 5.010
 
 Execute (vim info):
   Log v:progpath
