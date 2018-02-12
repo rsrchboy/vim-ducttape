@@ -77,10 +77,12 @@ Given ponyville (one pony):
   Rainbow Dash
 
 Execute (options - get):
+  if !has('patch-7.4.2273') | call vader#log('SKIPPING: We need at least v7.4.2273 for buffer option getting/setting to work') | finish | endif
   perl $b{oop} = $BUFFERS{0+$BUFFER}->options->{filetype}
   AssertEqual b:oop, 'ponyville'
 
 Execute (options - set):
+  if !has('patch-7.4.2273') | call vader#log('SKIPPING: We need at least v7.4.2273 for buffer option getting/setting to work') | finish | endif
   perl $b{oop} = $BUFFERS{0+$BUFFER}->options->{filetype} = 'manehattan'
   AssertEqual b:oop, 'manehattan', 'tied Perl return correct'
   AssertEqual &filetype, 'manehattan', '...and matches &filetype'
