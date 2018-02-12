@@ -7,6 +7,11 @@ addons:
       - libio-socket-ssl-perl
       - libperl-dev
 
+# NB: We build against several versions of vim.  One we know is the minimum
+# where everything works, two where we'd like them to work (because of what
+# stock Ubuntu/16.04 is at), and a couple PPA's containing newer vim that
+# serve as a sanity check on a vim built for real-world use.
+
 env:
   global:
     - BUILD_GIT_RAW="build/ditch-embedded-libgit2"
