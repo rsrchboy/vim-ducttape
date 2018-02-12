@@ -94,8 +94,11 @@ function index_add => sub { my $i = bufrepo->index; $i->add($BUFFER->Name); $i->
 function revlist       => sub { [ map { $_->id } bufrepo->walker->push_range(bufrepo->revparse(@_))->all ] };
 function revlist_count => sub { scalar bufrepo->walker->push_range(bufrepo->revparse(@_))->all             };
 
-function fixup => sub {
-    my ($id_to_fixup) = @_;
+function fixup  => sub { _special_commit(fixup  => @_) };
+function squash => sub { _special_commit(squash => @_) };
+
+sub _special_commit {
+    my ($cmd, $id_to_fixup) = @_;
 
     my $repo = bufrepo;
 
@@ -118,7 +121,7 @@ function fixup => sub {
     ### commit the fixup...
     my $who = Git::Raw::Signature->default($repo);
     my $fixup = Git::Raw::Commit->create($repo,
-        "fixup! $summary",
+        "$cmd! $summary",
         $who,
         $who,
         [$head_commit],
