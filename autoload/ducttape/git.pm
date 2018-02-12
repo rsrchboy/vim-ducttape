@@ -97,6 +97,8 @@ function revlist_count => sub { scalar bufrepo->walker->push_range(bufrepo->revp
 function fixup  => sub { _special_commit(fixup  => @_) };
 function squash => sub { _special_commit(squash => @_) };
 
+function args => 'command, ...', special_commit => sub { _special_commit($a{command}, @_) };
+
 sub _special_commit {
     my ($cmd, $id_to_fixup) = @_;
 
