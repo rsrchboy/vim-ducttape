@@ -31,6 +31,7 @@ Execute (round_trip):
   Assert exists('*t#one#round_trip'), 't#one#round_trip() exists'
   let g:tdata = 'eep'
   AssertEqual g:tdata, t#one#round_trip(g:tdata), 'correct return (1)'
+  unlet g:tdata
   let g:tdata = [1, 2, 3]
   AssertEqual g:tdata, t#one#round_trip(g:tdata), 'correct return(2)'
   AssertEqual [ g:tdata, 'a' ], t#one#round_trip(g:tdata, 'a'), 'correct return (3)'
