@@ -206,7 +206,7 @@ and `json_decode()` to make bits like `VIMx::Tie::Dict` and
 
 # Requirements
 
-In short, [vim v7.4.1304](https://github.com/vim/vim/tree/v7.4.1304) compiled with (`+perl`) Perl v5.10+ support.
+In short, [vim v7.4.2273](https://github.com/vim/vim/tree/v7.4.2273) compiled with (`+perl`) Perl v5.10+ support.
 
 ## Vim Requirements
 
@@ -229,6 +229,8 @@ Honorable mentions go to:
 * [v8.0.0654](https://github.com/vim/vim/tree/v8.0.0654), changes to how
     `:endfunction` is handled.  This would allow us to consolidate certain
     `:execute` calls, but is too new for most vim installations.
+* v7.4.2273 provides for buffer-local option reading/setting.
+* [v7.4.2204](https://github.com/vim/vim/tree/v7.4.2204) introduces `get{buf,tab,win}info()`.
 * [v7.4.1729](https://github.com/vim/vim/tree/v7.4.1729) allows a
     `print()`/etc from Perl to actually work.  We work around this for older
     vim.

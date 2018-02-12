@@ -13,7 +13,7 @@ env:
   matrix:
     - VIM_VER=""          VIM_PPA="ppa:pi-rho/dev"
     - VIM_VER=""          VIM_PPA="ppa:jonathonf/vim"
-    - VIM_VER="v7.4.2204" VIM_PPA=""
+    - VIM_VER="v7.4.2273" VIM_PPA=""
 
 matrix:
   allow_failures:
