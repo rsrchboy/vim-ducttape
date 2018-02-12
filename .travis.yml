@@ -6,6 +6,17 @@ addons:
       - vim-nox
       - libio-socket-ssl-perl
       - libperl-dev
+      # for p5-Git-Raw
+      - libcapture-tiny-perl
+      - libdevel-checklib-perl
+      - libextutils-pkgconfig-perl
+      - libfile-chdir-perl
+      - libfile-slurp-tiny-perl
+      - libgit-repository-perl
+      - libpath-tiny-perl
+      - libtest-pod-coverage-perl
+      - libtest-pod-perl
+      - libtest-simple-perl
 
 # NB: We build against several versions of vim.  One we know is the minimum
 # where everything works, two where we'd like them to work (because of what
