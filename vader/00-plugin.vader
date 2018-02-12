@@ -13,6 +13,12 @@ Execute (@INC):
 Execute ($PERL5LIB):
   Log $PERL5LIB
 
+Execute ($PERL5OPT):
+  Log $PERL5OPT
+
+Execute ($PERLIO):
+  Log $PERLIO
+
 Execute (linked Perl version):
   unlet! b:eep
   perl $b{eep} = $]
