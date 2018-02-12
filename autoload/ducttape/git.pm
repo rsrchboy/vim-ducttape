@@ -90,9 +90,8 @@ function args => q{}, has_modified  => sub { scalar keys %{ bufrepo->status({ sh
 function args => q{}, has_stash     => sub { ... };
 function args => q{}, has_untracked => sub { ... };
 
-function id_for           => sub { bufrepo->revparse(shift)     };
-
-fun revparse => sub { [ bufrepo->revparse(@_) ] };
+function id_for   => sub { bufrepo->revparse(shift)  };
+function revparse => sub { [ bufrepo->revparse(@_) ] };
 
 function index_add => sub { my $i = bufrepo->index; $i->add($BUFFER->Name); $i->write };
 
