@@ -83,7 +83,13 @@ function workdir          => sub { bufrepo->workdir(@_)         };
 function ignore           => sub { bufrepo->ignore(@_)          };
 function path_is_ignored  => sub { bufrepo->path_is_ignored(@_) };
 function merge_base       => sub { bufrepo->merge_base(@_)      };
-function status           => sub { bufrepo->status              };
+
+function args => q{}, state         => sub { my $st = bufrepo->state; return ($st eq 'none' ? q{} : $st) };
+function args => q{}, has_staged    => sub { scalar keys %{ bufrepo->status({ show => 'index' }) } };
+function args => q{}, has_modified  => sub { scalar keys %{ bufrepo->status({ show => 'worktree' }) } };
+function args => q{}, has_stash     => sub { ... };
+function args => q{}, has_untracked => sub { ... };
+
 function id_for           => sub { bufrepo->revparse(shift)     };
 
 fun revparse => sub { [ bufrepo->revparse(@_) ] };
