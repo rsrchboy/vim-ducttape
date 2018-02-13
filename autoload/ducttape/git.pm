@@ -6,7 +6,8 @@ use warnings;
 
 use VIMx::Symbiont;
 
-use Carp 'croak';
+use Carp qw{ croak confess };
+use Data::Section::Simple 'get_data_section';
 use Git::Raw;
 use Git::Raw::Blob;
 use Git::Raw::Commit;
@@ -16,6 +17,7 @@ use Git::Raw::Repository;
 use Git::Raw::Reference;
 use Git::Raw::Signature;
 use Path::Tiny;
+use Template::Tiny;
 
 # poor man's aliased
 use constant TreeBuilder => 'Git::Raw::Tree::Builder';
@@ -59,8 +61,9 @@ sub bufrepo {
     }
 
     ### $discover_path
+    # no warnings 'precedence';
     return Git::Raw::Repository->discover($discover_path)
-        or croak "Cannot find a git repo for buffer $name at path $discover_path";
+        || confess "Cannot find a git repo for buffer $name at path $discover_path";
 }
 
 function config_str => sub { Git::Raw::Config->default->str(shift) };
@@ -76,7 +79,6 @@ function is_head_detached => sub { bufrepo->is_head_detached    };
 function is_worktree      => sub { bufrepo->is_worktree         };
 function is_annex         => sub { defined bufrepo->config->int('annex.version') };
 function branches         => sub { bufrepo->branches(@_)        };
-function state            => sub { bufrepo->state               };
 function path             => sub { bufrepo->path                };
 function commondir        => sub { bufrepo->commondir           };
 function workdir          => sub { bufrepo->workdir(@_)         };
@@ -297,5 +299,57 @@ sub cbuf_to_blob {
     return $blob;
 }
 
+function status => sub { bufrepo->status({ flags => { include_untracked => 1 } }) };
+
+function status_msg => sub {
+    my $repo = bufrepo;
+
+    my $status = $repo->status({ flags => { include_untracked => 1 } });
+
+    $status->{$_}->{flags} = +{ map { $_ => 1 } @{ $status->{$_}->{flags} } }
+        for keys %$status;
+
+    my $lists = {
+        untracked => [ grep { $status->{$_}->{flags}->{worktree_new}      } sort keys %$status ],
+        modified  => [ grep { $status->{$_}->{flags}->{worktree_modified} } sort keys %$status ],
+        staged    => [ grep { $status->{$_}->{flags}->{index_modified}    } sort keys %$status ],
+    };
+
+    my $tmpl = get_data_section('status.tt2');
+    my $msg = q{};
+    my $tt = Template::Tiny->new(
+        # TRIM => 1
+    )->process(\$tmpl, $lists, \$msg);
+
+    return $msg;
+};
+
 !!42;
-__END__
+__DATA__
+@@ status.tt2
+# On branch [% branch %]
+# Your branch is ahead of 'origin/master' by 8 commits.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+[% FOREACH file IN staged -%]
+#	modified:   [% file %]
+[% END -%]
+#
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+[% FOREACH file IN modified -%]
+#	modified:   [% file %]
+[% END -%]
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+[% FOREACH file IN untracked -%]
+#       [% file %]
+[% END -%]
+#
