@@ -18,6 +18,7 @@ our @EXPORT = qw/
     %self
     $BUFFER
     %BUFFERS
+    %OPTIONS
 /;
 
 our @EXPORT_OK = qw/
@@ -27,7 +28,7 @@ our @EXPORT_OK = qw/
 
 our %EXPORT_TAGS = (
     variables => [ qw{ %a %b %g %l %s %t %v %w } ],
-    buffers   => [ qw{ $cbuf } ],
+    buffers   => [ qw{ $BUFFER %BUFFERS } ],
     options   => [ qw{ %GOPTIONS %LOPTIONS %OPTIONS } ],
 );
 

@@ -39,6 +39,8 @@ our @EXPORT = qw/
     %a %b %g %l %s %t %v %w
     %self
     $BUFFER
+    %BUFFERS
+    %OPTIONS
 /;
 
 tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return', turtles => 1;
