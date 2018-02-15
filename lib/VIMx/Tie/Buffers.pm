@@ -20,18 +20,17 @@ sub STORE  { ... }
 sub DELETE { ... }
 sub CLEAR  { ... }
 
-sub FIRSTKEY { [ VIM::Buffers() ]->[0]->Name }
+sub FIRSTKEY {
+    my ($this) = @_;
+    ### FIRSTKEY()...
+    $this->{keys} = [ sort map { $_->Name } VIM::Buffers() ];
+    return pop @{ $this->{keys} };
+}
 
-sub NEXTKEY  {
-    my ($this, $prevkey) = @_;
-    my @bufs = VIM::Buffers();
-    for my $i (0..$#bufs-1) {
-        return $bufs[$i+1]->Name
-            if $bufs[$i]->Name eq $prevkey;
-    }
-
-    # no more keys!
-    return;
+sub NEXTKEY {
+    my ($this, $lastkey) = @_;
+    ### NEXTKEY(): $lastkey
+    return pop @{ $this->{keys} };
 }
 
 sub EXISTS {
