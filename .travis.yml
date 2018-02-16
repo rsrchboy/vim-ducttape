@@ -8,6 +8,7 @@ addons:
       - libperl-dev
       # for p5-Git-Raw
       - libgit2-dev
+      - libssh2-1-dev
       - libcapture-tiny-perl
       - libdevel-checklib-perl
       - libextutils-pkgconfig-perl
