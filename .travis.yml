@@ -44,6 +44,8 @@ before_script: |
   if [ "x$BUILD_GIT_RAW" != "x" ]; then
     git clone --depth=1 --branch=$BUILD_GIT_RAW https://github.com/rsrchboy/p5-Git-Raw.git
     cpanm -q --sudo ./p5-Git-Raw || cat $HOME/.cpanm/build.log
+  else
+    cpanm -q --sudo Git::Raw
   fi
 
   if [ "x$VIM_VER" != "x" ]; then
