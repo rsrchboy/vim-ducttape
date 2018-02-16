@@ -33,38 +33,21 @@ sub _make_target {
     return "$dict"."['$key']";
 }
 
-sub _keys_hash {
-    my ($this) = @_;
-    my $dict = $this->{thing};
-
-    my @keys = sort @{ vim_eval("keys($dict)") };
-
-    ### @keys
-    my $first = shift @keys;
-    my $last  = pop @keys;
-
-    my %keys = (
-        $first,
-        ( map { $_ => $_ } @keys ),
-        ( defined $last ? ( $last, $last ) : () ),
-        undef,
-    );
-
-    ### %keys
-    return \%keys;
-}
-
 sub FIRSTKEY {
     my ($this) = @_;
-    my $dict = $this->{thing};
 
-    return vim_eval_raw("keys($dict)[0]");
+    ### FIRSTKEY()...
+    $this->{keys} = [ sort @{ vim_eval("keys($this->{thing})") } ];
+
+    ### keys: $this->{keys}
+    return pop @{ $this->{keys} };
 }
 
 sub NEXTKEY {
-    my ($this, $prevkey) = @_;
+    my ($this, $lastkey) = @_;
 
-    return _keys_hash($this)->{$prevkey};
+    ### NEXTKEY(): $lastkey
+    return pop @{ $this->{keys} };
 }
 
 sub SCALAR {
