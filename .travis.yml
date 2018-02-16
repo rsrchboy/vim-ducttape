@@ -32,11 +32,13 @@ env:
     - VIM_VER="v7.4.2273" VIM_PPA=""
     - VIM_VER="v7.4.2204" VIM_PPA=""
     - VIM_VER="v7.4.1304" VIM_PPA=""
+    - VIM_VER=""          VIM_PPA="ppa:pi-rho/dev" BUILD_GIT_RAW=""
 
 matrix:
   allow_failures:
     - env: VIM_VER="v7.4.2204" VIM_PPA=""
     - env: VIM_VER="v7.4.1304" VIM_PPA=""
+    - env: VIM_VER=""          VIM_PPA="ppa:pi-rho/dev" BUILD_GIT_RAW=""
 
 before_script: |
   git clone --depth=1 https://github.com/junegunn/vader.vim.git
