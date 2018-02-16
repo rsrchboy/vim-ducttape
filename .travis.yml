@@ -7,6 +7,7 @@ addons:
       - libio-socket-ssl-perl
       - libperl-dev
       # for p5-Git-Raw
+      - libgit2-dev
       - libcapture-tiny-perl
       - libdevel-checklib-perl
       - libextutils-pkgconfig-perl
