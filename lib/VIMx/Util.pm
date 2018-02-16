@@ -37,15 +37,21 @@ sub vim_escape { (my $viml = $_[0]) =~ s/'/''/g; return $viml }
 
 sub _eval_or_confess {
     my ($viml) = @_;
+
+    ### _eval_or_confess(): $viml
     my ($success, $v) = VIM::Eval($viml);
+
     confess "something bad happened in the eval"
         unless $success;
+
+    ### $v
     return $v;
 }
 
 sub vim_eval {
     my ($viml) = @_;
 
+    ### vim_eval(): $viml
     return decode_json(_eval_or_confess("json_encode($viml)"));
 }
 
@@ -62,11 +68,10 @@ sub vim_typeof {
         qw{ number string func list dict float bool none job channel }
     };
 
-    ### $types
-    ### typeof(): $viml
+    #### typeof(): $viml
     my $type = vim_eval_raw("type($viml)");
 
-    ### $type
+    #### $type
     return $types->{$type};
 }
 
