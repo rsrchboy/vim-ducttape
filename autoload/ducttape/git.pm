@@ -326,6 +326,51 @@ function status_msg => sub {
     return $msg;
 };
 
+function args => 'hash', get_commit => sub {
+    my $repo = bufrepo;
+
+    my $commit = $repo->lookup($a{hash})
+        || die "Cannot find commit $a{hash}";
+
+    my $spew = 'tree ' . $commit->tree->id . "\n";
+    $spew .= "parent $_\n"
+        for $commit->parents;
+    my $_sig = sub { $_[0]->name . q{ <} . $_[0]->email . q{> } . $_[0]->time };
+    $spew .= 'author '   .$_sig->($commit->author)   ."\n";
+    $spew .= 'committer '.$_sig->($commit->committer)."\n";
+    $spew .= "\n" . $commit->message . "\n";
+    # $spew .= "\n" . $commit->summary . "\n\n"
+    #     . $commit->message . "\n\n"
+    #     ;
+
+    my $diff = $commit->diff;
+
+    # # this is super slow when a single commit is Quite Large.
+    # #
+    # # ...maybe conditionalize it with a g:/b: combo? TODO
+    # my $stats = $diff->stats;
+    # if ($stats->files_changed < 100) {
+    #     $spew .= q{}
+    #     . $diff->stats->buffer({ flags => { full => 1} }) . "\n"
+    #     # . "full stats:\n" . $diff->stats->buffer({ flags => { full => 1} }) . "\n"
+    #     # . "summary stats:\n" . $diff->stats->buffer({ flags => { summary => 1} }) . "\n\n"
+    #     # . $diff->buffer('patch')
+    #     ;
+    # }
+    # else {
+    #     $spew .= q{}
+    #         . '+' . $stats->insertions . '/'
+    #         . '-' . $stats->deletions . q{, }
+    #         . $stats->files_changed . ' files changed'
+    # }
+
+    # this -- and the above stats -- fails for some commits.
+    $spew .= $diff->buffer('patch');
+
+    ### $spew
+    return [ split /\n/, $spew ];
+};
+
 !!42;
 __DATA__
 @@ status.tt2
