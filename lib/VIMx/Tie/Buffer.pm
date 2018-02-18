@@ -17,6 +17,9 @@ use VIMx::Util;
 
 use base 'Tie::Array';
 
+# # debugging...
+# use Smart::Comments '###';
+
 # buffer could be, e.g., '%' to always be the current buffer
 sub TIEARRAY {
     my ($class, $buffer) = @_;
@@ -29,9 +32,41 @@ sub FETCHSIZE {
     return $this->buffer->Count;
 }
 
+sub STORESIZE {
+    my ($this, $count) = @_;
+
+    ### STORESIZE(): $count
+    my $buf = $this->buffer;
+
+    return
+        if $buf->Count == $count;
+
+    if ($count == 0) {
+        $this->{cleared} = 1;
+        $buf->Delete(1, $buf->Count);
+    }
+    elsif ($count < $buf->Count) {
+        $buf->Delete($count+1, $buf->Count);
+    }
+    else {
+        $buf->Append($buf->Count, [ (q{}) x ($count - $buf->Count) ]);
+    }
+
+    return;
+}
+
 sub STORE {
     my ($this, $index, $value) = @_;
+
+    my $buf = $this->buffer;
+
+    # FIXME need to handle Count < $index
+    $buf->Append($buf->Count, [ (q{}) x ($index - $buf->Count) ])
+        if ($buf->Count - 1) < $index;
+
+    ### STORE(): "$index => $value"
     $this->buffer->Set($index+1 => $value);
+    $this->{cleared} = 0;
     return $value;
 }
 
@@ -50,6 +85,9 @@ sub EXISTS {
 sub DELETE {
     my ($this, $index) = @_;
 
+    # TODO FIXME set cleared when deleting and Count is 1
+
+    ### DELETE(): $index
     my $deleted = $this->FETCH($index);
     $this->buffer->Delete($index+1);
     return $deleted;
@@ -58,10 +96,17 @@ sub DELETE {
 sub PUSH {
     my ($this, @values) = @_;
 
+    ### PUSH(): scalar @values
     $this->buffer->Append($this->FETCHSIZE, @values);
+
+    do { $this->buffer->Delete(1); $this->{cleared} = 0 }
+        if $this->{cleared};
+
+    return scalar @values;
 }
 
 sub SPLICE {
+    ### SPLICE(): @_
     my ($this, $offset, $len, @replacements) = @_;
     my $buf = $this->buffer;
 
@@ -79,8 +124,10 @@ sub SPLICE {
 sub CLEAR {
     my ($this) = @_;
 
+    ### CLEAR()...
     my $buf = $this->buffer;
     $buf->Delete(1, $buf->Count);
+    $this->{cleared} = 1;
     return;
 }
 
