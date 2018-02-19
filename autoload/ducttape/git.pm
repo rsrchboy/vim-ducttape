@@ -335,13 +335,20 @@ function args => 'hash', get_commit => sub {
     my $spew = 'tree ' . $commit->tree->id . "\n";
     $spew .= "parent $_\n"
         for $commit->parents;
-    my $_sig = sub { $_[0]->name . q{ <} . $_[0]->email . q{> } . $_[0]->time };
+
+    my $_sig = sub {
+        my ($sig) = @_;
+        my $offset_min = $sig->offset % 60;
+        my $offset_hr = ($sig->offset - $offset_min) / 60;
+        return $sig->name . q{ <} . $sig->email . q{> }
+            . localtime($sig->time) . q{ }
+            . sprintf(($offset_hr < 0 ? '-' : q{} ) . '%02d%02d', abs($offset_hr), $offset_min)
+        ;
+    };
+
     $spew .= 'author '   .$_sig->($commit->author)   ."\n";
     $spew .= 'committer '.$_sig->($commit->committer)."\n";
     $spew .= "\n" . $commit->message . "\n";
-    # $spew .= "\n" . $commit->summary . "\n\n"
-    #     . $commit->message . "\n\n"
-    #     ;
 
     my $diff = $commit->diff;
 
