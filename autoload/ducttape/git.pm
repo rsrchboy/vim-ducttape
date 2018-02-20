@@ -13,6 +13,7 @@ use Git::Raw::Blob;
 use Git::Raw::Commit;
 use Git::Raw::Config;
 use Git::Raw::Graph;
+use Git::Raw::Note;
 use Git::Raw::Repository;
 use Git::Raw::Reference;
 use Git::Raw::Signature;
@@ -20,6 +21,7 @@ use Path::Tiny;
 use Template::Tiny;
 
 # poor man's aliased
+use constant Note => 'Git::Raw::Note';
 use constant TreeBuilder => 'Git::Raw::Tree::Builder';
 
 sub bufrepo {
@@ -370,6 +372,11 @@ function args => 'hash', get_commit => sub {
     #         . '-' . $stats->deletions . q{, }
     #         . $stats->files_changed . ' files changed'
     # }
+
+    # TODO need to find/display other notes, maybe
+    if (my $note = Note->read($repo, $commit)) {
+        $spew .= "Notes (__default__):\n\n" . $note->message . "\n";
+    }
 
     # this -- and the above stats -- fails for some commits.
     $spew .= $diff->buffer('patch');
