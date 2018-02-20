@@ -375,7 +375,8 @@ function args => 'hash', get_commit => sub {
     $spew .= $diff->buffer('patch');
 
     ### $spew
-    return [ split /\n/, $spew ];
+    @$BUFFER = ( split /\n/, $spew );
+    return;
 };
 
 !!42;
