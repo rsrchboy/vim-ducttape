@@ -1,19 +1,27 @@
-Execute (setup):
-  perl use VIMx; use warnings; use strict;
+Execute perl (setup):
+  use VIMx;
+  use warnings;
+  use strict;
 
 Before:
   unlet! b:eep b:oop b:scratch
 
-Execute (bufnr() agrees -- 0+ overloading):
-  perl $b{eep} = 0+$BUFFER
+Execute perl (bufnr() agrees -- 0+ overloading):
+  $b{eep} = 0+$BUFFER
+
+Then:
   AssertEqual b:eep, bufnr('')
 
-Execute (bufname() agrees -- "" overloading):
-  perl $b{eep} = "$BUFFER"
+Execute perl (bufname() agrees -- "" overloading):
+  $b{eep} = "$BUFFER"
+
+Then:
   AssertEqual b:eep, bufname('')
 
-Execute (numeric overload):
-  perl $b{eep} = 0+$VIMx::BUFFER
+Execute perl (numeric overload):
+  $b{eep} = 0+$VIMx::BUFFER
+
+Then:
   AssertEqual b:eep, bufnr('')
 
 Execute (vars - get):
@@ -35,8 +43,10 @@ Execute (info):
 Given (one pony):
   Rainbow Dash
 
-Execute(whole-buffer):
-  perl $b{eep} = [ @$VIMx::BUFFER ]
+Execute perl (whole-buffer):
+  $b{eep} = [ @$VIMx::BUFFER ]
+
+Then (whole-buffer):
   AssertEqual [
     \ 'Rainbow Dash',
     \], b:eep
@@ -49,8 +59,10 @@ Given (mane six):
   Rarity
   Pinkie Pie
 
-Execute(whole-buffer):
-  perl $b{eep} = [ @$VIMx::BUFFER ]
+Execute perl (whole-buffer):
+  $b{eep} = [ @$VIMx::BUFFER ]
+
+Then (whole-buffer):
   AssertEqual [
     \ 'Twilight Sparkle',
     \ 'Rainbow Dash',
@@ -60,8 +72,8 @@ Execute(whole-buffer):
     \ 'Pinkie Pie',
     \], b:eep
 
-Execute(append / push):
-  perl push @$VIMx::BUFFER, 'spike!'
+Execute perl (append / push):
+  push @$VIMx::BUFFER, 'spike!'
 
 Expect (ponies and company):
   Twilight Sparkle
@@ -72,8 +84,8 @@ Expect (ponies and company):
   Pinkie Pie
   spike!
 
-Execute(set / replace):
-  perl $VIMx::BUFFER->[2] = 'spiky!'
+Execute perl (set / replace):
+  $VIMx::BUFFER->[2] = 'spiky!'
 
 Expect (ponies and company):
   Twilight Sparkle
@@ -83,8 +95,10 @@ Expect (ponies and company):
   Rarity
   Pinkie Pie
 
-Execute(pop):
-  perl $VIMx::b{scratch} = pop @$VIMx::BUFFER
+Execute perl (pop):
+  $VIMx::b{scratch} = pop @$VIMx::BUFFER
+
+Then (pop):
   AssertEqual 'Pinkie Pie', b:scratch
 
 Expect (popped):
@@ -94,8 +108,10 @@ Expect (popped):
   Fluttershy
   Rarity
 
-Execute(delete):
-  perl $VIMx::b{scratch} = delete $VIMx::BUFFER->[3]
+Execute perl (delete):
+  $VIMx::b{scratch} = delete $VIMx::BUFFER->[3]
+
+Then (delete):
   AssertEqual 'Fluttershy', b:scratch
 
 Expect (delete):
@@ -105,8 +121,10 @@ Expect (delete):
   Rarity
   Pinkie Pie
 
-Execute(shift):
-  perl $VIMx::b{scratch} = shift @$VIMx::BUFFER
+Execute perl (shift):
+  $VIMx::b{scratch} = shift @$VIMx::BUFFER
+
+Then (shift):
   AssertEqual 'Twilight Sparkle', b:scratch
 
 Expect (shift):
@@ -116,8 +134,8 @@ Expect (shift):
   Rarity
   Pinkie Pie
 
-Execute(unshift):
-  perl unshift @$VIMx::BUFFER, 'Princess Celestia'
+Execute perl (unshift):
+  unshift @$VIMx::BUFFER, 'Princess Celestia'
 
 Expect (unshift):
   Princess Celestia
@@ -128,8 +146,8 @@ Expect (unshift):
   Rarity
   Pinkie Pie
 
-Execute(multiple unshift):
-  perl unshift @$VIMx::BUFFER, 'Princess Celestia', 'Princess Luna'
+Execute perl (multiple unshift):
+  unshift @$VIMx::BUFFER, 'Princess Celestia', 'Princess Luna'
 
 Expect (multiple unshift):
   Princess Celestia
@@ -141,10 +159,9 @@ Expect (multiple unshift):
   Rarity
   Pinkie Pie
 
-Execute(blessed overload):
-  perl $VIMx::b{eep} = $VIMx::BUFFER->Count
-  AssertEqual 6, b:eep
-  perl $VIMx::BUFFER->Append(0, 'Nightmare Moon')
+Execute perl (blessed overload):
+  $VIMx::b{eep} = $VIMx::BUFFER->Count;
+  $VIMx::BUFFER->Append(0, 'Nightmare Moon');
 
 Expect (autoloading blessed tie nightmare):
   Nightmare Moon
@@ -155,23 +172,32 @@ Expect (autoloading blessed tie nightmare):
   Rarity
   Pinkie Pie
 
-Execute (wipe):
-  perl @$BUFFER = ()
+Execute perl (wipe):
+  @$BUFFER = ()
 
 " cannot have 0-length buffer
 Expect:
   
 
-Execute (wipe-and-replace):
-  perl @$BUFFER = ( 'Appledash', 'Rarijack', 'Dashdash' )
+Execute perl (wipe-and-replace):
+  @$BUFFER = ( 'Appledash', 'Rarijack', 'Dashdash' )
 
 Expect:
   Appledash
   Rarijack
   Dashdash
 
-Execute (wipe-and-replace -- large):
-  perl @$BUFFER = ( ('Dashdash') x 500 )
+Execute perl (wipe and push):
+  @$BUFFER = ();
+  push @$BUFFER, ( 'Appledash', 'Rarijack', 'Dashdash' );
+
+Expect:
+  Appledash
+  Rarijack
+  Dashdash
+
+Execute perl (wipe-and-replace -- large):
+  @$BUFFER = ( ('Dashdash') x 500 )
 
 Expect:
   Dashdash
