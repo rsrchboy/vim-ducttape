@@ -13,6 +13,13 @@ vim-bits from Perl easier.
 You may find the test suite (available under `vader/`) helpful, for examples
 and demonstrations of expected behaviour.
 
+**NOTE:** This is a young project, under active development.  It would be wise
+to expect breaking changes and incomplete documentation.
+
+# "Perl from vim-bits"
+
+...
+
 # "vim-bits from Perl"
 
 ## Variables
@@ -206,7 +213,13 @@ and `json_decode()` to make bits like `VIMx::Tie::Dict` and
 
 # Requirements
 
-In short, [vim v7.4.2273](https://github.com/vim/vim/tree/v7.4.2273) compiled with (`+perl`) Perl v5.10+ support.
+`vim` compiled with (`+perl`) Perl (v5.10+) support.
+
+[vim v7.4.2273](https://github.com/vim/vim/tree/v7.4.2273) for full
+functionality, v7.4.2204 for everything except the ability to get and
+set buffer-local options of non-current buffers, v7.4.1304 for the above
+except the buffer/win/tab `info()` methods.
+
 
 ## Vim Requirements
 
@@ -221,16 +234,18 @@ Here's a list of the newer VimL bits we're using. ...that I'm aware of, at any
 rate.
 
 * [v7.4.1304](https://github.com/vim/vim/tree/v7.4.1304) The
-    `json_encode()` and decode functions (introduced as `jsonencode()` / `jsondecode()` in
-    [v7.4.1154](https://github.com/vim/vim/tree/v7.4.1154))
+    `json_encode()` and decode functions (introduced as `jsonencode()` /
+    `jsondecode()` in [v7.4.1154](https://github.com/vim/vim/tree/v7.4.1154))
+* [v7.4.2204](https://github.com/vim/vim/tree/v7.4.2204) introduces
+    `get{buf,tab,win}info()`.
+* [v7.4.2273](https://github.com/vim/vim/tree/v7.4.2273) provides for
+    buffer-local option reading/setting.
 
 Honorable mentions go to:
 
 * [v8.0.0654](https://github.com/vim/vim/tree/v8.0.0654), changes to how
     `:endfunction` is handled.  This would allow us to consolidate certain
     `:execute` calls, but is too new for most vim installations.
-* v7.4.2273 provides for buffer-local option reading/setting.
-* [v7.4.2204](https://github.com/vim/vim/tree/v7.4.2204) introduces `get{buf,tab,win}info()`.
 * [v7.4.1729](https://github.com/vim/vim/tree/v7.4.1729) allows a
     `print()`/etc from Perl to actually work.  We work around this for older
     vim.
@@ -250,7 +265,8 @@ submodules.
 
 # COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2017 by Chris Weyl <cweyl@alumni.drew.edu>.
+This software is Copyright (c) 2017, 2018 by Chris Weyl
+<cweyl@alumni.drew.edu>.
 
 This is free software, licensed under:
 
