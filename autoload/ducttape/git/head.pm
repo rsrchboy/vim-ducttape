@@ -18,7 +18,7 @@ use Path::Tiny;
 # debugging...
 use Smart::Comments '###';
 
-sub bufrepo { goto \&ducttape::git::bufrepo }
+sub bufrepo { goto \&VIMx::autoload::ducttape::git::bufrepo }
 
 function subject        => sub { bufrepo->head->peel('commit')->summary };
 function target_subject => sub { bufrepo->head->target->summary         };
