@@ -1,4 +1,4 @@
-package ducttape::perl;
+package VIMx::autoload::ducttape::perl;
 
 # ABSTRACT: Perly things one might need
 

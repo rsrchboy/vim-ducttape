@@ -1,4 +1,4 @@
-package ducttape::git::odb;
+package VIMx::autoload::ducttape::git::odb;
 
 use v5.10;
 use strict;

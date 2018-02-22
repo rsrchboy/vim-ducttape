@@ -1,4 +1,4 @@
-package ducttape::git;
+package VIMx::autoload::ducttape::git;
 
 use v5.10;
 use strict;

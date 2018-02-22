@@ -1,4 +1,4 @@
-package ducttape::http;
+package VIMx::autoload::ducttape::http;
 
 use v5.10;
 use strict;

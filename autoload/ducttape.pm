@@ -1,4 +1,4 @@
-package ducttape;
+package VIMx::autoload::ducttape;
 
 use v5.10;
 use strict;

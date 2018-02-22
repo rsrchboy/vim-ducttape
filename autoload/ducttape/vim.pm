@@ -1,4 +1,4 @@
-package ducttape::vim;
+package VIMx::autoload::ducttape::vim;
 
 # ABSTRACT: Useful things about VIM
 

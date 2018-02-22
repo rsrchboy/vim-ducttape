@@ -46,7 +46,8 @@ our @EXPORT = qw/
 tie our %vimx_return, 'VIMx::Tie::Dict', 'g:vimx_symbiont_return', turtles => 1;
 tie our %vimx_viml,   'VIMx::Tie::Dict', 'g:vimx_symbiont_viml', turtles => 1;
 
-sub _class_to_vim_ns { (my $ns = shift) =~ s/::/#/g; $ns }
+# strip the leading `VIMx::autoload::`
+sub _class_to_vim_ns { (my $ns = shift) =~ s/^VIMx::autoload:://; $ns =~ s/::/#/g; $ns }
 
 # NOTE: when using the args option, the named parameters must be accessed
 # through the %a tie.

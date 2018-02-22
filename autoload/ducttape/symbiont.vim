@@ -18,7 +18,7 @@ endif
 
 function! ducttape#symbiont#autoload(sfile) abort
     let l:pmfile = simplify(fnamemodify(a:sfile,':r') . '.pm')
-    let l:perl_pkg = fnamemodify(l:pmfile, ':p:r:s?^.*/autoload/??:gs?/?::?')
+    let l:perl_pkg = 'VIMx::autoload::' . fnamemodify(l:pmfile, ':p:r:s?^.*/autoload/??:gs?/?::?')
     " echom 'Loading ' . pmfile . ' for ' . a:sfile
     execute 'perl require "'.pmfile.'" unless $INC{"'.pmfile.'"}'
     let g:ducttape#symbiont#loaded[l:pmfile] = 1
