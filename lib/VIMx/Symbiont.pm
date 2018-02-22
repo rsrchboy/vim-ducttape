@@ -30,6 +30,8 @@ our @EXPORT = qw/
 
     path
 
+    try catch
+
     function
     fun
 
