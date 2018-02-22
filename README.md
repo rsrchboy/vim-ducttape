@@ -18,7 +18,60 @@ to expect breaking changes and incomplete documentation.
 
 # "Perl from vim-bits"
 
-...
+This is relatively straight-forward.  `VIMx::Symbiont` takes a package and
+functions, and generates viml that can be sourced to create glue functions.
+
+First, decide what you want the vim namespace of the glue functions to be and
+create a minimal autoload file; e.g. if you want your functions to live under
+`foo#bar`, create `autoload/foo/bar.vim` as:
+
+```vim
+" For those following along at home:  the reason we can get away with
+" autoloaded functions is that we execute the VimL that creates them from
+" inside this script/file.  That's enough to convince vim that these functions
+" belong in that namespace -- or perhaps just that we're determined so it may
+" as well get out of the way.
+
+for s:eval in ducttape#symbiont#autoload(expand('<sfile>'))
+    execute s:eval
+endfor
+```
+
+Then, write your Perl as `autoload/foo/bar.pm`:
+
+```perl
+package VIMx::autoload::foo::bar;
+use strict;
+use warnings;
+use VIMx::Symbiont;
+
+# glue: foo#bar#thing(...) abort
+function thing => sub { ... };
+
+# glue: foo#bar#hello(name) abort
+function args => 'name', hello => sub {
+  return "Hello, $a{name}!";
+};
+
+# glue: foo#bar#coolness(factor, ...) abort
+function args => 'factor, ...', coolness => sub {
+  my $pony = shift // 'Rainbow_Dash';
+
+  $g{$pony} *= $a{factor};
+  return;
+};
+
+# glue: foo#bar#line5() abort
+function args => q{}, line5 => sub { print $BUFFER->[4]; return };
+```
+
+When calling the glue functions, any non-named parameters end up in `@_`, as
+one might expect, while named parameters end up in the tied hash `%a`.
+Anything `return` works as you'd expect, including complex returns (e.g. a
+list, hashref, etc, will be translated.)
+
+The current buffer can be accessed via `$BUFFER`; all buffers can be accessed
+via `%BUFFERS`.  Similarly, `%g` will get you `g:`, `%t` gets you `t:`, etc.
 
 # "vim-bits from Perl"
 
@@ -103,7 +156,7 @@ execute ducttape#symbiont#autoload(expand('<sfile>'))
 ```
 ```perl
 # autoload/heya/there.pm
-package heya::there;
+package VIMx::autoload::heya::there;
 use VIMx::Symbiont;
 
 function hello => sub { print 'hello, ' . ($_[0] // 'world') };
