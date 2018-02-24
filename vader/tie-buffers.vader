@@ -63,10 +63,16 @@ Execute (vars - set):
   perl $BUFFERS{0+$BUFFER}->vars->{oop} = $b{eep}
   AssertEqual b:oop, b:eep
 
-Execute ($BUFFER->options isa BufferVars):
-  perl $b{eep} = ref tied(%{ $BUFFER->options })
+Execute perl ($BUFFER->options isa BufferVars):
+  $b{eep} = ref tied(%{ $BUFFER->options });
+
+Then:
   AssertEqual b:eep, 'VIMx::Tie::Options', 'tied class correct'
-  perl $b{oop} = tied(%{ $BUFFER->options })->{thing}
+
+Execute perl ($BUFFER->options prefix correct):
+  $b{oop} = tied(%{ $BUFFER->options })->{thing};
+
+Then:
   AssertEqual b:oop, '&', 'prefix correct (&)'
 
 Execute (options - values are tied ::BufferVars):
