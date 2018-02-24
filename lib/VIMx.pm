@@ -19,6 +19,7 @@ our @EXPORT = qw/
     %self
     $BUFFER
     %BUFFERS
+    $TAB
     %OPTIONS
 /;
 
