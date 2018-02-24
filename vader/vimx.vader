@@ -25,6 +25,12 @@ Then ($BUFFER->options is %OPTIONS):
   AssertEqual b:oop, '&', 'prefix correct (&)'
 
 Execute perl:
+  $b{eep} = ref tied(@VIMx::TABS)
+
+Then (@TABS is tied to tabs):
+  AssertEqual b:eep, 'VIMx::Tie::Tabs', 'tied class correct'
+
+Execute perl:
   $b{eep} = $VIMx::TAB->number
 
 Then ($TAB -- tabnr correct):

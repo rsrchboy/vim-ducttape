@@ -12,6 +12,8 @@ use VIMx::Tie::Buffer;
 use VIMx::Tie::Buffers;
 use VIMx::Tie::Dict;
 use VIMx::Tie::Options;
+use VIMx::Tie::Tabs;
+
 use Exporter 'import';
 
 our @EXPORT = qw/
@@ -20,6 +22,7 @@ our @EXPORT = qw/
     $BUFFER
     %BUFFERS
     $TAB
+    @TABS
     %OPTIONS
 /;
 
@@ -57,6 +60,7 @@ tied(@curbuf)->{vars} = \%b;
 tied(@curbuf)->{options} = \%OPTIONS;
 our $BUFFER = bless \@curbuf, 'VIMx::AutoLoadFor::Tie';
 
+tie our @TABS, 'VIMx::Tie::Tabs';
 our $TAB = VIMx::Tab->new('tabpagenr()', vars => \%t);
 
 # TODO register access?
