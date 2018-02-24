@@ -33,16 +33,16 @@ our %EXPORT_TAGS = (
 );
 
 # see help for internal-variables for more information
-tie our %a, 'VIMx::Tie::Dict', 'a:';
-tie our %b, 'VIMx::Tie::Dict', 'b:';
-tie our %g, 'VIMx::Tie::Dict', 'g:';
-tie our %l, 'VIMx::Tie::Dict', 'l:';
-tie our %s, 'VIMx::Tie::Dict', 's:';
-tie our %t, 'VIMx::Tie::Dict', 't:';
-tie our %v, 'VIMx::Tie::Dict', 'v:';
-tie our %w, 'VIMx::Tie::Dict', 'w:';
+tie our %a, 'VIMx::Tie::Dict', 'a:', turtles => 1;
+tie our %b, 'VIMx::Tie::Dict', 'b:', turtles => 1;
+tie our %g, 'VIMx::Tie::Dict', 'g:', turtles => 1;
+tie our %l, 'VIMx::Tie::Dict', 'l:', turtles => 1;
+tie our %s, 'VIMx::Tie::Dict', 's:', turtles => 1;
+tie our %t, 'VIMx::Tie::Dict', 't:', turtles => 1;
+tie our %v, 'VIMx::Tie::Dict', 'v:', turtles => 1;
+tie our %w, 'VIMx::Tie::Dict', 'w:', turtles => 1;
 
-tie our %self, 'VIMx::Tie::Dict', 'l:self';
+tie our %self, 'VIMx::Tie::Dict', 'l:self', turtles => 1;
 
 tie our %GOPTIONS, 'VIMx::Tie::Options', '&g:';
 tie our %LOPTIONS, 'VIMx::Tie::Options', '&l:';
