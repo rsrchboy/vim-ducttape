@@ -352,6 +352,11 @@ function args => 'hash', get_commit => sub {
     $spew .= 'committer '.$_sig->($commit->committer)."\n";
     $spew .= "\n" . $commit->message . "\n";
 
+    # TODO need to find/display other notes, maybe
+    if (my $note = Note->read($repo, $commit)) {
+        $spew .= "Notes (__default__):\n\n" . $note->message . "\n";
+    }
+
     my $diff = $commit->diff;
 
     if (!$g{dt_git_no_diffstats}) {
@@ -373,11 +378,6 @@ function args => 'hash', get_commit => sub {
                 . '-' . $stats->deletions . q{, }
                 . $stats->files_changed . ' files changed'
         }
-    }
-
-    # TODO need to find/display other notes, maybe
-    if (my $note = Note->read($repo, $commit)) {
-        $spew .= "Notes (__default__):\n\n" . $note->message . "\n";
     }
 
     # this -- and the above stats -- fails for some commits.
