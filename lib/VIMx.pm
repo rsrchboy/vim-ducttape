@@ -7,6 +7,7 @@ use strict;
 use warnings;
 
 use VIMx::AutoLoadFor::Tie;
+use VIMx::Tab;
 use VIMx::Tie::Buffer;
 use VIMx::Tie::Buffers;
 use VIMx::Tie::Dict;
@@ -54,6 +55,8 @@ tie our @curbuf, 'VIMx::Tie::Buffer', '%';
 tied(@curbuf)->{vars} = \%b;
 tied(@curbuf)->{options} = \%OPTIONS;
 our $BUFFER = bless \@curbuf, 'VIMx::AutoLoadFor::Tie';
+
+our $TAB = VIMx::Tab->new('tabpagenr()', vars => \%t);
 
 # TODO register access?
 

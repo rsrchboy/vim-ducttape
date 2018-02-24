@@ -1,0 +1,40 @@
+Execute perl (setup):
+  use VIMx;
+  use VIMx::Tab;
+  use warnings;
+  use strict;
+  our $TEST_TAB = VIMx::Tab->new(0+VIMx::Util::vim_eval_raw('tabpagenr()'))
+
+Before:
+  unlet! b:eep b:oop b:scratch
+  unlet! b:eep t:__TEST__ t:__TEST_STR__
+  let t:__TEST_STR__ = 'Dashie'
+
+Execute perl (tab number is correct):
+  $b{eep} = $TEST_TAB->number;
+
+Then (current tab is correct):
+  Log b:eep
+  AssertEqual tabpagenr(), b:eep
+
+Execute (info spew):
+  perl $b{eep} = $TEST_TAB->info
+  Log b:eep
+
+Execute perl:
+  $b{eep} = defined $TEST_TAB->vars->{__TEST__} ? 1 : 0
+
+Then (t:__TEST__ is undefined):
+  AssertEqual 0, b:eep
+
+Execute perl:
+  $b{eep} = defined $TEST_TAB->vars->{__TEST_STR__} ? 1 : 0
+
+Then (t:__TEST_STR__ is defined):
+  AssertEqual 1, b:eep
+
+Execute perl:
+  $b{eep} = $TEST_TAB->vars->{__TEST_STR__}
+
+Then (tab var fetched as expected):
+  AssertEqual t:__TEST_STR__, b:eep

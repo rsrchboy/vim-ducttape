@@ -1,0 +1,37 @@
+" Tests for VIMx bits.
+
+Execute (setup):
+  perl use VIMx; use warnings; use strict;
+
+Before:
+  unlet! b:eep b:oop b:scratch
+
+Execute perl:
+  $b{eep} = tied(%{ $BUFFER->vars })->{thing}
+
+Then ($BUFFER->vars is %b):
+  AssertEqual b:eep, 'b:'
+
+Execute perl:
+  $b{eep} = ref tied(%{ $BUFFER->options })
+
+Then ($BUFFER->options is %OPTIONS):
+  AssertEqual b:eep, 'VIMx::Tie::Options', 'tied class correct'
+
+Execute perl:
+  $b{oop} = tied(%{ $BUFFER->options })->{thing}
+
+Then ($BUFFER->options is %OPTIONS):
+  AssertEqual b:oop, '&', 'prefix correct (&)'
+
+Execute perl:
+  $b{eep} = $VIMx::TAB->number
+
+Then ($TAB -- tabnr correct):
+  AssertEqual b:eep, tabpagenr()
+
+Execute perl:
+  $b{eep} = $VIMx::TAB->info
+
+Then ($TAB info spew):
+  Log b:eep
