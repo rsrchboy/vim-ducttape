@@ -354,24 +354,26 @@ function args => 'hash', get_commit => sub {
 
     my $diff = $commit->diff;
 
-    # # this is super slow when a single commit is Quite Large.
-    # #
-    # # ...maybe conditionalize it with a g:/b: combo? TODO
-    # my $stats = $diff->stats;
-    # if ($stats->files_changed < 100) {
-    #     $spew .= q{}
-    #     . $diff->stats->buffer({ flags => { full => 1} }) . "\n"
-    #     # . "full stats:\n" . $diff->stats->buffer({ flags => { full => 1} }) . "\n"
-    #     # . "summary stats:\n" . $diff->stats->buffer({ flags => { summary => 1} }) . "\n\n"
-    #     # . $diff->buffer('patch')
-    #     ;
-    # }
-    # else {
-    #     $spew .= q{}
-    #         . '+' . $stats->insertions . '/'
-    #         . '-' . $stats->deletions . q{, }
-    #         . $stats->files_changed . ' files changed'
-    # }
+    if (!$g{dt_git_no_diffstats}) {
+        # this is super slow when a single commit is Quite Large.
+        #
+        # ...maybe conditionalize it with a g:/b: combo? TODO
+        my $stats = $diff->stats;
+        if ($stats->files_changed < 100) {
+            $spew .= q{}
+            . $diff->stats->buffer({ flags => { full => 1} }) . "\n"
+            # . "full stats:\n" . $diff->stats->buffer({ flags => { full => 1} }) . "\n"
+            # . "summary stats:\n" . $diff->stats->buffer({ flags => { summary => 1} }) . "\n\n"
+            # . $diff->buffer('patch')
+            ;
+        }
+        else {
+            $spew .= q{}
+                . '+' . $stats->insertions . '/'
+                . '-' . $stats->deletions . q{, }
+                . $stats->files_changed . ' files changed'
+        }
+    }
 
     # TODO need to find/display other notes, maybe
     if (my $note = Note->read($repo, $commit)) {
