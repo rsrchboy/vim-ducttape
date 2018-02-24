@@ -1,4 +1,4 @@
-package t::one;
+package VIMx::autoload::t::one;
 
 use v5.10;
 use strict;
