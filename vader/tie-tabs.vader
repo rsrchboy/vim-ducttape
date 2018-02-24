@@ -1,0 +1,18 @@
+Execute perl (setup):
+  use VIMx;
+  use VIMx::Tie::Tabs;
+  use warnings;
+  use strict;
+  tie our @TEST_TABS, 'VIMx::Tie::Tabs';
+
+Before:
+  unlet! b:eep b:oop b:scratch
+  unlet! b:eep t:__TEST__ t:__TEST_STR__
+  let t:__TEST_STR__ = 'Dashie'
+
+Execute perl:
+  $b{eep} = scalar @TEST_TABS;
+
+Then (tab count correct):
+  Log b:eep
+  AssertEqual tabpagenr('$'), b:eep
