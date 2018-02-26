@@ -36,6 +36,9 @@ sub NEXTKEY {
 sub EXISTS {
     my ($this, $bufid) = @_;
 
+    $bufid = 0+$bufid
+        if $bufid =~ /^\d+/;
+
     ### EXISTS(): $bufid
     my $buf = VIM::Buffers($bufid);
 
@@ -49,6 +52,9 @@ sub FETCH {
 
     # for efficiency, we don't use EXISTS() here.
     # of course, you know what they say about premature optimization...
+
+    $bufid = 0+$bufid
+        if $bufid =~ /^\d+/;
 
     ### FETCH(): $bufid
     my $buf = VIM::Buffers($bufid);
