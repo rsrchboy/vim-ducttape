@@ -1,39 +1,51 @@
-Execute (setup):
-  perl require VIMx; require VIMx::Tie::BufferVars;
-
-Given:
+Execute perl (setup):
+  use strict;
+  use warnings;
+  require VIMx;
+  require VIMx::Tie::BufferVars;
 
 Before:
-  unlet! b:eep b:var b:var_exists
+  unlet! b:eep b:var b:var_exists b:oop
+  let b:oop = 'Dashie'
   let b:ours = bufnr('')
   perl tie our %vars, 'VIMx::Tie::BufferVars', $b{ours}
 
-Execute(EXISTS):
-  let b:eep = 'Rainbow Dash'
-  perl $b{var_exists} = exists $vars{eep}
+Execute perl (EXISTS):
+  $b{var_exists} = exists $vars{oop}
+
+Then (EXISTS):
   Assert b:var_exists
 
-Execute(not EXISTS):
-  perl $b{var_exists} = exists $vars{eep}
+Execute perl (not EXISTS):
+  $b{var_exists} = exists $vars{eep}
+
+Then (not EXISTS):
   Assert !b:var_exists
 
-Execute(FETCH):
-  let b:eep = 'Rainbow Dash'
-  perl $b{var} = $vars{eep}
-  AssertEqual b:var, 'Rainbow Dash'
+Execute perl (FETCH):
+  $b{var} = $vars{oop}
 
-Execute(FETCH dne):
-  perl $b{var} = not defined $vars{eep}
+Then (FETCH):
+  AssertEqual b:var, 'Dashie'
+
+Execute perl (FETCH dne):
+  $b{var} = not defined $vars{eep}
+
+Then (FETCH dne):
   Assert b:var
 
-Execute(STORE):
-  perl $b{var} = $vars{eep} = 'Rainbow Dash'
+Execute perl (STORE):
+  $b{var} = $vars{eep} = 'Rainbow Dash'
+
+Then (STORE):
   AssertEqual b:var, 'Rainbow Dash'
   AssertEqual b:eep, 'Rainbow Dash'
 
-Execute(KEYS spew):
-  perl $b{eep} = [ keys %vars ]
-  Log b:eep
+Execute perl (KEYS):
+  $b{oop} = [ sort keys %vars ]
+
+Then (KEYS):
+  AssertEqual sort(keys(b:)), b:oop
 
 Execute perl:
   $b{eep} = scalar %vars;
