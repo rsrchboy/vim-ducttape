@@ -35,4 +35,11 @@ Execute(KEYS spew):
   perl $b{eep} = [ keys %vars ]
   Log b:eep
 
+Execute perl:
+  $b{eep} = scalar %vars;
+
+Then (SCALAR):
+  " -1 as we're creating a new entry with the assignment to $b{eep}
+  AssertEqual len(keys(b:))-1, b:eep
+
 " __END__
