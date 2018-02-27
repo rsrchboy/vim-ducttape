@@ -8,6 +8,8 @@ use VIMx::Util;
 
 use base 'Tie::Hash';
 
+# NOTE (and TODO): 'turtles' option not implemented here yet!
+
 sub TIEHASH {
     my ($class, $bufnr, @tie_opts) = @_;
 
@@ -26,9 +28,12 @@ sub TIEHASH {
 sub EXISTS {
     my ($this, $key) = @_;
     ### EXISTS(): $key
+    my $cmd = "keys($this->{get}($this->{bufnr}, '$this->{prefix}', {}))";
+
+    ### $cmd
     my %bufvars =
         map { $_ => 1 }
-        @{ vim_eval("keys($this->{get}($this->{bufnr}, '$this->{prefix}'))") }
+        @{ vim_eval($cmd) || [] }
         ;
 
     ### %bufvars
@@ -74,7 +79,9 @@ sub NEXTKEY {
     return pop @{ $this->{keys} };
 }
 
-sub _buf_vars { @{ vim_eval("keys($_[0]->{get}($_[0]->{bufnr}, '$_[0]->{prefix}'))") } }
+sub SCALAR { scalar shift->_buf_vars }
+
+sub _buf_vars { @{ vim_eval("keys($_[0]->{get}($_[0]->{bufnr}, '$_[0]->{prefix}', {}))") } }
 
 !!42;
 __END__
