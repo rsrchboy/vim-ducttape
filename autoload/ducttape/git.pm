@@ -54,6 +54,8 @@ sub bufrepo {
     else {
         $name = path($name);
 
+        # FIXME this barfs horribly if $name->parent doesn't exist
+
         ### check to see if exists: $name
         $discover_path
             = $name->exists
