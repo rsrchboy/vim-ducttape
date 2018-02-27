@@ -178,7 +178,8 @@ function wip => sub {
     return
         if $BUFFER->Name =~ m!^(\.git/|fugitive://)!;
 
-    return if $OPTIONS{buftype} ne q{};
+    return
+        if $OPTIONS{previewwindow} || ($OPTIONS{buftype} ne q{});
 
     ### skip files in a git-annex repository...
     my $repo = bufrepo;
