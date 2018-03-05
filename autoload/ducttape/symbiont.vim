@@ -1,7 +1,3 @@
-if !has('perl')
-    finish
-endif
-
 if !has_key(g:, 'ducttape#symbiont#loaded')
     let g:ducttape#symbiont#loaded = {}
 endif
@@ -17,6 +13,13 @@ endif
 " care to avoid needing a symbiont ourselves -- or be careful how we load it!
 
 function! ducttape#symbiont#autoload(sfile) abort
+    if !has('perl')
+        let l:vim_ns = fnamemodify(a:sfile, ':p:r:s?^.*/autoload/??:gs?/?#?')
+        let g:[l:vim_ns . '#loaded'] = 0
+
+        " FIXME throw something here?
+        return 'fun! ' . l:vim_ns . "#load() abort\nendfun"
+    endif
     let l:pmfile = simplify(fnamemodify(a:sfile,':r') . '.pm')
     let l:perl_pkg = 'VIMx::autoload::' . fnamemodify(l:pmfile, ':p:r:s?^.*/autoload/??:gs?/?::?')
     " echom 'Loading ' . pmfile . ' for ' . a:sfile
