@@ -82,10 +82,7 @@ sub FETCH {
         ;
 
     ### $buf
-    croak "No such buffer ($bufid)"
-        unless defined $buf;
-
-    return VIMx::buffer($bufid);
+    return !!$buf ? VIMx::buffer($bufid) : undef;
 }
 
 sub SCALAR { scalar VIM::Buffers() }
