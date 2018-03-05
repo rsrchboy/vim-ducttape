@@ -7,6 +7,7 @@ use strict;
 use warnings;
 
 use Carp 'croak';
+use VIMx::Util;
 
 use base 'Tie::Hash';
 
@@ -15,15 +16,29 @@ sub TIEHASH {
     return bless { }, $class;
 }
 
+# debugging...
+use Smart::Comments '###';
+
 # changing the buffer list is unimplemented at this point
-sub STORE  { ... }
 sub DELETE { ... }
 sub CLEAR  { ... }
+
+sub STORE  {
+    ...;
+
+    # my ($this, $fn, $content) = @_;
+    # # TODO when $content is defined, spew it into the new buffer
+}
 
 sub FIRSTKEY {
     my ($this) = @_;
     ### FIRSTKEY()...
-    $this->{keys} = [ sort map { $_->Name } VIM::Buffers() ];
+    $this->{keys} = [
+        sort
+        map { $_->Name }
+        grep { vim_eval_raw(q{buflisted(}.$_->Number.q{)})  }
+        VIM::Buffers()
+    ];
     return pop @{ $this->{keys} };
 }
 
@@ -36,15 +51,19 @@ sub NEXTKEY {
 sub EXISTS {
     my ($this, $bufid) = @_;
 
-    $bufid = 0+$bufid
+    ### EXISTS(): $bufid
+
+    return defined VIM::Buffers(0+$bufid)
         if $bufid =~ /^\d+/;
 
-    ### EXISTS(): $bufid
-    my $buf = VIM::Buffers($bufid);
+    # We need to check twice if the first returns undefined, as
+    # VIM::Buffers() returns undef for unlisted buffers if asked for by name.
+    #
+    # see https://github.com/vim/vim/pull/2692
+    my $buf_exists = !!VIM::Buffers($bufid) || vim_eval_raw("bufnr('$bufid')") >= 0;
 
-    ### $buf
-    ### defined: defined $buf
-    return defined $buf;
+    ### $buf_exists
+    return $buf_exists;
 }
 
 sub FETCH {
@@ -53,11 +72,14 @@ sub FETCH {
     # for efficiency, we don't use EXISTS() here.
     # of course, you know what they say about premature optimization...
 
-    $bufid = 0+$bufid
-        if $bufid =~ /^\d+/;
-
     ### FETCH(): $bufid
-    my $buf = VIM::Buffers($bufid);
+
+    # same bit as in EXISTS() about unlisted buffers
+    my $buf
+        = $bufid =~ /^\d+/
+        ? VIM::Buffers(0+$bufid)
+        : VIM::Buffers($bufid) || VIM::Buffers(0+vim_eval_raw("bufnr('$bufid')"))
+        ;
 
     ### $buf
     croak "No such buffer ($bufid)"
