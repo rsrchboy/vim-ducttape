@@ -16,9 +16,6 @@ sub TIEHASH {
     return bless { }, $class;
 }
 
-# debugging...
-use Smart::Comments '###';
-
 # changing the buffer list is unimplemented at this point
 sub DELETE { ... }
 sub CLEAR  { ... }
