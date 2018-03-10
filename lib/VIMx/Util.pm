@@ -16,6 +16,7 @@ our @EXPORT = qw{
     vim_escape
     vim_do
     vim_has
+    vim_has_feature
     vim_has_patch
     vim_typeof
 };
@@ -78,11 +79,20 @@ sub vim_typeof {
 
 sub vim_has { 0 + vim_eval_raw("has('$_[0]')") }
 
-sub vim_has_patch {
-    my $level = shift;
+sub vim_has_patch { vim_has_feature("patch-$_[0]") }
+
+sub vim_has_feature {
+    my $feature = shift;
 
     state $checked = {};
-    return $checked->{$level} //= 0+vim_eval_raw("has('$level')");
+    return $checked->{$feature} //= 0+vim_eval_raw("has('$feature')");
 }
 
 !!42;
+__END__
+
+=head1 DESCRIPTION
+
+=head1 FUNCTIONS
+
+=cut
