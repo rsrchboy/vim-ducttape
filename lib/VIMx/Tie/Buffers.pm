@@ -56,11 +56,11 @@ sub EXISTS {
     # We need to check twice if the first returns undefined, as
     # VIM::Buffers() returns undef for unlisted buffers if asked for by name.
     #
-    # see https://github.com/vim/vim/pull/2692
-    my $buf_exists = !!VIM::Buffers($bufid) || vim_eval_raw("bufnr('$bufid')") >= 0;
+    # Fixed in 8.0-1576
+    return defined VIM::Buffers($bufid)
+        if vim_has_patch('8.0-1576');
 
-    ### $buf_exists
-    return $buf_exists;
+    return !!VIM::Buffers($bufid) || vim_eval_raw("bufnr('$bufid')") >= 0;
 }
 
 sub FETCH {
