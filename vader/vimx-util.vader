@@ -19,44 +19,58 @@ Execute perl (!has_patch):
 Then (!has_patch):
   Assert !b:eep
 
-Execute (vim_do):
-  perl vim_do("let b:eep = 'eeeyup!'")
+Execute perl (vim_do):
+  vim_do("let b:eep = 'eeeyup!'")
+
+Then (vim_do):
   AssertEqual b:eep, 'eeeyup!'
 
-Execute (vim_eval - scalar):
-  perl $b{eep} = vim_eval(1)
+Execute perl (vim_eval - scalar):
+  $b{eep} = vim_eval(1)
+
+Then (vim_eval - scalar):
   AssertEqual b:eep, 1
 
-Execute (vim_eval - function):
-  perl $b{eep} = vim_eval("[ 1, 2 ]")
+Execute perl (vim_eval - function):
+  $b{eep} = vim_eval("[ 1, 2 ]")
+
+Then (vim_eval - function):
   AssertEqual b:eep, [ 1, 2 ]
 
-Execute (vim_typeof - number):
-  let b:eep = 1
-  perl $b{oop} = vim_typeof(1)
+Execute perl (vim_typeof - number):
+  $b{oop} = vim_typeof(1)
+
+Then (vim_typeof - number):
   AssertEqual b:oop, 'number'
 
-Execute (vim_typeof - string):
-  let b:eep = 1
-  perl $b{oop} = vim_typeof("'hiya'")
+Execute perl (vim_typeof - string):
+  $b{oop} = vim_typeof("'hiya'")
+
+Then (vim_typeof - string):
   AssertEqual b:oop, 'string'
 
-Execute (vim_typeof - dict):
-  let b:eep = 1
-  perl $b{oop} = vim_typeof("{'one': 1}")
+Execute perl (vim_typeof - dict):
+  $b{oop} = vim_typeof("{'one': 1}")
+
+Then (vim_typeof - dict):
   AssertEqual b:oop, 'dict'
 
-Execute (vim_typeof - list):
-  let b:eep = 1
-  perl $b{oop} = vim_typeof("[1, 2, 3]")
+Execute perl (vim_typeof - list):
+  $b{oop} = vim_typeof("[1, 2, 3]")
+
+Then (vim_typeof - list):
   AssertEqual b:oop, 'list'
 
-Execute (vim_has):
-  perl $b{eep} = vim_has('autocmd')
+Execute perl (vim_has):
+  $b{eep} = vim_has('autocmd')
+
+Then (vim_has):
   AssertEqual b:eep, 1
 
-Execute (vim_has - not):
-  perl $b{eep} = vim_has('ponies')
+Execute perl (vim_has - not):
+  $b{eep} = vim_has('ponies')
+
+Then (vim_has - not):
   AssertEqual b:eep, 0
 
 " Execute (vim_escape):
