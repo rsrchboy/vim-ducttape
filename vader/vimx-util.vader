@@ -7,6 +7,18 @@ Execute perl (setup):
 Before:
   unlet! b:eep b:eep2 b:oop b:dict
 
+Execute perl (has_patch):
+  $b{eep} = vim_has_patch('patch-7.4.100')
+
+Then (has_patch):
+  Assert b:eep
+
+Execute perl (!has_patch):
+  $b{eep} = vim_has_patch('patch-9.0.100')
+
+Then (!has_patch):
+  Assert !b:eep
+
 Execute (vim_do):
   perl vim_do("let b:eep = 'eeeyup!'")
   AssertEqual b:eep, 'eeeyup!'
