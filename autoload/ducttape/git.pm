@@ -411,6 +411,12 @@ function args => 'hash', get_commit => sub {
     return;
 };
 
+function args => q{id}, author_timestamp => sub {
+    my $r = bufrepo;
+    return $r->lookup($r->revparse($a{id}))->author->time;
+};
+
+
 !!42;
 __DATA__
 @@ status.tt2
