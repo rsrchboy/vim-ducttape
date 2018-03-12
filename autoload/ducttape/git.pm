@@ -70,7 +70,7 @@ sub bufrepo {
         || confess "Cannot find a git repo for buffer $name at path $discover_path";
 }
 
-function config_str => sub { Git::Raw::Config->default->str(shift) };
+function config_str => sub { bufrepo->config->str(shift) };
 
 fun args => 'key', config => sub {
     return bufrepo($BUFFER->Number)->config->str($a{key});
