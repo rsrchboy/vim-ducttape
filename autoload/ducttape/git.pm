@@ -88,7 +88,6 @@ function commondir        => sub { bufrepo->commondir           };
 function workdir          => sub { bufrepo->workdir(@_)         };
 function ignore           => sub { bufrepo->ignore(@_)          };
 function path_is_ignored  => sub { bufrepo->path_is_ignored(@_) };
-function merge_base       => sub { bufrepo->merge_base(@_)      };
 
 function args => q{}, state         => sub { my $st = bufrepo->state; return ($st eq 'none' ? q{} : $st) };
 function args => q{}, has_staged    => sub { scalar keys %{ bufrepo->status({ show => 'index' }) } };
@@ -104,6 +103,19 @@ function index_add => sub { my $i = bufrepo->index; $i->add($BUFFER->Name); $i->
 # TODO rejigger to use the ::Graph functions instead
 function revlist       => sub { [ map { $_->id } bufrepo->walker->push_range(bufrepo->revparse(@_))->all ] };
 function revlist_count => sub { scalar bufrepo->walker->push_range(bufrepo->revparse(@_))->all             };
+
+function merge_base => sub {
+    my (@objs) = @_;
+
+    my $repo = bufrepo;
+
+    my @commits =
+        map { $repo->lookup($_)   }
+        map { $repo->revparse($_) }
+        @objs;
+
+    return $repo->merge_base(@commits);
+};
 
 function fixup  => sub { _special_commit(fixup  => @_) };
 function squash => sub { _special_commit(squash => @_) };
