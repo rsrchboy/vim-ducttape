@@ -161,7 +161,8 @@ fun args => 'id', type_of => sub {
     # FIXME probably not ideal
     # return bufrepo->lookup($a{id})->is_blob ? 'blob' : 'tree';
 
-    my $thing = bufrepo->lookup($a{id});
+    my $r = bufrepo;
+    my $thing = $r->lookup($r->revparse($a{id}));
     (my $type = lc ref $thing) =~ s/^.*:://;
 
     return $type;
