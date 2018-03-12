@@ -162,6 +162,14 @@ fun args => 'id', blob_read => sub {
     return [ split(/\n/, $r->lookup($a{id})->content) ];
 };
 
+fun args => 'id', blob_read_into_buf => sub {
+    my $r = bufrepo;
+
+    # lookup() returns blessed to type of thing found
+    @$BUFFER = split(/\n/, $r->lookup($a{id})->content);
+    return;
+};
+
 # somewhat a misnomer -- write the contents of the current file to the object
 # store, then return the blob's id
 function curbuf_to_blob => sub {
