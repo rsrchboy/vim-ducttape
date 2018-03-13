@@ -417,6 +417,16 @@ function args => q{id}, author_timestamp => sub {
     return $r->lookup($r->revparse($a{id}))->author->time;
 };
 
+function interesting_refs => sub {
+    my $r = bufrepo;
+
+    return [
+        map  { $_->shorthand                                }
+        grep { $_->is_branch || $_->is_remote || $_->is_tag }
+        $r->refs
+    ];
+};
+
 
 !!42;
 __DATA__
