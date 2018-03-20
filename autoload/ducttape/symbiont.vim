@@ -7,7 +7,9 @@ endif
 "
 " Most viml looking to load their symbiont should just need to do this:
 "
-"   call ducttape#symbiont#load(expand('<sfile>'))
+"   for s:eval in ducttape#symbiont#autoload(expand('<sfile>'))
+"       execute s:eval
+"   endfor
 "
 " Because we provide the viml functions to load our symbiont, we should take
 " care to avoid needing a symbiont ourselves -- or be careful how we load it!
