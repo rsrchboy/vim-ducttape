@@ -34,6 +34,8 @@ env:
   matrix:
     - VIM_VER=""          VIM_PPA="ppa:pi-rho/dev"
     - VIM_VER=""          VIM_PPA="ppa:jonathonf/vim"
+    # v8.0.1576 contains our fix for unlisted buffers
+    - VIM_VER="v8.0.1575" VIM_PPA=""
     - VIM_VER="v7.4.2273" VIM_PPA=""
     - VIM_VER="v7.4.2204" VIM_PPA=""
     - VIM_VER="v7.4.1304" VIM_PPA=""
