@@ -320,7 +320,9 @@ sub _wip_ref_for {
 sub cbuf_to_blob {
     my ($repo) = @_;
 
-    my $contents = join("\n", @$BUFFER);
+    # trailing empty string forces a blob to end with a newline, which keeps
+    # git from complaining
+    my $contents = join("\n", @$BUFFER, q{});
     my $blob = Git::Raw::Blob->create($repo, $contents);
 
     ### id: $blob->id
