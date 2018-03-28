@@ -2,10 +2,6 @@ sudo: true
 language: C
 addons:
   apt:
-    sources:
-      # for a newer libgit2
-      - sourceline: 'ppa:jonathonf/rustlang'
-        key_url: 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x8CF63AD3F06FC659'
     packages:
       - vim-nox
       - libio-socket-ssl-perl
