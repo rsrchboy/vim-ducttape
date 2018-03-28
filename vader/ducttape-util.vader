@@ -1,0 +1,15 @@
+Execute perl (setup):
+  use strict;
+  use warnings;
+
+Before:
+  unlet! b:test_dir b:pre_inc
+  let b:pre_inc = perleval('[ @INC ]')
+
+Execute (AddLibToInc - local modules):
+  let b:test_dir = fnamemodify(g:vader_file, ':p:h').'../util/local-modules'
+  call ducttape#util#AddLocalToInc(b:test_dir)
+
+Then (AddLibToInc - local modules):
+  Log b:test_dir
+  Assert index(perleval('[ @INC ]'), b:test_dir)
