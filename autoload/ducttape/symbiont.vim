@@ -2,6 +2,10 @@ if !has_key(g:, 'ducttape#symbiont#loaded')
     let g:ducttape#symbiont#loaded = {}
 endif
 
+if !has_key(g:, 'loaded_ducttape')
+    runtime 'plugin/ducttape.vim'
+endif
+
 " These functions all deal with symbiote perl -- that is, for a foo/bar.vim, a
 " foo/bar.pm package.
 "
