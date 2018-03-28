@@ -2,7 +2,7 @@ if !has_key(g:, 'ducttape#symbiont#loaded')
     let g:ducttape#symbiont#loaded = {}
 endif
 
-if !has_key(g:, 'loaded_ducttape')
+if !has_key(g:, 'ducttape_loaded')
     runtime 'plugin/ducttape.vim'
 endif
 
