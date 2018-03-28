@@ -12,7 +12,8 @@ endfor
 let s:perl_init .= '}; use VIMx;'
 execute s:perl_init
 
-unlet s:subdir s:perl_init s:our_dir
+" in some versions, s:subdir seems to stick around
+unlet! s:subdir s:perl_init s:our_dir
 
 " for reference:
 " perleval() became available with 2016-01-17 e9b892ebc (tag: v7.4.1125) patch 7.4.1125
