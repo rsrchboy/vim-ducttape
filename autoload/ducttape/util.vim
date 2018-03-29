@@ -24,7 +24,7 @@ fun! ducttape#util#AddLocalToInc(dir) abort
 
     " embedded modules (typically submodule clones of CPAN dists)
     for l:subdir in glob(a:dir . '/p5/*/lib',1,1)
-        let l:perl_init .= ', q{' . s:subdir . '}'
+        let l:perl_init .= ', q{' . l:subdir . '}'
     endfor
 
     let l:perl_init .= ';'
