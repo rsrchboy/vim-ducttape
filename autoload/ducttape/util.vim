@@ -1,5 +1,5 @@
 
-fun! ducttape#util#wrapper(viml) abort
+fun! ducttape#util#wrapper(viml) abort " {{{1
     let l:error = ''
     try
         " echom a:viml
@@ -11,7 +11,7 @@ fun! ducttape#util#wrapper(viml) abort
     return l:error
 endfun
 
-fun! ducttape#util#AddLocalToInc(dir) abort
+fun! ducttape#util#AddLocalToInc(dir) abort " {{{1
 
     " let s:our_dir = simplify(expand('<sfile>:p:h') . '/..')
 
