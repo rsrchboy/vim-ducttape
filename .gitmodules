@@ -22,3 +22,6 @@
 [submodule "p5/data-section-simple"]
 	path = p5/data-section-simple
 	url = https://github.com/miyagawa/Data-Section-Simple.git
+[submodule "p5/local-lib"]
+	path = p5/local-lib
+	url = https://github.com/Perl-Toolchain-Gang/local-lib.git
