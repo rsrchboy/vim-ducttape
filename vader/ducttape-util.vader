@@ -5,25 +5,34 @@ Execute perl (setup):
 Before:
   unlet! b:test_dir b:pre_inc
   let b:pre_inc = perleval('[ @INC ]')
+  " Log b:test_dir
+  " Log perleval('[ @INC ]')
 
 Execute (AddLibToInc - local modules):
   let b:test_dir = fnamemodify(g:vader_file, ':p:h').'/util/local-modules'
   call ducttape#util#AddLocalToInc(b:test_dir)
-  Log b:test_dir
-  Log perleval('[ @INC ]')
   Assert index(perleval('[ @INC ]'), b:test_dir.'/lib') != -1
 
 Execute (AddLibToInc - embedded):
   let b:test_dir = fnamemodify(g:vader_file, ':p:h').'/util/embedded'
   call ducttape#util#AddLocalToInc(b:test_dir)
-  Log b:test_dir
-  Log perleval('[ @INC ]')
   Assert index(perleval('[ @INC ]'), b:test_dir.'/p5/foo/lib') != -1
 
 Execute (AddLibToInc - both):
   let b:test_dir = fnamemodify(g:vader_file, ':p:h').'/util/embedded-and-local'
   call ducttape#util#AddLocalToInc(b:test_dir)
-  Log b:test_dir
-  Log perleval('[ @INC ]')
   Assert index(perleval('[ @INC ]'), b:test_dir.'/p5/foo/lib') != -1
   Assert index(perleval('[ @INC ]'), b:test_dir.'/lib') != -1
+
+Execute (AddLocalLib):
+  let b:test_dir = fnamemodify(g:vader_file, ':p:h').'/util/perl5'
+  call ducttape#util#AddLocalLib(b:test_dir)
+
+  " " e.g.
+  " '.../vim-ducttape/vader/util/perl5/lib/perl5/5.26.1/x86_64-linux-thread-multi'
+  " '.../vim-ducttape/vader/util/perl5/lib/perl5/5.26.1'
+  " '.../vim-ducttape/vader/util/perl5/lib/perl5/x86_64-linux-thread-multi'
+  " '.../vim-ducttape/vader/util/perl5/lib/perl5'
+
+  Assert index(perleval('[ @INC ]'), b:test_dir.'/lib/perl5') != -1
+  Assert index(perleval('[ @INC ]'), b:test_dir.'/lib/perl5/x86_64-linux-thread-multi') != -1

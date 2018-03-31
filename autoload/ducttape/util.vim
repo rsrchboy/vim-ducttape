@@ -33,3 +33,9 @@ fun! ducttape#util#AddLocalToInc(dir) abort " {{{1
 
     return
 endfun
+
+
+fun! ducttape#util#AddLocalLib(dir) abort " {{{1
+    exe 'perl use local::lib q{' . a:dir . '}'
+    return
+endfun
