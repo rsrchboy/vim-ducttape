@@ -1,0 +1,9 @@
+Execute perl (setup):
+  use strict;
+  use warnings;
+
+Execute (ducttape#has() -- exists):
+  Assert ducttape#has('warnings')
+
+Execute (ducttape#has() -- !exists):
+  Assert !ducttape#has('warningsGAAHHRRARRRGHHHTOOLATEFORWARNINGSSSSS')
