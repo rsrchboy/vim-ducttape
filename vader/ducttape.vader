@@ -48,7 +48,9 @@ Execute (AddLibToInc - both):
 
 Execute (AddLocalLib):
   let b:test_dir = fnamemodify(g:vader_file, ':p:h').'/util/perl5'
+  Log b:test_dir
   call ducttape#AddLocalLib(b:test_dir)
+  Log perleval('[ @INC ]')
 
   " " e.g.
   " '.../vim-ducttape/vader/util/perl5/lib/perl5/5.26.1/x86_64-linux-thread-multi'
