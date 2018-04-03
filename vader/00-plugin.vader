@@ -20,6 +20,10 @@ Execute (g:ducttape_locallib):
   Assert exists('g:ducttape_locallib'), 'exists'
   AssertEqual b:top_dir.'/perl5', g:ducttape_locallib, 'correct'
 
+Execute (g:ducttape_cpanm):
+  Assert exists('g:ducttape_cpanm'), 'exists'
+  AssertEqual b:top_dir.'/cpanm', g:ducttape_cpanm, 'correct'
+
 Execute (@INC):
   " let the user know what our @INC is after the login is loaded
   unlet! b:INC b:inc_dir

@@ -4,7 +4,9 @@ endif
 let g:ducttape_loaded = 1
 
 let g:ducttape_topdir = simplify(expand('<sfile>:p:h') . '/..')
+
 let g:ducttape_locallib = get(g:, 'ducttape_locallib', g:ducttape_topdir.'/perl5')
+let g:ducttape_cpanm    = get(g:, 'ducttape_cpanm',    g:ducttape_topdir.'/cpanm')
 
 let s:our_dir = g:ducttape_topdir
 
