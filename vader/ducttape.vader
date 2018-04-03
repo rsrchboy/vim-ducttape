@@ -1,6 +1,13 @@
 Execute perl (setup):
   use strict;
   use warnings;
+  use Config;
+  use VIMx;
+
+  $b{archname} = $Config{archname}
+
+Execute (archname):
+  Log b:archname
 
 Execute (ducttape#has() -- exists):
   Assert ducttape#has('warnings')
@@ -50,7 +57,6 @@ Execute (AddLocalLib):
   let b:test_dir = fnamemodify(g:vader_file, ':p:h').'/util/perl5'
   Log b:test_dir
   call ducttape#AddLocalLib(b:test_dir)
-  Log perleval('[ @INC ]')
 
   " " e.g.
   " '.../vim-ducttape/vader/util/perl5/lib/perl5/5.26.1/x86_64-linux-thread-multi'
@@ -58,5 +64,5 @@ Execute (AddLocalLib):
   " '.../vim-ducttape/vader/util/perl5/lib/perl5/x86_64-linux-thread-multi'
   " '.../vim-ducttape/vader/util/perl5/lib/perl5'
 
-  Assert index(perleval('[ @INC ]'), b:test_dir.'/lib/perl5') != -1
-  Assert index(perleval('[ @INC ]'), b:test_dir.'/lib/perl5/x86_64-linux-thread-multi') != -1
+  Assert index(perleval('[ @INC ]'), b:test_dir.'/lib/perl5') != -1, 'arch-indpt lib dir'
+  Assert index(perleval('[ @INC ]'), b:test_dir.'/lib/perl5/'.b:archname) != -1, 'arch lib dir'
