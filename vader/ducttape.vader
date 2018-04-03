@@ -7,3 +7,15 @@ Execute (ducttape#has() -- exists):
 
 Execute (ducttape#has() -- !exists):
   Assert !ducttape#has('warningsGAAHHRRARRRGHHHTOOLATEFORWARNINGSSSSS')
+
+Execute (ducttape#use() -- exists):
+  Assert ducttape#use('warnings')
+
+Execute (ducttape#use() -- !exists):
+  Assert !ducttape#use('warningsGAAHHRRARRRGHHHTOOLATEFORWARNINGSSSSS')
+
+Execute (ducttape#require() -- exists):
+  Assert ducttape#require('warnings')
+
+Execute (ducttape#require() -- !exists):
+  Assert !ducttape#require('warningsGAAHHRRARRRGHHHTOOLATEFORWARNINGSSSSS')
