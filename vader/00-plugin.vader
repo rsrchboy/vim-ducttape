@@ -1,6 +1,24 @@
-Execute (ensure plugin was loaded):
-  Assert exists('g:ducttape_loaded'), 'g:ducttape_loaded exists'
-  AssertEqual 1, g:ducttape_loaded, 'g:ducttape_loaded exists and is 1'
+" ensure the plugin loads as promised
+
+Execute perl (setup):
+  use strict;
+  use warnings;
+
+Execute (get top dir):
+  let b:top_dir = fnamemodify(g:vader_file, ':p:h:h')
+  Log b:top_dir
+
+Execute (g:ducttape_loaded):
+  Assert exists('g:ducttape_loaded'), 'exists'
+  AssertEqual 1, g:ducttape_loaded, 'correct'
+
+Execute (g:ducttape_topdir):
+  Assert exists('g:ducttape_topdir'), 'exists'
+  AssertEqual b:top_dir, g:ducttape_topdir, 'correct'
+
+Execute (g:ducttape_locallib):
+  Assert exists('g:ducttape_locallib'), 'exists'
+  AssertEqual b:top_dir.'/perl5', g:ducttape_locallib, 'correct'
 
 Execute (@INC):
   " let the user know what our @INC is after the login is loaded
@@ -29,5 +47,11 @@ Execute (linked Perl version):
 Execute (vim info):
   Log v:progpath
   Log v:version
+
+Execute (lib/ in @INC):
+  Assert index(perleval('[ @INC ]'), b:top_dir.'/lib') != -1
+
+Execute (p5/try-tiny/lib in @INC):
+  Assert index(perleval('[ @INC ]'), b:top_dir.'/p5/try-tiny/lib') != -1
 
 " __END__
