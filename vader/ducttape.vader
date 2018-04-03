@@ -20,6 +20,10 @@ Execute (ducttape#require() -- exists):
 Execute (ducttape#require() -- !exists):
   Assert !ducttape#require('warningsGAAHHRRARRRGHHHTOOLATEFORWARNINGSSSSS')
 
+Execute (ducttape#install()):
+  call ducttape#install('autobox::JSON')
+  Assert ducttape#has('autobox::JSON')
+
 Before:
   unlet! b:test_dir b:pre_inc
   " let b:pre_inc = perleval('[ @INC ]')

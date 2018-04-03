@@ -37,4 +37,20 @@ fun! ducttape#AddLocalLib(dir) abort " {{{1
     return
 endfun
 
+fun! ducttape#install(module) abort " {{{1
+    if ducttape#has(a:module)
+        return 1
+    endif
+
+    if exists(':Dispatch') == 2
+        let l:cmd = 'Dispatch '
+    elseif exists(':AsyncRun') == 2
+        let l:cmd = 'AsyncRun '
+    else
+        let l:cmd = '!'
+    endif
+
+    exe l:cmd . g:ducttape_cpanm . ' ' . a:module
+endfun
+
 " __END__
