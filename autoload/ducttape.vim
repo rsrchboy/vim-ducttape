@@ -33,7 +33,7 @@ endfun
 
 
 fun! ducttape#AddLocalLib(dir) abort " {{{1
-    exe 'perl use local::lib q{' . a:dir . '}'
+    exe 'perl local::lib->new(quiet => 1)->activate(q{' . a:dir . '})->setup_local_lib'
     return
 endfun
 
