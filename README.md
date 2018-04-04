@@ -252,14 +252,14 @@ really rather not reimplement here.  They're pulled in as submodules, and
 their source repositories should be viewed to learn more about those packages,
 including their authors, maintainers, and licenses.
 
-* Data::Section::Simple
-* HTTP::Tiny
-* JSON::Tiny
-* Module::Runtime
-* Path::Tiny
-* Role::Tiny
-* Template::Tiny (*in `lib/`)
-* Try::Tiny
+* [Data::Section::Simple](https://metacpan.org/pod/Data::Section::Simple)
+* [HTTP::Tiny](https://metacpan.org/pod/HTTP::Tiny)
+* [JSON::Tiny](https://metacpan.org/pod/JSON::Tiny)
+* [Module::Runtime](https://metacpan.org/pod/Module::Runtime)
+* [Path::Tiny](https://metacpan.org/pod/Path::Tiny)
+* [Role::Tiny](https://metacpan.org/pod/Role::Tiny)
+* [Template::Tiny](https://metacpan.org/pod/Template::Tiny) (*in `lib/`)
+* [Try::Tiny](https://metacpan.org/pod/Try::Tiny)
 
 `JSON::Tiny` in particular is key, as we lean heavily on vim's `json_encode()`
 and `json_decode()` to make bits like `VIMx::Tie::Dict` and
