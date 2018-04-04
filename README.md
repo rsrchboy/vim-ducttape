@@ -1,6 +1,32 @@
+[![Build Status](https://travis-ci.org/rsrchboy/vim-ducttape.svg?branch=master)](https://travis-ci.org/rsrchboy/vim-ducttape)
+
 # Vim and Perl: Perfect together
 
-[![Build Status](https://travis-ci.org/rsrchboy/vim-ducttape.svg?branch=master)](https://travis-ci.org/rsrchboy/vim-ducttape)
+<!-- vim-markdown-toc GFM -->
+
+* ["Perl from vim-bits"](#perl-from-vim-bits)
+* ["vim-bits from Perl"](#vim-bits-from-perl)
+  * [Variables](#variables)
+  * [Buffers](#buffers)
+    * [Current Buffer](#current-buffer)
+    * [All Buffers (`%VIMx::BUFFERS`)](#all-buffers-vimxbuffers)
+  * [Perl Functions from Vim](#perl-functions-from-vim)
+* [Components](#components)
+  * [VIMx::Tie::Buffer](#vimxtiebuffer)
+  * [VIMx::Tie::Buffers](#vimxtiebuffers)
+  * [VIMx::Tie::Dict](#vimxtiedict)
+  * [VIMx::Tie::List](#vimxtielist)
+  * [VIMx::Symbiont](#vimxsymbiont)
+  * [VIMx::Out](#vimxout)
+  * [Essential CPAN packages](#essential-cpan-packages)
+* [Mechanism](#mechanism)
+* [Requirements](#requirements)
+  * [Vim Requirements](#vim-requirements)
+  * [Perl Requirements](#perl-requirements)
+* [Why "ducttape"?](#why-ducttape)
+* [COPYRIGHT AND LICENSE](#copyright-and-license)
+
+<!-- vim-markdown-toc -->
 
 `ducttape` is a VimL library to assist one in using Perl in vim; that is, not
 to help you with *writing* Perl in vim, but rather *using* vim's embedded Perl
