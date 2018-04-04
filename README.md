@@ -5,21 +5,20 @@
 <!-- vim-markdown-toc GFM -->
 
 * ["Perl from vim-bits"](#perl-from-vim-bits)
+  * [`ducttape#symbiont#autoload()`](#ducttapesymbiontautoload)
 * ["vim-bits from Perl"](#vim-bits-from-perl)
-  * [Variables](#variables)
-  * [Buffers](#buffers)
-    * [Current Buffer](#current-buffer)
-    * [All Buffers (`%VIMx::BUFFERS`)](#all-buffers-vimxbuffers)
-  * [Perl Functions from Vim](#perl-functions-from-vim)
-* [Components](#components)
-  * [VIMx::Tie::Buffer](#vimxtiebuffer)
-  * [VIMx::Tie::Buffers](#vimxtiebuffers)
-  * [VIMx::Tie::Dict](#vimxtiedict)
-  * [VIMx::Tie::List](#vimxtielist)
-  * [VIMx::Symbiont](#vimxsymbiont)
-  * [VIMx::Out](#vimxout)
-  * [Essential CPAN packages](#essential-cpan-packages)
-* [Mechanism](#mechanism)
+  * [`VIMx`](#vimx)
+    * [Variables](#variables)
+    * [Buffers](#buffers)
+      * [Current Buffer](#current-buffer)
+      * [All Buffers (`%VIMx::BUFFERS`)](#all-buffers-vimxbuffers)
+  * [`VIMx::Tie::Buffer`](#vimxtiebuffer)
+  * [`VIMx::Tie::Buffers`](#vimxtiebuffers)
+  * [`VIMx::Tie::Dict`](#vimxtiedict)
+  * [`VIMx::Tie::List`](#vimxtielist)
+  * [`VIMx::Symbiont`](#vimxsymbiont)
+  * [`VIMx::Out`](#vimxout)
+* [Essential CPAN packages](#essential-cpan-packages)
 * [Requirements](#requirements)
   * [Vim Requirements](#vim-requirements)
   * [Perl Requirements](#perl-requirements)
@@ -43,6 +42,8 @@ and demonstrations of expected behaviour.
 to expect breaking changes and incomplete documentation.
 
 # "Perl from vim-bits"
+
+## `ducttape#symbiont#autoload()`
 
 This is relatively straight-forward.  `VIMx::Symbiont` takes a package and
 functions, and generates viml that can be sourced to create glue functions.
@@ -101,7 +102,12 @@ via `%BUFFERS`.  Similarly, `%g` will get you `g:`, `%t` gets you `t:`, etc.
 
 # "vim-bits from Perl"
 
-## Variables
+## `VIMx`
+
+The `VIMx` package exports a number of useful routines and variables designed
+to make interfacing with Vim easier.
+
+### Variables
 
 `%b`, `%g`, `%a`, etc, are provided to access `b:`, `g:`, `a:`, etc.  Complex
 data structures are supported on both sides; e.g.:
@@ -121,11 +127,11 @@ let b:eep = [ 1, 2, { 'three': 3 } ]
 Additionally, `%self` is provided for use in dict functions.  See [VIMx] for
 more information.
 
-## Buffers
+### Buffers
 
 Buffers can be accessed in a number of ways.
 
-### Current Buffer
+#### Current Buffer
 
 The current buffer can be accessed via `$VIMx::BUFFER`, a blessed reference to a
 tied variable.  The contents of the buffer can be read or modified by
@@ -145,7 +151,7 @@ You can also call any method you can call on a `VIBUF`:
 
 ```perl
 my $name = $VIMx::BUFFER->Name;
-# ...etc.  see `:h perl` for more
+## ...etc.  see `:h perl` for more
 ```
 
 You can delete lines by using the Perl built-in `delete`, a la:
@@ -156,7 +162,7 @@ my $line5 = delete $VIMx::BUFFER->[4];
 
 `$VIMx::BUFFER` stringifies to its name.
 
-### All Buffers (`%VIMx::BUFFERS`)
+#### All Buffers (`%VIMx::BUFFERS`)
 
 Similarly, all buffers can be accessed via the `%VIMx::BUFFERS` hash.  The
 keys are the names of the buffers, while the values are a reference tied and
@@ -171,35 +177,7 @@ say "buf: $_"
     for keys %VIMx::BUFFERS;
 ```
 
-## Perl Functions from Vim
-
-Perl functions can easily be bound to generated viml functions by exploiting
-`ducttape::symbiont` and vim's autoload functionality.
-
-```vim
-" autoload/heya/there.vim
-execute ducttape#symbiont#autoload(expand('<sfile>'))
-```
-```perl
-# autoload/heya/there.pm
-package VIMx::autoload::heya::there;
-use VIMx::Symbiont;
-
-function hello => sub { print 'hello, ' . ($_[0] // 'world') };
-```
-
-Given the above files:
-
-```vim
-:call heya#there#hello()
-" prints 'hello, world'
-:call heya#there#hello('chris')
-" prints 'hello, chris'
-```
-
-# Components
-
-## VIMx::Tie::Buffer
+## `VIMx::Tie::Buffer`
 
 Ties an array to a `VIBUF`, allowing the buffer contents to be accessed
 through the tied array.  It also contains additional "methods" that the
@@ -216,13 +194,14 @@ say "$BUFFER"; # AKA $curbuf->Name
 say 0+$BUFFER; # AKA $curbuf->Number
 ```
 
-## VIMx::Tie::Buffers
+## `VIMx::Tie::Buffers`
 
 The magic behind `%VIMx::BUFFERS`.
 
-...
+It's unlikely you'll ever need to tinker with this directly, as
+`%VIMx::BUFFERS` is already tied to it.
 
-## VIMx::Tie::Dict
+## `VIMx::Tie::Dict`
 
 This package allows one to create tied hashes that access vim Dictionaries
 transparently.  e.g., you could access global variables by:
@@ -243,11 +222,11 @@ $g{a_dict} = { 'rainbow dash' => '120%' };
 my $coolness = $g{a_dict}; # hashref
 ```
 
-## VIMx::Tie::List
+## `VIMx::Tie::List`
 
 As with `VIMx::Tie::Dict`, but for Lists.
 
-## VIMx::Symbiont
+## `VIMx::Symbiont`
 
 This package starts tying things together.  When used, it exports a number of
 things, e.g. `%g`, `%b`, `%s`, etc, tied to `g:`, `b:`, `s:`, etc.  It also
@@ -258,14 +237,14 @@ installs it, then generates a glue viml function.
 
 ...
 
-## VIMx::Out
+## `VIMx::Out`
 
 If you're using a version of vim older than 7.4.1729, writing to `STDOUT` or
 `STDERR` will fail silently.  We work around that by playing with the
 file-handles until they use `VIM::Msg()` and company.  (Yes, this is probably
 not the best way to do it, but as people upgrade it'll be moot anyways.)
 
-## Essential CPAN packages
+# Essential CPAN packages
 
 We include a minimal subset of CPAN packages to assist us in our efforts
 while keeping things as simple as possible, mainly `*::Tiny` packages I'd
@@ -285,10 +264,6 @@ including their authors, maintainers, and licenses.
 `JSON::Tiny` in particular is key, as we lean heavily on vim's `json_encode()`
 and `json_decode()` to make bits like `VIMx::Tie::Dict` and
 `VIMx::Symbiont::function()` work.
-
-# Mechanism
-
-...
 
 # Requirements
 
