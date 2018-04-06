@@ -22,6 +22,18 @@ Execute (EXISTS - bufnr):
   perl $b{oop} = exists $BUFFERS{0+$BUFFER}
   Assert b:oop
 
+Execute perl (FETCH by nr isa):
+  $b{oop} = ref $BUFFERS{0+$BUFFER}
+
+Then (FETCH by nr isa):
+  AssertEqual b:oop, 'VIMx::AutoLoadFor::Tie'
+
+Execute perl (FETCH by nr tied isa):
+  $b{oop} = ref tied @{ $BUFFERS{0+$BUFFER} }
+
+Then (FETCH by nr tied):
+  AssertEqual 'VIMx::Tie::Buffer', b:oop
+
 Execute(KEYS spew):
   perl $b{eep} = [ keys %BUFFERS ]
   Log b:eep
