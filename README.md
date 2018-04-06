@@ -4,14 +4,24 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* ["Perl from vim-bits"](#perl-from-vim-bits)
+* [Configuration](#configuration)
+  * [`g:ducttape_loaded`](#gducttape_loaded)
+  * [`g:ducttape_locallib`](#gducttape_locallib)
+  * [`g:ducttape_cpanm`](#gducttape_cpanm)
+* [Vim Functions](#vim-functions)
   * [`ducttape#symbiont#autoload()`](#ducttapesymbiontautoload)
+  * [`ducttape#has(module)`](#ducttapehasmodule)
+  * [`ducttape#require(module)`](#ducttaperequiremodule)
+  * [`ducttape#use(module)`](#ducttapeusemodule)
 * ["vim-bits from Perl"](#vim-bits-from-perl)
   * [`VIMx`](#vimx)
-    * [Variables](#variables)
-    * [Buffers](#buffers)
-      * [Current Buffer](#current-buffer)
-      * [All Buffers (`%VIMx::BUFFERS`)](#all-buffers-vimxbuffers)
+    * [Export Groups](#export-groups)
+    * [`%b`, `%g`, `%a`, etc](#b-g-a-etc)
+    * [`%self`](#self)
+    * [`$BUFFER`](#buffer)
+    * [`%BUFFERS`](#buffers)
+    * [`$TAB`](#tab)
+    * [`@TABS`](#tabs)
   * [`VIMx::Tie::Buffer`](#vimxtiebuffer)
   * [`VIMx::Tie::Buffers`](#vimxtiebuffers)
   * [`VIMx::Tie::Dict`](#vimxtiedict)
@@ -41,7 +51,36 @@ and demonstrations of expected behaviour.
 **NOTE:** This is a young project, under active development.  It would be wise
 to expect breaking changes and incomplete documentation.
 
-# "Perl from vim-bits"
+# Configuration
+
+Generally speaking, most of these take effect only when set prior to plugin
+initialization.
+
+## `g:ducttape_loaded`
+
+If this variable exists, the plugin will not be initialized.
+
+You probably don't want to mess with this.
+
+## `g:ducttape_locallib`
+
+_Default_: `<plugin directory>/perl5`
+
+`ducttape` maintains a [local::lib](https://metacpan.org/pod/local::lib) for
+anything we install locally.  Usually this is in the `perl5` directory at the
+top level of the plugin.
+
+You probably don't want to mess with this.
+
+## `g:ducttape_cpanm`
+
+_Default_: `<plugin directory>/cpanm`
+
+We include copy of the `cpanm` executable to enable the installation of
+additional CPAN packages to our local lib.  It's fatpacked, so won't require
+any additional dependencies on your system.
+
+# Vim Functions
 
 ## `ducttape#symbiont#autoload()`
 
@@ -100,14 +139,50 @@ list, hashref, etc, will be translated.)
 The current buffer can be accessed via `$BUFFER`; all buffers can be accessed
 via `%BUFFERS`.  Similarly, `%g` will get you `g:`, `%t` gets you `t:`, etc.
 
+## `ducttape#has(module)`
+
+Given a module, returns true if the module is available; false otherwise.
+
+## `ducttape#require(module)`
+
+Given a module, `require`'s the module.  Essentially equivalent to:
+
+  require Some::Module;
+
+## `ducttape#use(module)`
+
+Given a module, `use`'s the module.  Essentially equivalent to:
+
+  use Some::Module;
+
+Note: any exports the module's `inport()` function performs will end up in the
+`main` namespace.
+
 # "vim-bits from Perl"
 
 ## `VIMx`
 
 The `VIMx` package exports a number of useful routines and variables designed
-to make interfacing with Vim easier.
+to make interfacing with Vim easier.  You can choose to not export any (or
+all) of them and access them via their fully-qualified names (e.g.
+`%VIMx::b`).
 
-### Variables
+Where exported by default, we'll refer to variables by their unqualified name.
+
+### Export Groups
+
+`VIMx` recognizes the following export groups:
+
+* `:variables`
+  * `%a %b %g %l %s %t %v %w %self`
+* `:buffers`
+  * `$BUFFER %BUFFERS`
+* `:options`
+  * `%GOPTIONS %LOPTIONS %OPTIONS`
+* `:tabs`
+  * `$TAB @TABS`
+
+### `%b`, `%g`, `%a`, etc
 
 `%b`, `%g`, `%a`, etc, are provided to access `b:`, `g:`, `a:`, etc.  Complex
 data structures are supported on both sides; e.g.:
@@ -124,14 +199,12 @@ let b:eep = [ 1, 2, { 'three': 3 } ]
 
 ...and the other way around.
 
-Additionally, `%self` is provided for use in dict functions.  See [VIMx] for
-more information.
+### `%self`
 
-### Buffers
+Additionally, `%self` is provided for use in dict functions; this corresponds
+to `l:self`. See `VIMx` for more information.
 
-Buffers can be accessed in a number of ways.
-
-#### Current Buffer
+### `$BUFFER`
 
 The current buffer can be accessed via `$VIMx::BUFFER`, a blessed reference to a
 tied variable.  The contents of the buffer can be read or modified by
@@ -160,9 +233,12 @@ You can delete lines by using the Perl built-in `delete`, a la:
 my $line5 = delete $VIMx::BUFFER->[4];
 ```
 
-`$VIMx::BUFFER` stringifies to its name.
+`$VIMx::BUFFER` stringifies to its name in string context, and to its number
+in numeric context.
 
-#### All Buffers (`%VIMx::BUFFERS`)
+[`VIMx::Tie::Buffer`](#vimxtiebuffer)
+
+### `%BUFFERS`
 
 Similarly, all buffers can be accessed via the `%VIMx::BUFFERS` hash.  The
 keys are the names of the buffers, while the values are a reference tied and
@@ -176,6 +252,10 @@ say 'it exists!'
 say "buf: $_"
     for keys %VIMx::BUFFERS;
 ```
+
+### `$TAB`
+
+### `@TABS`
 
 ## `VIMx::Tie::Buffer`
 
@@ -215,7 +295,7 @@ tie my %self, 'VIMx::Tie::Dict', 'l:self';
 ```
 
 Dicts and Lists are mapped to hashrefs and arrayrefs automatically, so the
-following would work:
+following will work:
 
 ```perl
 $g{a_dict} = { 'rainbow dash' => '120%' };
