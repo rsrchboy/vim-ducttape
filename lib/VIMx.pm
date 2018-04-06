@@ -27,14 +27,15 @@ our @EXPORT = qw/
 /;
 
 our @EXPORT_OK = qw/
-    %global_options %local_options
-    buffer          buffers
+    %GOPTIONS %LOPTIONS
+    buffer    buffers
 /;
 
 our %EXPORT_TAGS = (
-    variables => [ qw{ %a %b %g %l %s %t %v %w } ],
+    variables => [ qw{ %a %b %g %l %s %t %v %w %self } ],
     buffers   => [ qw{ $BUFFER %BUFFERS } ],
     options   => [ qw{ %GOPTIONS %LOPTIONS %OPTIONS } ],
+    tabs      => [ qw{ $TAB @TABS } ],
 );
 
 # see help for internal-variables for more information
