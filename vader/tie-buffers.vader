@@ -3,6 +3,7 @@ Execute (setup):
 
 Before:
   unlet! b:eep b:oop b:ours b:isa b:our_name
+  let b:eep      = 'Rainbow Dash'
   let b:ours     = bufnr('')
   let b:our_name = bufname('')
 
@@ -14,12 +15,16 @@ Given (mane six):
   Rarity
   Pinkie Pie
 
-Execute (%BUFFERS isa):
-  perl $b{oop} = ref tied(%BUFFERS)
+Execute perl (%BUFFERS isa):
+  $b{oop} = ref tied(%BUFFERS)
+
+Then (%BUFFERS isa):
   AssertEqual b:oop, 'VIMx::Tie::Buffers'
 
-Execute (EXISTS - bufnr):
-  perl $b{oop} = exists $BUFFERS{0+$BUFFER}
+Execute perl (EXISTS - bufnr):
+  $b{oop} = exists $BUFFERS{0+$BUFFER}
+
+Then (EXISTS - bufnr):
   Assert b:oop
 
 Execute perl (FETCH by nr isa):
@@ -35,51 +40,65 @@ Then (FETCH by nr tied):
   AssertEqual 'VIMx::Tie::Buffer', b:oop
 
 Execute(KEYS spew):
-  perl $b{eep} = [ keys %BUFFERS ]
-  Log b:eep
+  perl $b{oop} = [ keys %BUFFERS ]
+  Log b:oop
 
-Execute (EXISTS - bufname):
+Execute perl (EXISTS - bufname):
+  $b{oop} = exists $BUFFERS{"$BUFFER"} ? 1 : 0
+
+Then (EXISTS - bufname):
   Assert bufexists(bufname('')), 'buffer exists'
   Assert buflisted(bufname('')), 'buffer is listed'
   Assert bufloaded(bufname('')), 'buffer is loaded'
-  perl $b{oop} = exists $BUFFERS{"$BUFFER"} ? 1 : 0
   Assert b:oop, 'tied %BUFFERS found ' . bufname('')
 
-Execute (not EXISTS - bufname):
-  perl $b{oop} = exists $BUFFERS{'la la la la la BUFNAME OF DOOM'} ? 0 : 1
+Execute perl (not EXISTS - bufname):
+  $b{oop} = exists $BUFFERS{'la la la la la BUFNAME OF DOOM'} ? 0 : 1
+
+Then (not EXISTS - bufname):
   Assert b:oop
 
-Execute (trivial get of a buffer line):
-  perl $b{oop} = $BUFFERS{0+$BUFFER}->[1]
+Execute perl (trivial get of a buffer line):
+  $b{oop} = $BUFFERS{0+$BUFFER}->[1]
+
+Then (trivial get of a buffer line):
   AssertEqual b:oop, 'Rainbow Dash'
 
-Execute (vars - values are VIMx::AutoLoadFor::Tie):
-  perl $b{oop} = ref $BUFFERS{0+$BUFFER}
+Execute perl (vars - values are VIMx::AutoLoadFor::Tie):
+  $b{oop} = ref $BUFFERS{0+$BUFFER}
+
+Then (vars - values are VIMx::AutoLoadFor::Tie):
   AssertEqual b:oop, 'VIMx::AutoLoadFor::Tie'
 
-Execute (vars - values are tied ::Buffer):
-  perl $b{oop} = ref tied(@{ $BUFFERS{0+$BUFFER} })
+Execute perl (vars - values are tied ::Buffer):
+  $b{oop} = ref tied(@{ $BUFFERS{0+$BUFFER} })
+
+Then (vars - values are tied ::Buffer):
   AssertEqual b:oop, 'VIMx::Tie::Buffer'
 
-Execute (vars - isa ::BufferVars):
-  perl $b{oop} = ref tied(%{ $BUFFERS{0+$BUFFER}->vars })
+Execute perl (vars - isa ::BufferVars):
+  $b{oop} = ref tied(%{ $BUFFERS{0+$BUFFER}->vars })
+
+Then (vars - isa ::BufferVars):
   AssertEqual b:oop, 'VIMx::Tie::BufferVars'
 
-Execute (vars - get):
-  let b:eep = 'Rainbow Dash'
-  perl $b{oop} = $BUFFERS{0+$BUFFER}->vars->{eep}
+Execute perl (vars - get):
+  $b{oop} = $BUFFERS{0+$BUFFER}->vars->{eep}
+
+Then (vars - get):
   AssertEqual b:oop, b:eep
 
-Execute (vars - set):
-  let b:eep = 'Rainbow Dash'
-  perl $BUFFERS{0+$BUFFER}->vars->{oop} = $b{eep}
+Execute perl (vars - set):
+  $BUFFERS{0+$BUFFER}->vars->{oop} = $b{eep}
+
+Then (vars - set):
   AssertEqual b:oop, b:eep
 
 Execute perl ($BUFFER->options isa BufferVars):
-  $b{eep} = ref tied(%{ $BUFFER->options });
+  $b{oop} = ref tied(%{ $BUFFER->options });
 
 Then:
-  AssertEqual b:eep, 'VIMx::Tie::Options', 'tied class correct'
+  AssertEqual b:oop, 'VIMx::Tie::Options', 'tied class correct'
 
 Execute perl ($BUFFER->options prefix correct):
   $b{oop} = tied(%{ $BUFFER->options })->{thing};
@@ -87,8 +106,10 @@ Execute perl ($BUFFER->options prefix correct):
 Then:
   AssertEqual b:oop, '&', 'prefix correct (&)'
 
-Execute (options - values are tied ::BufferVars):
-  perl $b{oop} = ref tied(%{ $BUFFERS{0+$BUFFER}->options })
+Execute perl (options - values are tied ::BufferVars):
+  $b{oop} = ref tied(%{ $BUFFERS{0+$BUFFER}->options })
+
+Then (options - values are tied ::BufferVars):
   AssertEqual b:oop, 'VIMx::Tie::BufferVars'
 
 Given ponyville (one pony):
