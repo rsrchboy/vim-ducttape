@@ -1,15 +1,34 @@
-Execute (setup):
-  perl require VIMx;
+Execute perl (setup):
+  use strict;
+  use warnings;
+  require VIMx;
+
+Before:
+  Save &g:filetype
+  unlet! b:eep
+
+After:
+  Restore &g:filetype
 
 Given frobnip (frobnip f/t buffer):
   hi there!
 
-Execute(f/t option local):
-  unlet! b:eep
-  AssertEqual 'frobnip', &filetype, 'Initial check'
-  perl $b{eep} = $VIMx::OPTIONS{filetype}
+Execute (&ft as expected):
+  AssertEqual 'frobnip',   &filetype,   '&ft'
+  AssertEqual 'frobnip', &l:filetype, '&l:ft'
+
+Execute perl (%OPTIONS{ft} correct):
+  $b{eep} = $VIMx::OPTIONS{filetype}
+
+Then (%OPTIONS{ft} correct):
   AssertEqual 'frobnip', b:eep, 'check what $VIMx::OPTIONS believes it to be'
-  perl $VIMx::OPTIONS{filetype} = 'zoop'
-  AssertEqual 'zoop', &filetype, 'check Perl set to "zoop"'
+
+Execute perl (%OPTIONS{ft} sets &ft correctly):
+  $VIMx::OPTIONS{filetype} = 'zoop'
+
+Then (%OPTIONS{ft} sets &ft correctly):
+  AssertEqual 'zoop',   &filetype,   '&ft'
+  AssertEqual 'zoop', &l:filetype, '&l:ft'
+  AssertEqual 'zoop', &g:filetype, '&g:ft'
 
 " __END__
