@@ -69,9 +69,11 @@ our $TAB = VIMx::Tab->new('tabpagenr()', vars => \%t);
 sub buffer {
     my ($bufid) = @_;
 
-    tie our @buf, 'VIMx::Tie::Buffer', $bufid;
-    our $buf = bless \@buf, 'VIMx::AutoLoadFor::Tie';
+    ### $bufid
+    tie my @buf, 'VIMx::Tie::Buffer', $bufid;
+    my $buf = bless \@buf, 'VIMx::AutoLoadFor::Tie';
 
+    ### $buf
     return $buf;
 }
 
