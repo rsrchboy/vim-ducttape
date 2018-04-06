@@ -50,6 +50,8 @@ sub EXISTS {
 
     ### EXISTS(): $bufid
 
+    $bufid = _int_or_escape($bufid);
+
     return defined VIM::Buffers(0+$bufid)
         if $bufid =~ /^\d+/;
 
@@ -71,11 +73,13 @@ sub FETCH {
 
     ### FETCH(): $bufid
 
+    $bufid = _int_or_escape($bufid);
+
     # same bit as in EXISTS() about unlisted buffers
     my $buf
         = $bufid =~ /^\d+/
         ? VIM::Buffers(0+$bufid)
-        : VIM::Buffers($bufid) || VIM::Buffers(0+vim_eval_raw("bufnr('$bufid')"))
+        : (VIM::Buffers($bufid) || VIM::Buffers(0+vim_eval_raw("bufnr('$bufid')")))
         ;
 
     ### $buf
@@ -83,6 +87,17 @@ sub FETCH {
 }
 
 sub SCALAR { scalar VIM::Buffers() }
+
+sub _int_or_escape {
+    my $id = shift;
+
+    return 0+$id
+        if $id =~ /^\d+$/;
+
+    # $id =~ s/\[/\\[/g;
+    $id =~ s/([[\]])/\\$1/g;
+    return $id;
+}
 
 !!42;
 __END__
