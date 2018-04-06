@@ -43,14 +43,14 @@ fun! ducttape#install(module) abort " {{{1
     endif
 
     if exists(':Dispatch') == 2
-        let l:cmd = 'Dispatch '
+        let l:cmd = 'Dispatch'
     elseif exists(':AsyncRun') == 2
-        let l:cmd = 'AsyncRun '
+        let l:cmd = 'AsyncRun'
     else
         let l:cmd = '!'
     endif
 
-    exe l:cmd . g:ducttape_cpanm . ' ' . a:module
+    exe l:cmd, g:ducttape_cpanm, '--local-lib', g:ducttape_locallib, a:module
 endfun
 
 " __END__
