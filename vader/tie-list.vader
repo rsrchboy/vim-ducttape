@@ -1,6 +1,11 @@
-Execute (setup):
-  perl use VIMx; require VIMx::Tie::List; use strict; use warnings
-  perl tie our @listie, 'VIMx::Tie::List', 'b:test_list'
+Execute perl (setup):
+  use VIMx;
+  use strict;
+  use warnings;
+  require VIMx::Tie::List;
+
+Execute perl (creation):
+  tie our @listie, 'VIMx::Tie::List', 'b:test_list';
 
 Execute (creation):
   Assert has_key(b:, 'test_list')
