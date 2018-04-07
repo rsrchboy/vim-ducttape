@@ -50,7 +50,7 @@ fun! ducttape#install(module) abort " {{{1
         let l:cmd = '!'
     endif
 
-    exe l:cmd, g:ducttape_cpanm, '--local-lib', g:ducttape_locallib, a:module
+    exe l:cmd g:ducttape_cpanm '--local-lib' g:ducttape_locallib a:module
 endfun
 
 " __END__
