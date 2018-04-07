@@ -7,6 +7,7 @@
 * [Configuration](#configuration)
   * [`g:ducttape_loaded`](#gducttape_loaded)
   * [`g:ducttape_locallib`](#gducttape_locallib)
+  * [`g:ducttape_real_locallib`](#gducttape_real_locallib)
   * [`g:ducttape_cpanm`](#gducttape_cpanm)
 * [Vim Functions](#vim-functions)
   * [`ducttape#symbiont#autoload()`](#ducttapesymbiontautoload)
@@ -69,6 +70,19 @@ _Default_: `<plugin directory>/perl5`
 `ducttape` maintains a [local::lib](https://metacpan.org/pod/local::lib) for
 anything we install locally.  Usually this is in the `perl5` directory at the
 top level of the plugin.
+
+You probably don't want to mess with this.
+
+## `g:ducttape_real_locallib`
+
+_Default:_ 0
+
+Did I say we maintain a `local::lib`?  What I really meant was we fake it by
+manipulating `@INC` in the same manner.  This allows `cpanm` to install (and
+us to use) the modules we need, without forcing everything we spawn to use our
+`local::lib` settings.
+
+If you want a real `local::lib`, with all that implies, set this to 1.
 
 You probably don't want to mess with this.
 

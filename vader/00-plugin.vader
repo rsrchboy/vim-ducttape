@@ -20,6 +20,10 @@ Execute (g:ducttape_locallib):
   Assert exists('g:ducttape_locallib'), 'exists'
   AssertEqual b:top_dir.'/perl5', g:ducttape_locallib, 'correct'
 
+Execute (g:ducttape_real_locallib):
+  Assert exists('g:ducttape_real_locallib'), 'exists'
+  AssertEqual 0, g:ducttape_real_locallib, 'correct'
+
 Execute (g:ducttape_cpanm):
   Assert exists('g:ducttape_cpanm'), 'exists'
   AssertEqual b:top_dir.'/cpanm', g:ducttape_cpanm, 'correct'
