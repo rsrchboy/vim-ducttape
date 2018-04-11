@@ -25,6 +25,9 @@
     * [`@TABS`](#tabs)
   * [`VIMx::Tie::Buffer`](#vimxtiebuffer)
   * [`VIMx::Tie::Buffers`](#vimxtiebuffers)
+    * [FETCH](#fetch)
+    * [KEYS](#keys)
+    * [VALUES](#values)
   * [`VIMx::Tie::Dict`](#vimxtiedict)
   * [`VIMx::Tie::List`](#vimxtielist)
   * [`VIMx::Symbiont`](#vimxsymbiont)
@@ -290,10 +293,54 @@ say 0+$BUFFER; # AKA $curbuf->Number
 
 ## `VIMx::Tie::Buffers`
 
-The magic behind `%VIMx::BUFFERS`.
+The magic behind `%VIMx::BUFFERS`, this is a `Tie::Hash`.
+
+This tie allows one to access all buffers known to vim: listed, unlisted, etc,
+etc.  Use a map if you need to narrow something down:
+
+```perl
+my @listed = grep { $_->options->{buflisted} } values %BUFFERS;
+```
 
 It's unlikely you'll ever need to tinker with this directly, as
 `%VIMx::BUFFERS` is already tied to it.
+
+Here's how the different hash operations are implemented; not all of them are,
+e.g. trying to clear the hash (e.g. `%BUFFERS = ()`) is unimplemented, as is
+creating a buffer (currently).
+
+### FETCH
+
+Returns a reference to a blessed/tied `VIMx::Tie::Buffer`; `undef` if a
+buffer with a matching name/number is not found.
+
+```perl
+# fetches buffer number 42
+my $bufA = $BUFFERS{42};
+# fetches buffer named meaning.txt
+my $also_bufA = $buffers{'meaning.txt'};
+# fetches buffer _named_ 42
+my $bufB = $buffers{'42'};
+```
+
+### KEYS
+
+While all buffer names are returned, we don't also return the buffer number.
+(If you're looking for a specific number, just fetch it directly.)
+
+```perl
+# I know, terribly, shockingly surprising
+my @names = keys %BUFFERS;
+```
+
+### VALUES
+
+Just as expected, all the buffers.
+
+```perl
+# again, shocking
+my @bufs = values %BUFFERS;
+```
 
 ## `VIMx::Tie::Dict`
 
