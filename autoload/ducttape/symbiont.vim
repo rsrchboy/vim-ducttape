@@ -32,7 +32,7 @@ function! ducttape#symbiont#autoload(sfile) abort
     let l:pmfile = simplify(fnamemodify(a:sfile,':r') . '.pm')
     let l:perl_pkg = 'VIMx::autoload::' . fnamemodify(l:pmfile, ':p:r:s?^.*/autoload/??:gs?/?::?')
     " echom 'Loading ' . pmfile . ' for ' . a:sfile
-    execute 'perl require "'.pmfile.'" unless $INC{"'.pmfile.'"}'
+    execute 'perl require "'.l:pmfile.'" unless $INC{"'.l:pmfile.'"}'
     let g:ducttape#symbiont#loaded[l:pmfile] = 1
     return g:vimx_symbiont_viml[l:perl_pkg]
 endfunction
