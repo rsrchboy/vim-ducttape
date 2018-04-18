@@ -19,8 +19,11 @@ endif
 " care to avoid needing a symbiont ourselves -- or be careful how we load it!
 
 function! ducttape#symbiont#autoload(sfile) abort
+    let l:vim_ns = fnamemodify(a:sfile, ':p:r:s?^.*/autoload/??:gs?/?#?')
+    if has_key(g:, l:vim_ns . '#loaded')
+        return ''
+    endif
     if !has('perl')
-        let l:vim_ns = fnamemodify(a:sfile, ':p:r:s?^.*/autoload/??:gs?/?#?')
         let g:[l:vim_ns . '#loaded'] = 0
 
         " FIXME throw something here?
