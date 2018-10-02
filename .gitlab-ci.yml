@@ -7,7 +7,6 @@ variables:
 before_script:
   - apk update ; apk add git make
   - git clone --depth=1 --recurse-submodules https://github.com/junegunn/vader.vim.git
-  - git clone --depth=1 --recurse-submodules https://github.com/rsrchboy/vim-ducttape.git
   - vim --version
   - perl -V
 
