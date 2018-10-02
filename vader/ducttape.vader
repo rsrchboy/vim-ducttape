@@ -28,8 +28,8 @@ Execute (ducttape#require() -- !exists):
   Assert !ducttape#require('warningsGAAHHRRARRRGHHHTOOLATEFORWARNINGSSSSS')
 
 Execute (ducttape#install()):
-  call ducttape#install('autobox::JSON')
-  Assert ducttape#has('autobox::JSON')
+  call ducttape#install('YAML::Tiny')
+  Assert ducttape#has('YAML::Tiny')
 
 Before:
   unlet! b:test_dir b:pre_inc
