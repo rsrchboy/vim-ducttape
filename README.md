@@ -1,5 +1,4 @@
 [![pipeline status](https://gitlab.com/rsrchboy/vim-ducttape/badges/master/pipeline.svg)](https://gitlab.com/rsrchboy/vim-ducttape/commits/master)
-[![Travis Build Status](https://travis-ci.org/rsrchboy/vim-ducttape.svg?branch=master)](https://travis-ci.org/rsrchboy/vim-ducttape)
 
 # Vim and Perl: Perfect together
 
