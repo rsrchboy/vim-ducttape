@@ -1,0 +1,24 @@
+Execute perl (setup):
+  use strict;
+  use warnings;
+  use VIMx;
+
+Execute (ducttape#path#simpletempdir()):
+  let b:thingie = ducttape#path#simpletempdir()
+  Log b:thingie
+  Assert !empty(b:thingie), 'a temporary path is returned'
+  Assert isdirectory(b:thingie), '...and is a directory'
+
+Execute (ducttape#path#tempdir()):
+  let b:thingie = ducttape#path#tempdir()
+  Log b:thingie
+  Assert !empty(b:thingie), 'a temporary path is returned'
+  Assert isdirectory(b:thingie), '...and is a directory'
+
+Execute (ducttape#path#tempdir(TEMPLATE => ...)):
+  " really, we're testing that parameters are getting across correctly
+  let b:thingie = ducttape#path#tempdir({ 'TEMPLATE': 'thingie.XXXXXX'})
+  Log b:thingie
+  Assert !empty(b:thingie), 'a temporary path is returned'
+  Assert isdirectory(b:thingie), '...and is a directory'
+  Assert b:thingie =~# "/thingie\.", '...and uses the template'
