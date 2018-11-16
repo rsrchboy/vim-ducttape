@@ -14,4 +14,14 @@ function tempdir => sub {
         ->stringify;
 };
 
+function args => q{dir}, rmtree => sub {
+    path($a{dir})->remove_tree({ safe => 0 });
+    return;
+};
+
+function args => q{path}, mkpath => sub {
+    path($a{path})->mkpath;
+    return $a{path};
+};
+
 !!42;
