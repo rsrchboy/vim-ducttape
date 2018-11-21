@@ -8,4 +8,4 @@ Execute (get() exists):
 Execute (basic get):
   unlet! b:response
   let b:response = ducttape#http#get('https://api.github.com/rate_limit')
-  AssertEqual ['content', 'headers', 'reason', 'status', 'success', 'url'], sort(keys(b:response))
+  AssertEqual ['content', 'headers', 'protocol', 'reason', 'status', 'success', 'url'], sort(keys(b:response))
