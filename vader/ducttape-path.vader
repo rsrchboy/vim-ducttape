@@ -30,3 +30,9 @@ Execute (ducttape#path#mkpath() & rmtree()):
   Assert isdirectory(b:thingie), 'path created'
   call ducttape#path#rmtree(b:basedir)
   Assert !isdirectory(b:basedir), 'basedir and contents removed'
+
+Execute (ducttape#path#touch()):
+  let b:basedir = ducttape#path#tempdir()
+  let b:touched = ducttape#path#touch(b:basedir . '/foo')
+  Assert filereadable(b:touched), 'file touched OK'
+  call ducttape#path#rmtree(b:basedir)
