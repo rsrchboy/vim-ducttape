@@ -152,6 +152,15 @@ sub info { vim_eval("getbufinfo('$_[0]->{buffer}')") }
 sub vars    { shift->_reader('vars',    { prefix => q{} }, @_) }
 sub options { shift->_reader('options', { prefix => '&' }, @_) }
 
+sub Save {
+    my ($this) = @_;
+
+    my $bufnr = $this->buffer->Number;
+    vim_do(":${bufnr}bufdo write");
+
+    return;
+}
+
 sub _reader {
     my ($this, $key, $tie_opts) = @_;
 
