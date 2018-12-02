@@ -29,6 +29,8 @@ Execute (ducttape#require() -- !exists):
 
 Execute (ducttape#install()):
   call ducttape#install('YAML::Tiny')
+
+Then (ducttape#install()):
   Assert ducttape#has('YAML::Tiny')
 
 Before:
