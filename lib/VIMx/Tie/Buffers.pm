@@ -16,8 +16,25 @@ sub TIEHASH {
     return bless { }, $class;
 }
 
-# changing the buffer list is unimplemented at this point
-sub DELETE { ... }
+sub DELETE {
+    my ($this, $bufid) = @_;
+
+    #### DELETE(): $bufid
+    my $buf = $this->FETCH($bufid);
+
+    return unless !!$buf;
+
+    vim_do(':bdelete ' . $buf->Number);
+
+    # note we don't return $buf, as that somewhat defeats the point: it's not
+    # supposed to exist anymore.  (kinda)  This is in contrast to your typical
+    # hash, where the value continues to exist even once deleted.  (kinda)
+    #
+    # ...well, in a sense I guess this means that our behaviour isn't that
+    # different; we're returning an explicit undef on purpose to match.
+    return undef;
+}
+
 sub CLEAR  { ... }
 
 sub STORE  {
