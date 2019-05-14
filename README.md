@@ -52,8 +52,11 @@ vim-bits from Perl easier.
 You may find the test suite (available under `vader/`) helpful, for examples
 and demonstrations of expected behaviour.
 
-**NOTE:** This is a young project, under active development.  It would be wise
-to expect breaking changes and incomplete documentation.
+# Codebase Notes
+
+This project currently lives on GitHub, but CI is done via GitLab.
+
+https://gitlab.com/rsrchboy/vim-ducttape/pipelines?scope=branches
 
 # Configuration
 
