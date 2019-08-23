@@ -33,8 +33,11 @@ function! ducttape#symbiont#autoload(sfile) abort
     let l:perl_pkg = 'VIMx::autoload::' . fnamemodify(l:pmfile, ':p:r:s?^.*/autoload/??:gs?/?::?')
     " echom 'Loading ' . pmfile . ' for ' . a:sfile
     execute 'perl require "'.l:pmfile.'" unless $INC{"'.l:pmfile.'"}'
-    let g:ducttape#symbiont#loaded[l:pmfile] = 1
-    return g:vimx_symbiont_viml[l:perl_pkg]
+    if has_key(g:vimx_symbiont_viml, l:perl_pkg)
+        let g:ducttape#symbiont#loaded[l:pmfile] = 1
+        return g:vimx_symbiont_viml[l:perl_pkg]
+    end
+    return ''
 endfunction
 
 " !!42

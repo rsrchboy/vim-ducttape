@@ -58,6 +58,7 @@ Execute (AddLibToInc - both):
 Execute (AddLocalLib):
   let b:test_dir = fnamemodify(g:vader_file, ':p:h').'/util/perl5'
   Log b:test_dir
+  Log perleval('[ @INC ]')
   call ducttape#AddLocalLib(b:test_dir)
 
   " " e.g.
@@ -67,5 +68,6 @@ Execute (AddLocalLib):
   " '.../vim-ducttape/vader/util/perl5/lib/perl5'
 
 Then:
+  Log 'Expecting in @INC: ' . b:test_dir.'/lib/perl5'
   Assert index(perleval('[ @INC ]'), b:test_dir.'/lib/perl5') != -1, 'arch-indpt lib dir'
   Assert index(perleval('[ @INC ]'), b:test_dir.'/lib/perl5/'.b:archname) != -1, 'arch lib dir'

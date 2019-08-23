@@ -35,7 +35,7 @@ function use => sub {
 function require => sub {
     my @modules = @_;
     return try {
-        require_module($_)
+        do { try { require_module($_) } catch { die $_ unless $_ =~ qr/Attempt to reload/ } }
             for @modules;
         return 1;
     }
