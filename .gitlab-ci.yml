@@ -5,7 +5,7 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 before_script:
-  - apk update ; apk add git make
+  - apk update ; apk add git make wget
   - git clone --depth=1 --recurse-submodules https://github.com/junegunn/vader.vim.git
   - vim --version
   - perl -V
