@@ -59,6 +59,15 @@ function! s:settingsSection() abort " {{{1
 
 endfunction
 
+function! s:perlSection() abort " {{{1
+    call health#report_start('@INC (internal)')
+
+    for l:path in ducttape#inc()
+        call health#report_info(l:path)
+    endfor
+
+endfunction
+
 function! health#ducttape#check() abort " {{{1
 
     if !exists('g:ducttape_loaded')
@@ -70,5 +79,12 @@ function! health#ducttape#check() abort " {{{1
 
     call s:vimSection()
     call s:settingsSection()
+
+    if !get(g:, 'ducttape_loaded_ok', 0)
+        return
+    endif
+
+    call s:perlSection()
+
     return
 endfunction

@@ -44,5 +44,7 @@ function require => sub {
     };
 };
 
+function inc => sub { @INC };
+
 !!42;
 __END__
