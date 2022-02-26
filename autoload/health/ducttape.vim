@@ -39,7 +39,36 @@ function! s:vimSection() abort " {{{1
 
 endfunction
 
+function! s:checkGlobal(name) abort
+    if has_key(g:, a:name)
+        call health#report_ok('g:' . a:name . ' is: ' . get(g:, a:name))
+    else
+        call health#report_error('g:' . a:name . ' NOT set!')
+    endif
+endfunction
+
+function! s:settingsSection() abort " {{{1
+    call health#report_start('settings')
+
+    " if has_key(g:, 'ducttape_loaded')
+    " endif
+    call s:checkGlobal('ducttape_loaded')
+    call s:checkGlobal('ducttape_loaded_ok')
+    call s:checkGlobal('ducttape_locallib')
+    call s:checkGlobal('ducttape_real_locallib')
+
+endfunction
+
 function! health#ducttape#check() abort " {{{1
+
+    if !exists('g:ducttape_loaded')
+        call health#report_error('vim-ducttape is not loaded')
+    endif
+    if !get(g:, 'ducttape_loaded_ok', 1)
+        call health#report_error('vim-ducttape was not loaded OK')
+    endif
+
     call s:vimSection()
+    call s:settingsSection()
     return
 endfunction
