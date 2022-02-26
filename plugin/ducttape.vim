@@ -3,6 +3,23 @@ if has('g:ducttape_loaded')
 endif
 let g:ducttape_loaded = 1
 
+let g:ducttape_loaded_ok = 1
+
+" minimum version checks
+if !has('perl')
+    let g:ducttape_loaded_ok = 0
+    finish
+endif
+
+if has('nvim')
+    " you're kinda on your own here, but I'm interested in hearing... anything
+else
+    if !has('patch-7.4.1304')
+        let g:ducttape_loaded_ok = 0
+        finish
+    endif
+endif
+
 let g:ducttape_topdir = simplify(expand('<sfile>:p:h') . '/..')
 
 let g:ducttape_locallib = get(g:, 'ducttape_locallib', g:ducttape_topdir.'/perl5')
