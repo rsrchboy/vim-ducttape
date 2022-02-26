@@ -29,7 +29,7 @@ let s:perl_init .= 'use local::lib; '
 
 if g:ducttape_real_locallib
     let s:perl_init .=
-    \   . 'BEGIN { local::lib->new(quiet => 1)->activate(q{'.g:ducttape_locallib.'})->setup_local_lib } '
+    \   'BEGIN { local::lib->new(quiet => 1)->activate(q{'.g:ducttape_locallib.'})->setup_local_lib } '
 else
 
     " Otherwise, 'fake' the locallib by setting up @INC in a similar fashion
