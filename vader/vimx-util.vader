@@ -14,7 +14,7 @@ Then (has_patch):
   Assert b:eep
 
 Execute perl (!has_patch):
-  $b{eep} = vim_has_patch('9.0.100')
+  $b{eep} = vim_has_patch('19.0.100')
 
 Then (!has_patch):
   Assert !b:eep
